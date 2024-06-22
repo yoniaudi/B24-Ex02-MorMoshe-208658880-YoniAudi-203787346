@@ -6,6 +6,7 @@ using FacebookWrapper.ObjectModel;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using Page = FacebookWrapper.ObjectModel.Page;
 using Status = FacebookWrapper.ObjectModel.Status;
@@ -148,13 +149,24 @@ namespace BasicFacebookFeatures
 
         private void fetchPhotos()
         {
+            Thread loadAlbumsThread = null;
+
             progressBar.Visible = true;
-            m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
-            panelPhotos.Controls.Add(m_Photos);
-            searchableListBoxMain.DisplayMember = m_Photos.DisplayMember;
-            searchableListBoxMain.DataSource = m_Photos.DataSource;
-            displayPanel(panelPhotos);
-            progressBar.Visible = false;
+            loadAlbumsThread = new Thread(() =>
+            {
+                m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
+
+                Invoke(new Action(() =>
+                {
+                    panelPhotos.Controls.Add(m_Photos);
+                    searchableListBoxMain.DisplayMember = m_Photos.DisplayMember;
+                    searchableListBoxMain.DataSource = m_Photos.DataSource;
+                    displayPanel(panelPhotos);
+                    progressBar.Visible = false;
+                }));
+            });
+
+            loadAlbumsThread.Start();
         }
 
         private void buttonPosts_Click(object sender, EventArgs e)

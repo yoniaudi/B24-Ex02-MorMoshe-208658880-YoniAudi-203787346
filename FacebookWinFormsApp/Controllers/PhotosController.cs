@@ -1,4 +1,5 @@
 ﻿using FacebookWrapper.ObjectModel;
+using System;
 using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
@@ -24,12 +25,19 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(FacebookObjectCollection<Album> i_Albums = null, FacebookWrapper.ObjectModel.Album i_Album = null)
         {
-            m_ProgressBar.Visible = true;
-            m_ProgressBar.Minimum = 1;
-            m_ProgressBar.Maximum = i_Albums != null ? i_Albums.Count : (i_Album != null ? i_Album.Photos.Count : 0);
-            m_ProgressBar.Value = 1;
-            m_ProgressBar.Step = 1;
-            m_ProgressBar.Visible = false;
+            if (m_ProgressBar.InvokeRequired == true)
+            {
+                m_ProgressBar.Invoke(new MethodInvoker(() => initializeProgressBar(i_Albums, i_Album)));
+            }
+            else
+            {
+                m_ProgressBar.Visible = true;
+                m_ProgressBar.Minimum = 1;
+                m_ProgressBar.Maximum = i_Albums != null ? i_Albums.Count : (i_Album != null ? i_Album.Photos.Count : 0);
+                m_ProgressBar.Value = 1;
+                m_ProgressBar.Step = 1;
+                m_ProgressBar.Visible = false;
+            }
         }
 
         private object filterAlbumsWithProgress(FacebookObjectCollection<Album> i_Albums)
@@ -43,7 +51,14 @@ namespace BasicFacebookFeatures.Models
                     filteredAlbums.Add(album);
                 }
 
-                m_ProgressBar.PerformStep();
+                if (m_ProgressBar.InvokeRequired == true)
+                {
+                    m_ProgressBar.Invoke(new MethodInvoker(m_ProgressBar.PerformStep));
+                }
+                else
+                {
+                    m_ProgressBar.PerformStep();
+                }
             }
 
             return filteredAlbums;
@@ -64,7 +79,15 @@ namespace BasicFacebookFeatures.Models
                 flowLayoutPanelPhotos.Controls.Add(picture);
                 picture.BringToFront();
                 picture.Visible = true;
-                m_ProgressBar.PerformStep();
+
+                if (m_ProgressBar.InvokeRequired == true)
+                {
+                    m_ProgressBar.Invoke(new MethodInvoker(m_ProgressBar.PerformStep));
+                }
+                else
+                {
+                    m_ProgressBar.PerformStep();
+                }
             }
         }
     }
