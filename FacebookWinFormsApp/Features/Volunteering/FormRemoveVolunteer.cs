@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -8,29 +7,27 @@ namespace BasicFacebookFeatures.Features.Volunteering
 {
     public partial class FormRemoveVolunteer : Form
     {
+        private readonly RemoveVolunteerService m_VolunteerService;
+
         public FormRemoveVolunteer()
         {
             InitializeComponent();
+            m_VolunteerService = new RemoveVolunteerService();
         }
 
         private void textBoxPhone_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Char.IsDigit(e.KeyChar) == false && e.KeyChar != '\b')
+            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
             {
                 e.Handled = true;
             }
         }
 
-        private void displayVolunteersWithPhoneNumber(string i_SelectedPhoneNumber)
+        private void displayVolunteersWithPhoneNumber(string selectedPhoneNumber)
         {
-            List<VolunteerPerson> volunteerPeople = FileOperations.LoadFromFile();
-            List<string> volunteerPeopleToDisplay = new List<string>();
-            List<VolunteerPerson> filteredVolunteers = volunteerPeople.Where(v => v.PhoneNumber == i_SelectedPhoneNumber).ToList();
-
-            foreach (VolunteerPerson person in filteredVolunteers)
-            {
-                volunteerPeopleToDisplay.Add(person.ToString());
-            }
+            List<VolunteerPerson> volunteerPeople = m_VolunteerService.LoadVolunteers();
+            List<VolunteerPerson> filteredVolunteers = m_VolunteerService.FilterVolunteersByPhoneNumber(volunteerPeople, selectedPhoneNumber);
+            List<string> volunteerPeopleToDisplay = filteredVolunteers.Select(person => person.ToString()).ToList();
 
             listBoxVolunteers.DataSource = volunteerPeopleToDisplay;
         }
@@ -39,7 +36,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
         {
             string phoneNumber = textBoxPhone.Text;
 
-            if (String.IsNullOrEmpty(phoneNumber) == false)
+            if (!string.IsNullOrEmpty(phoneNumber))
             {
                 displayVolunteersWithPhoneNumber(phoneNumber);
             }
@@ -54,8 +51,8 @@ namespace BasicFacebookFeatures.Features.Volunteering
             if (listBoxVolunteers.SelectedIndex != -1)
             {
                 string selectedVolunteerString = (string)listBoxVolunteers.SelectedItem;
-                VolunteerPerson details = extractVolunteerDetails(selectedVolunteerString);
-                List<VolunteerPerson> volunteerPeople = FileOperations.LoadFromFile();
+                VolunteerPerson details = m_VolunteerService.ExtractVolunteerDetails(selectedVolunteerString);
+                List<VolunteerPerson> volunteerPeople = m_VolunteerService.LoadVolunteers();
                 VolunteerPerson selectedVolunteer = volunteerPeople.FirstOrDefault(vp =>
                     vp.Subject == details.Subject &&
                     vp.Location == details.Location &&
@@ -65,28 +62,10 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
                 if (selectedVolunteer != null)
                 {
-                    volunteerPeople.Remove(selectedVolunteer);
-                    FileOperations.SaveToFile(volunteerPeople);
+                    m_VolunteerService.RemoveVolunteer(volunteerPeople, selectedVolunteer);
                     displayVolunteersWithPhoneNumber(details.PhoneNumber);
                 }
             }
-        }
-
-        private VolunteerPerson extractVolunteerDetails(string i_VolunteerString)
-        {
-            VolunteerPerson details = new VolunteerPerson();
-            string[] parts = i_VolunteerString.Split(new string[] { " at ", " from ", " to ", " Phone:" }, StringSplitOptions.None);
-
-            if (parts.Length == 5)
-            {
-                details.Subject = parts[0].Trim();
-                details.Location = parts[1].Trim();
-                details.StartDate = DateTime.Parse(parts[2].Trim()).Date;
-                details.EndDate = DateTime.Parse(parts[3].Trim()).Date;
-                details.PhoneNumber = parts[4].Trim();
-            }
-
-            return details;
         }
     }
 }
