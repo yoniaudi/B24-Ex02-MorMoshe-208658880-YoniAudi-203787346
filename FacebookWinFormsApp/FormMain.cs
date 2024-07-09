@@ -17,12 +17,12 @@ namespace BasicFacebookFeatures
     {
         private FacebookWrapper.LoginResult m_LoginResult = null;
         private User m_LoggedInUser = null;
-        private Models.PhotosController m_Photos = null;
-        private Models.PostController m_Posts = null;
-        private Models.PageController m_Pages = null;
-        private Models.ProfileController m_Profile = null;
-        private Models.FriendController m_Friends = null;
-        private Models.StatusController m_Statuses = null;
+        private PhotosController m_Photos = null;
+        private PostController m_Posts = null;
+        private PageController m_Pages = null;
+        private ProfileController m_Profile = null;
+        private FriendController m_Friends = null;
+        private StatusController m_Statuses = null;
         private Panel[] m_Panels = null;
 
         public FormMain()
@@ -155,7 +155,7 @@ namespace BasicFacebookFeatures
 
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
-            new Thread (fetchPhotos).Start();
+            new Thread(fetchPhotos).Start(); // Is it ok to declare it this way? new
         }
 
         private void fetchPhotos()
