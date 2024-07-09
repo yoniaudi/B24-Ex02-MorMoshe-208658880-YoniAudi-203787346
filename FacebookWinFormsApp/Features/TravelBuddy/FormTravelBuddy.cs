@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Features.TravelBuddy
 {
     public partial class FormTravelBuddy : Form
     {
-        private User m_LoggedInUser;
+        private readonly TravelBuddyService m_TravelBuddyService;
         private DateTime m_ArrivalDate;
         private DateTime m_DepartureDate;
         private string m_SelectedCountry;
@@ -17,60 +18,34 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
         private int m_MaxAge = 0;
         private bool m_SelectingArrival = true;
 
-        public FormTravelBuddy()
-        {
-            InitializeComponent();
-            populateComboBoxCountires();
-        }
-
         public FormTravelBuddy(User i_LoggedInUser)
         {
             InitializeComponent();
-            populateComboBoxCountires();
-            m_LoggedInUser = i_LoggedInUser;
+            populateComboBoxCountries();
+            m_TravelBuddyService = new TravelBuddyService(i_LoggedInUser);
         }
 
-        private void populateComboBoxCountires()
+        private void populateComboBoxCountries()
         {
-            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
-            {
-                RegionInfo region = new RegionInfo(culture.Name);
+            var countries = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+                           .Select(culture => new RegionInfo(culture.Name).EnglishName)
+                           .Distinct()
+                           .OrderBy(name => name);
 
-                if (comboBoxCountries.Items.Contains(region.EnglishName) == false)
-                {
-                    comboBoxCountries.Items.Add(region.EnglishName);
-                }
-            }
-
-            comboBoxCountries.Sorted = true;
+            comboBoxCountries.Items.AddRange(countries.ToArray());
         }
 
         private void checkBoxAge_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxAge.Checked)
-            {
-                labelAgeRange.Visible = true;
-                textBoxMinAge.Visible = true;
-                textBoxMaxAge.Visible = true;
-            }
-            else
-            {
-                labelAgeRange.Visible = false;
-                textBoxMinAge.Visible = false;
-                textBoxMaxAge.Visible = false;
-            }
+            bool isChecked = checkBoxAge.Checked;
+            labelAgeRange.Visible = isChecked;
+            textBoxMinAge.Visible = isChecked;
+            textBoxMaxAge.Visible = isChecked;
         }
 
         private void checkBoxGender_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxGender.Checked)
-            {
-                comboBoxGender.Visible = true;
-            }
-            else
-            {
-                comboBoxGender.Visible = false;
-            }
+            comboBoxGender.Visible = checkBoxGender.Checked;
         }
 
         private void monthCalendar_DateSelected(object sender, DateRangeEventArgs e)
@@ -101,7 +76,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private void textBoxMinAge_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Char.IsDigit(e.KeyChar) == false && e.KeyChar != '\b')
+            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
             {
                 e.Handled = true;
             }
@@ -109,7 +84,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private void textBoxMaxAge_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Char.IsDigit(e.KeyChar) == false && e.KeyChar != '\b')
+            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
             {
                 e.Handled = true;
             }
@@ -117,220 +92,50 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private void buttonFindMatch_Click(object sender, EventArgs e)
         {
-            if (checkInputValidation() == true)
+            var validationData = new TravelBuddyValidationData
             {
-                List<TravelBuddyModel> friendsList = null;
+                SelectedCountry = comboBoxCountries.Text,
+                ArrivalDate = textBoxArrivalDate.Text,
+                DepartureDate = textBoxDepartureDate.Text,
+                MinAge = !string.IsNullOrEmpty(textBoxMinAge.Text) ? int.Parse(textBoxMinAge.Text) : 0,
+                MaxAge = !string.IsNullOrEmpty(textBoxMaxAge.Text) ? int.Parse(textBoxMaxAge.Text) : 0,
+                AgeChecked = checkBoxAge.Checked,
+                GenderChecked = checkBoxGender.Checked,
+                Gender = comboBoxGender.Text
+            };
 
+            if (m_TravelBuddyService.ValidateData(validationData, out string errorMessage))
+            {
                 listBoxTravelBuddies.DataSource = null;
                 listBoxTraveledFriends.DataSource = null;
                 listBoxTravelBuddies.Items.Clear();
                 listBoxTraveledFriends.Items.Clear();
                 buttonFindMatch.Cursor = Cursors.AppStarting;
-                friendsList = loadFriends();
+
+                var friendsList = m_TravelBuddyService.LoadFriends();
                 findMatch(friendsList);
                 findFriendsWhoTraveledDestCountry(friendsList);
-            }
 
-            buttonFindMatch.Cursor = Cursors.Default;
+                buttonFindMatch.Cursor = Cursors.Default;
+            }
+            else
+            {
+                MessageBox.Show(errorMessage);
+            }
         }
 
-        private void findMatch(List<TravelBuddyModel> i_FriendsList)
+        private void findMatch(List<TravelBuddyModel> friendsList)
         {
-            List<TravelBuddyModel> friendsWithPlannedTravel = new List<TravelBuddyModel>();
-
-            friendsWithPlannedTravel = checkFriendsForPlannedTravel(i_FriendsList, m_SelectedCountry, m_ArrivalDate, m_DepartureDate, m_MinAge, m_MaxAge, m_Gender);
+            var friendsWithPlannedTravel = m_TravelBuddyService.FindFriendsWithPlannedTravel(friendsList, m_SelectedCountry, m_ArrivalDate, m_DepartureDate, m_MinAge, m_MaxAge, m_Gender);
             listBoxTravelBuddies.DisplayMember = "Name";
             listBoxTravelBuddies.DataSource = friendsWithPlannedTravel;
         }
 
-        private void findFriendsWhoTraveledDestCountry(List<TravelBuddyModel> i_FriendsList)
+        private void findFriendsWhoTraveledDestCountry(List<TravelBuddyModel> friendsList)
         {
-            List<TravelBuddyModel> friendsTraveledDesiredCountry = checkFriendsForDesiredCountry(i_FriendsList, m_SelectedCountry);
-
+            var friendsTraveledDesiredCountry = m_TravelBuddyService.FindFriendsForDesiredCountry(friendsList, m_SelectedCountry);
             listBoxTraveledFriends.DisplayMember = "Name";
             listBoxTraveledFriends.DataSource = friendsTraveledDesiredCountry;
-        }
-
-        private bool checkInputValidation()
-        {
-            bool isValid = true;
-
-            m_SelectedCountry = comboBoxCountries.Text;
-
-            if (string.IsNullOrEmpty(m_SelectedCountry))
-            {
-                isValid = false;
-                MessageBox.Show("Choose country");
-            }
-
-            if (string.IsNullOrEmpty(textBoxArrivalDate.Text) || string.IsNullOrEmpty(textBoxDepartureDate.Text) || m_DepartureDate < m_ArrivalDate)
-            {
-                isValid = false;
-                MessageBox.Show("Invalid Dates");
-            }
-
-            if (checkBoxAge.Checked == true)
-            {
-                if (string.IsNullOrEmpty(textBoxMinAge.Text) == false && string.IsNullOrEmpty(textBoxMaxAge.Text) == false)
-                {
-                    m_MinAge = int.Parse(textBoxMinAge.Text);
-                    m_MaxAge = int.Parse(textBoxMaxAge.Text);
-
-                    if (m_MinAge < 1 || m_MinAge > 120 || m_MaxAge < 1 || m_MaxAge > 120)
-                    {
-                        isValid = false;
-                        MessageBox.Show("Choose age between 1 to 120");
-                    }
-                    else if (m_MaxAge < m_MinAge)
-                    {
-                        isValid = false;
-                        MessageBox.Show("Invalid age range");
-                    }
-                }
-                else
-                {
-                    isValid = false;
-                    MessageBox.Show("Choose age");
-                }
-            }
-
-            if (checkBoxGender.Checked == true)
-            {
-                if (string.IsNullOrEmpty(comboBoxGender.Text) == false)
-                {
-                    m_Gender = comboBoxGender.Text;
-                }
-                else
-                {
-                    isValid = false;
-                    MessageBox.Show("Choose gender");
-                }
-            }
-
-            return isValid;
-        }
-
-        private List<TravelBuddyModel> loadFriends()
-        {
-            FacebookObjectCollection<User> friends = m_LoggedInUser.Friends;
-            TravelBuddyModel travelBuddyFriend = null;
-            FacebookObjectCollection<Event> events = null;
-            List<TravelBuddyModel> friendList = new List<TravelBuddyModel>();
-
-            foreach (User fbFriend in friends)
-            {
-                int age = fbFriend.Birthday != null ? calculateAge(fbFriend.Birthday) : 0;
-                List<string> traveledCountries = new List<string>();
-
-                if (fbFriend.Albums != null)
-                {
-                    foreach (Album album in fbFriend.Albums)
-                    {
-                        foreach (Photo photo in album.Photos)
-                        {
-                            if (photo.Place != null && string.IsNullOrEmpty(photo.Place.Location.Country) == false)
-                            {
-                                if (traveledCountries.Contains(photo.Place.Location.Country) == false)
-                                {
-                                    traveledCountries.Add(photo.Place.Location.Country);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                travelBuddyFriend = new TravelBuddyModel()
-                {
-                    Name = fbFriend.Name,
-                    Age = age,
-                    Gender = fbFriend.Gender.ToString(),
-                    TraveledCountries = traveledCountries
-                };
-
-                events = fbFriend.Events;
-
-                foreach (Event fbEvent in events)
-                {
-                    if (fbEvent.Place != null && fbEvent.Place.Location != null)
-                    {
-                        string country = fbEvent.Place.Location.Country;
-                        DateTime startDate = fbEvent.StartTime ?? DateTime.MinValue;
-                        DateTime endDate = fbEvent.EndTime ?? startDate;
-
-                        if (string.IsNullOrEmpty(country) == false)
-                        {
-                            travelBuddyFriend.TravelPlans.Add(new TravelPlanModel
-                            {
-                                Country = country,
-                                StartDate = startDate,
-                                EndDate = endDate
-                            });
-                        }
-                    }
-                }
-
-                friendList.Add(travelBuddyFriend);
-            }
-
-            return friendList;
-        }
-
-        private int calculateAge(string i_Birthday)
-        {
-            int age = 0;
-            DateTime birthDate;
-
-            if (DateTime.TryParse(i_Birthday, out birthDate))
-            {
-                age = DateTime.Now.Year - birthDate.Year;
-
-                if (DateTime.Now.DayOfYear < birthDate.DayOfYear)
-                {
-                    age--;
-                }
-            }
-
-            return age;
-        }
-
-        private List<TravelBuddyModel> checkFriendsForDesiredCountry(List<TravelBuddyModel> i_FriendsList, string i_DesiredCountry)
-        {
-            List<TravelBuddyModel> friendsInDesiredCountry = new List<TravelBuddyModel>();
-
-            foreach (TravelBuddyModel friend in i_FriendsList)
-            {
-                if (friend.TraveledCountries.Contains(i_DesiredCountry))
-                {
-                    friendsInDesiredCountry.Add(friend);
-                }
-            }
-
-            return friendsInDesiredCountry;
-        }
-
-        private List<TravelBuddyModel> checkFriendsForPlannedTravel(List<TravelBuddyModel> i_FriendsList, string i_DesiredCountry, DateTime i_StartDate, DateTime i_EndDate, int i_MinAge = 0, int i_MaxAge = 0, string i_Gender = null)
-        {
-            List<TravelBuddyModel> friendsWithPlannedTravel = new List<TravelBuddyModel>();
-
-            foreach (TravelBuddyModel friend in i_FriendsList)
-            {
-                foreach (TravelPlanModel travelPlan in friend.TravelPlans)
-                {
-                    if (travelPlan.Country == i_DesiredCountry && travelPlan.StartDate <= i_EndDate && travelPlan.EndDate >= i_StartDate)
-                    {
-                        bool ageCondition = (i_MinAge == 0 && i_MaxAge == 0) || (friend.Age >= i_MinAge && friend.Age <= i_MaxAge);
-                        bool genderCondition = i_Gender == null || friend.Gender == i_Gender;
-
-                        if (ageCondition && genderCondition)
-                        {
-                            friendsWithPlannedTravel.Add(friend);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return friendsWithPlannedTravel;
         }
     }
 }

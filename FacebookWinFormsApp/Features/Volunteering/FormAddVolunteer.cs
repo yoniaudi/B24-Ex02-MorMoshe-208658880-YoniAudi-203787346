@@ -5,17 +5,19 @@ namespace BasicFacebookFeatures.Features.Volunteering
 {
     public partial class FormAddVolunteer : Form
     {
-        string m_Subject = null;
-        string m_Location = null;
-        string m_Phone = null;
-        DateTime m_StartAvailableDate;
-        DateTime m_EndAvailableDate;
+        private string m_Subject;
+        private string m_Location;
+        private string m_Phone;
+        private DateTime m_StartAvailableDate;
+        private DateTime m_EndAvailableDate;
+        private readonly AddVolunteerService m_VolunteerService;
 
         public FormAddVolunteer()
         {
             InitializeComponent();
             m_StartAvailableDate = DateTime.Now;
             m_EndAvailableDate = DateTime.Now;
+            m_VolunteerService = new AddVolunteerService();
         }
 
         private void dateTimePickerStartDate_ValueChanged(object sender, EventArgs e)
@@ -30,7 +32,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void textBoxPhone_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Char.IsDigit(e.KeyChar) == false && e.KeyChar != '\b')
+            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
             {
                 e.Handled = true;
             }
@@ -38,11 +40,9 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void buttonAddVolunteer_Click(object sender, EventArgs e)
         {
-            VolunteerPerson volunteerPerson = null;
-
-            if (checkDataValidation())
+            if (collectFormData() && validateData())
             {
-                volunteerPerson = new VolunteerPerson()
+                var volunteerPerson = new VolunteerPerson()
                 {
                     Subject = m_Subject,
                     Location = m_Location,
@@ -51,55 +51,31 @@ namespace BasicFacebookFeatures.Features.Volunteering
                     EndDate = m_EndAvailableDate
                 };
 
-                FileOperations.SaveVolunteerPersonToFile(volunteerPerson);
+                m_VolunteerService.SaveVolunteerPerson(volunteerPerson);
                 MessageBox.Show("Data Saved Successfully!");
-            }
-            else
-            {
-                MessageBox.Show("Saved Failed!");
             }
         }
 
-        private bool checkDataValidation()
+        private bool collectFormData()
         {
-            bool isValid = true;
+            m_Subject = comboBoxSubject.Text;
+            m_Location = textBoxLocation.Text;
+            m_Phone = textBoxPhone.Text;
 
-            if (string.IsNullOrEmpty(comboBoxSubject.Text) == false)
-            {
-                m_Subject = comboBoxSubject.Text;
-            }
-            else
-            {
-                isValid = false;
-                MessageBox.Show("Choose subject");
-            }
+            return !string.IsNullOrEmpty(m_Subject) &&
+                   !string.IsNullOrEmpty(m_Location) &&
+                   !string.IsNullOrEmpty(m_Phone) &&
+                   m_StartAvailableDate <= m_EndAvailableDate;
+        }
 
-            if (string.IsNullOrEmpty(textBoxLocation.Text) == false)
-            {
-                m_Location = textBoxLocation.Text;
-            }
-            else
-            {
-                isValid = false;
-                MessageBox.Show("Choose location");
-            }
+        private bool validateData()
+        {
+            string errorMessage;
+            bool isValid = m_VolunteerService.ValidateData(m_Subject, m_Location, m_StartAvailableDate, m_EndAvailableDate, m_Phone, out errorMessage);
 
-            if (String.IsNullOrEmpty(m_StartAvailableDate.ToString()) ||
-                String.IsNullOrEmpty(m_EndAvailableDate.ToString()) ||
-                m_StartAvailableDate > m_EndAvailableDate)
+            if (!isValid)
             {
-                isValid = false;
-                MessageBox.Show("Invalid dates");
-            }
-
-            if (String.IsNullOrEmpty(textBoxPhone.Text) == false)
-            {
-                m_Phone = textBoxPhone.Text;
-            }
-            else
-            {
-                isValid = false;
-                MessageBox.Show("Enter phone number");
+                MessageBox.Show(errorMessage);
             }
 
             return isValid;
