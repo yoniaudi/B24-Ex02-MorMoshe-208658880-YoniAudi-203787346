@@ -1,4 +1,5 @@
 ﻿using FacebookWrapper.ObjectModel;
+using System;
 using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
@@ -24,10 +25,13 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(FacebookObjectCollection<Post> i_Posts)
         {
-            m_ProgressBar.Minimum = 1;
-            m_ProgressBar.Maximum = i_Posts.Count;
-            m_ProgressBar.Value = 1;
-            m_ProgressBar.Step = 1;
+            m_ProgressBar.Invoke(new Action(() =>
+            {
+                m_ProgressBar.Minimum = 1;
+                m_ProgressBar.Maximum = i_Posts.Count;
+                m_ProgressBar.Value = 1;
+                m_ProgressBar.Step = 1;
+            }));
         }
 
         private object filterPostsWithProgress(FacebookObjectCollection<Post> i_Posts)
@@ -41,7 +45,7 @@ namespace BasicFacebookFeatures.Models
                     filteredPosts.Add(post);
                 }
 
-                m_ProgressBar.PerformStep();
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
             }
 
             return filteredPosts;

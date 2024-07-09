@@ -41,7 +41,7 @@ namespace BasicFacebookFeatures
             this.panelPosts = new System.Windows.Forms.Panel();
             this.panelStatuses = new System.Windows.Forms.Panel();
             this.panelPhotos = new System.Windows.Forms.Panel();
-            this.panelCheckins = new System.Windows.Forms.Panel();
+            this.panelPages = new System.Windows.Forms.Panel();
             this.panelMain = new System.Windows.Forms.Panel();
             this.buttonProfile = new System.Windows.Forms.Button();
             this.buttonFriends = new System.Windows.Forms.Button();
@@ -159,13 +159,13 @@ namespace BasicFacebookFeatures
             this.panelPhotos.TabIndex = 78;
             this.panelPhotos.Visible = false;
             // 
-            // panelCheckins
+            // panelPages
             // 
-            this.panelCheckins.Location = new System.Drawing.Point(317, 128);
-            this.panelCheckins.Name = "panelCheckins";
-            this.panelCheckins.Size = new System.Drawing.Size(874, 453);
-            this.panelCheckins.TabIndex = 78;
-            this.panelCheckins.Visible = false;
+            this.panelPages.Location = new System.Drawing.Point(317, 128);
+            this.panelPages.Name = "panelPages";
+            this.panelPages.Size = new System.Drawing.Size(874, 453);
+            this.panelPages.TabIndex = 78;
+            this.panelPages.Visible = false;
             // 
             // panelMain
             // 
@@ -297,9 +297,9 @@ namespace BasicFacebookFeatures
             // 
             // pictureBoxAppVisability
             // 
-            this.pictureBoxAppVisability.Location = new System.Drawing.Point(12, 96);
+            this.pictureBoxAppVisability.Location = new System.Drawing.Point(12, 590);
             this.pictureBoxAppVisability.Name = "pictureBoxAppVisability";
-            this.pictureBoxAppVisability.Size = new System.Drawing.Size(1197, 523);
+            this.pictureBoxAppVisability.Size = new System.Drawing.Size(1197, 29);
             this.pictureBoxAppVisability.TabIndex = 86;
             this.pictureBoxAppVisability.TabStop = false;
             // 
@@ -342,7 +342,7 @@ namespace BasicFacebookFeatures
             this.Controls.Add(this.panelSecondary);
             this.Controls.Add(this.panelPhotos);
             this.Controls.Add(this.panelPosts);
-            this.Controls.Add(this.panelCheckins);
+            this.Controls.Add(this.panelPages);
             this.Controls.Add(this.panelStatuses);
             this.Controls.Add(this.panelFriends);
             this.Controls.Add(this.panelProfile);
@@ -388,7 +388,7 @@ namespace BasicFacebookFeatures
         private System.Windows.Forms.Panel panelPhotos;
         private System.Windows.Forms.Label labelFullName;
         private System.Windows.Forms.Panel panelPosts;
-        private System.Windows.Forms.Panel panelCheckins;
+        private System.Windows.Forms.Panel panelPages;
         private System.Windows.Forms.PictureBox pictureBoxAppVisability;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button buttonTravelBuddy;

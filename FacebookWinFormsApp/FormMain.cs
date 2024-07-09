@@ -19,15 +19,26 @@ namespace BasicFacebookFeatures
         private User m_LoggedInUser = null;
         private Models.PhotosController m_Photos = null;
         private Models.PostController m_Posts = null;
-        private Models.PageController m_Checkins = null;
+        private Models.PageController m_Pages = null;
         private Models.ProfileController m_Profile = null;
         private Models.FriendController m_Friends = null;
         private Models.StatusController m_Statuses = null;
+        private Panel[] m_Panels = null;
 
         public FormMain()
         {
             InitializeComponent();
             FacebookWrapper.FacebookService.s_CollectionLimit = 25;
+            m_Panels = new Panel[] 
+            {
+                panelProfile,
+                panelFriends,
+                panelStatuses,
+                panelInbox,
+                panelPhotos,
+                panelPosts,
+                panelPages
+            };
         }
 
         protected override void OnLoad(EventArgs e)
@@ -144,61 +155,73 @@ namespace BasicFacebookFeatures
 
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
-            fetchPhotos();
+            new Thread (fetchPhotos).Start();
         }
 
         private void fetchPhotos()
         {
-            Thread loadAlbumsThread = null;
-
-            progressBar.Visible = true;
-            loadAlbumsThread = new Thread(() =>
+            progressBar.Invoke(new Action(() => progressBar.Visible = true));
+            m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
+            panelPhotos.Invoke(new Action(() =>
             {
-                m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
-
-                Invoke(new Action(() =>
-                {
-                    panelPhotos.Controls.Add(m_Photos);
-                    searchableListBoxMain.DisplayMember = m_Photos.DisplayMember;
-                    searchableListBoxMain.DataSource = m_Photos.DataSource;
-                    displayPanel(panelPhotos);
-                    progressBar.Visible = false;
-                }));
-            });
-
-            loadAlbumsThread.Start();
+                panelPhotos.Controls.Clear();
+                panelPhotos.Controls.Add(m_Photos);
+            }));
+            searchableListBoxMain.Invoke(new Action(() =>
+            {
+                searchableListBoxMain.DisplayMember = m_Photos.DisplayMember;
+                searchableListBoxMain.DataSource = m_Photos.DataSource;
+            }));
+            progressBar.Invoke(new Action(() => progressBar.Visible = false));
+            displayPanel(panelPhotos);
         }
 
         private void buttonPosts_Click(object sender, EventArgs e)
         {
-            fetchPosts();
+            new Thread(fetchPosts).Start();
         }
 
         private void fetchPosts()
         {
-            progressBar.Visible = true;
+            progressBar.Invoke(new Action(() => progressBar.Visible = true));
             m_Posts = new Models.PostController(m_LoginResult.LoggedInUser.Posts, progressBar);
-            panelPosts.Controls.Add(m_Posts);
-            searchableListBoxMain.DisplayMember = m_Posts.DisplayMember;
-            searchableListBoxMain.DataSource = m_Posts.DataSource;
+            panelPosts.Invoke(new Action(() =>
+            {
+                panelPosts.Controls.Clear();
+                panelPosts.Controls.Add(m_Posts);
+            }));
+            searchableListBoxMain.Invoke(new Action(() =>
+            {
+                searchableListBoxMain.DisplayMember = m_Posts.DisplayMember;
+                searchableListBoxMain.DataSource = m_Posts.DataSource;
+            }));
             displayPanel(panelPosts);
-            progressBar.Visible = false;
+            progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
 
         private void buttonPages_Click(object sender, EventArgs e)
         {
-            fetchPages();
+            new Thread(fetchPages).Start();
         }
 
         private void fetchPages()
         {
-            progressBar.Visible = true;
-            m_Checkins = new Models.PageController(m_LoginResult.LoggedInUser.LikedPages, progressBar);
-            panelCheckins.Controls.Add(m_Checkins);
-            searchableListBoxMain.DisplayMember = m_Checkins.DisplayMember;
-            searchableListBoxMain.DataSource = m_Checkins.DataSource;
-            displayPanel(panelCheckins);
-            progressBar.Visible = false;
+            progressBar.Invoke(new Action(() => progressBar.Visible = true));
+            m_Pages = new Models.PageController(m_LoginResult.LoggedInUser.LikedPages, progressBar);
+            panelPages.Invoke(new Action(() =>
+            {
+                panelPages.Controls.Clear();
+                panelPages.Controls.Add(m_Pages);
+            }));
+
+            searchableListBoxMain.Invoke(new Action(() =>
+            {
+                searchableListBoxMain.DisplayMember = m_Pages.DisplayMember;
+                searchableListBoxMain.DataSource = m_Pages.DataSource;
+            }));
+
+            displayPanel(panelPages);
+            progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
 
         private void buttonProfile_Click(object sender, EventArgs e)
@@ -245,7 +268,7 @@ namespace BasicFacebookFeatures
             displayPanel(panelStatuses);
             progressBar.Visible = false;
         }
-
+        
         private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             object selectedItem = (sender as SearchableListBoxController).SelectedItem;
@@ -256,10 +279,10 @@ namespace BasicFacebookFeatures
                     m_Photos.ShowSelectedAlbum(album);
                     break;
                 case Post post:
-                    m_Posts.ShowSelectedPost(post);
+                    m_Posts.Invoke(new Action(() => m_Posts.ShowSelectedPost(post)));
                     break;
                 case Page page:
-                    m_Checkins.ShowSelectedPage(page);
+                    m_Pages.Invoke(new Action(() => m_Pages.ShowSelectedPage(page)));
                     break;
                 case User user:
                     m_Friends.ShowSelectedFriend(user);
@@ -288,14 +311,24 @@ namespace BasicFacebookFeatures
 
         private void displayPanel(Panel i_Panel)
         {
+            foreach (Panel panel in m_Panels)
+            {
+                panel.Invoke(new Action(() => panel.Visible = false));
+            }
+
+            i_Panel.Invoke(new Action(() => i_Panel.Visible = true));
+        }
+
+        /*private void displayPanel(Panel i_Panel)
+        {
             panelProfile.Visible = false;
             panelFriends.Visible = false;
             panelStatuses.Visible = false;
             panelInbox.Visible = false;
             panelPhotos.Visible = false;
             panelPosts.Visible = false;
-            panelCheckins.Visible = false;
-            i_Panel.Visible = true;
-        }
+            panelPages.Visible = false;
+            i_Panel.Invoke(new Action(() => i_Panel.Visible = true));
+        }*/
     }
 }

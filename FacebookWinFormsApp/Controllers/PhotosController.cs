@@ -25,11 +25,7 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(FacebookObjectCollection<Album> i_Albums = null, FacebookWrapper.ObjectModel.Album i_Album = null)
         {
-            if (m_ProgressBar.InvokeRequired == true)
-            {
-                m_ProgressBar.Invoke(new MethodInvoker(() => initializeProgressBar(i_Albums, i_Album)));
-            }
-            else
+            m_ProgressBar.Invoke(new Action(() =>
             {
                 m_ProgressBar.Visible = true;
                 m_ProgressBar.Minimum = 1;
@@ -37,7 +33,7 @@ namespace BasicFacebookFeatures.Models
                 m_ProgressBar.Value = 1;
                 m_ProgressBar.Step = 1;
                 m_ProgressBar.Visible = false;
-            }
+            }));
         }
 
         private object filterAlbumsWithProgress(FacebookObjectCollection<Album> i_Albums)
@@ -51,14 +47,7 @@ namespace BasicFacebookFeatures.Models
                     filteredAlbums.Add(album);
                 }
 
-                if (m_ProgressBar.InvokeRequired == true)
-                {
-                    m_ProgressBar.Invoke(new MethodInvoker(m_ProgressBar.PerformStep));
-                }
-                else
-                {
-                    m_ProgressBar.PerformStep();
-                }
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
             }
 
             return filteredAlbums;
@@ -72,22 +61,14 @@ namespace BasicFacebookFeatures.Models
             for (int i = 0; i < i_Album.Photos.Count; i++)
             {
                 PictureBox picture = new PictureBox();
-				
+
                 picture.Name = $"pictureBox{i}";
                 picture.SizeMode = PictureBoxSizeMode.AutoSize;
                 picture.ImageLocation = i_Album.Photos[i].PictureThumbURL;
                 flowLayoutPanelPhotos.Controls.Add(picture);
                 picture.BringToFront();
                 picture.Visible = true;
-
-                if (m_ProgressBar.InvokeRequired == true)
-                {
-                    m_ProgressBar.Invoke(new MethodInvoker(m_ProgressBar.PerformStep));
-                }
-                else
-                {
-                    m_ProgressBar.PerformStep();
-                }
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
             }
         }
     }

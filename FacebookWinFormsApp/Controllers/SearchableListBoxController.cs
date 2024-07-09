@@ -31,21 +31,24 @@ namespace BasicFacebookFeatures.Models
         {
             int foundIdx = -1;
 
-            listBoxMain.ClearSelected();
-            foundIdx = listBoxMain.FindString(textBoxSearch.Text);
-
-            if (foundIdx > -1)
+            listBoxMain.Invoke(new Action(() =>
             {
-                object item = listBoxMain.Items[foundIdx];
-                string propValue = getPropertyValue(item, "Name") ?? getPropertyValue(item, "Message");
+                listBoxMain.ClearSelected();
+                foundIdx = listBoxMain.FindString(textBoxSearch.Text);
 
-                if (propValue != null && textBoxSearch.Text.ToLower() == propValue.ToLower())
+                if (foundIdx > -1)
                 {
-                    listBoxMain.SelectedIndex = foundIdx;
-                }
-            }
+                    object item = listBoxMain.Items[foundIdx];
+                    string propValue = getPropertyValue(item, "Name") ?? getPropertyValue(item, "Message");
 
-            listBoxMain.TopIndex = foundIdx;
+                    if (propValue != null && textBoxSearch.Text.ToLower() == propValue.ToLower())
+                    {
+                        listBoxMain.SelectedIndex = foundIdx;
+                    }
+                }
+
+                listBoxMain.TopIndex = foundIdx;
+            }));
         }
 
         private void buttonSort_Click(object sender, EventArgs e)
@@ -85,10 +88,13 @@ namespace BasicFacebookFeatures.Models
                 Array.Reverse(items);
             }
 
-            listBoxMain.DataSource = null;
-            listBoxMain.Items.Clear();
-            listBoxMain.DisplayMember = "Name";
-            listBoxMain.DataSource = items.ToList();
+            listBoxMain.Invoke(new Action(() =>
+            {
+                listBoxMain.DataSource = null;
+                listBoxMain.Items.Clear();
+                listBoxMain.DisplayMember = "Name";
+                listBoxMain.DataSource = items.ToList();
+            }));
         }
 
         private string getPropertyValue(object i_Obj, string i_PropertyName)
@@ -98,7 +104,7 @@ namespace BasicFacebookFeatures.Models
 
         private void listBoxMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedIndexChanged?.Invoke(this, EventArgs.Empty);
+            Invoke(new Action(() => SelectedIndexChanged?.Invoke(this, EventArgs.Empty)));
         }
     }
 }
