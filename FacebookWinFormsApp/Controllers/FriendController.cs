@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Page = FacebookWrapper.ObjectModel.Page;
 
 namespace BasicFacebookFeatures.Models
@@ -13,14 +14,14 @@ namespace BasicFacebookFeatures.Models
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
-        private ProgressBar m_ProgressBar = null;
+        private System.Windows.Forms.ProgressBar m_ProgressBar = null;
 
         public FriendController()
         {
             InitializeComponent();
         }
 
-        public FriendController(FacebookObjectCollection<User> i_Friends, ProgressBar i_ProgressBar)
+        public FriendController(FacebookObjectCollection<User> i_Friends, System.Windows.Forms.ProgressBar i_ProgressBar)
         {
             InitializeComponent();
             DataSource = i_Friends;
@@ -49,29 +50,32 @@ namespace BasicFacebookFeatures.Models
             searchableListBoxControllerFriendsOfFriend.DataSource = i_Friend.Friends;
             searchableListBoxControllerCommonFriends.DisplayMember = "Name";
             searchableListBoxControllerCommonFriends.DataSource = i_Friend.Friends.Where(myFriend => mainUserFriends.Contains(myFriend)).ToList();
-            m_ProgressBar.Visible = false;
+            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = false));
         }
 
         private void initializeProgressBar(User i_Friend)
         {
-            m_ProgressBar.Minimum = 1;
-            m_ProgressBar.Maximum = i_Friend.Statuses.Count + i_Friend.Albums.Count;
-            m_ProgressBar.Value = 1;
-            m_ProgressBar.Step = 1;
+            m_ProgressBar.Invoke(new Action(() => 
+            { 
+                m_ProgressBar.Minimum = 1; 
+                m_ProgressBar.Maximum = i_Friend.Statuses.Count + i_Friend.Albums.Count;
+                m_ProgressBar.Value = 1;
+                m_ProgressBar.Step = 1;
+            }));
         }
 
         private object filterStatusesWithProgress(User i_Friend)
         {
-            List<Status> filteredStatuses = new List<Status>();
+            List<FacebookWrapper.ObjectModel.Status> filteredStatuses = new List<FacebookWrapper.ObjectModel.Status>();
 
-            foreach (Status status in i_Friend.Statuses)
+            foreach (FacebookWrapper.ObjectModel.Status status in i_Friend.Statuses)
             {
                 if (status.Message != null)
                 {
                     filteredStatuses.Add(status);
                 }
 
-                m_ProgressBar.PerformStep();
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
             }
 
             return filteredStatuses;
@@ -88,7 +92,7 @@ namespace BasicFacebookFeatures.Models
                     filteredAlbums.Add(album);
                 }
 
-                m_ProgressBar.PerformStep();
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
             }
 
             return filteredAlbums;
@@ -114,7 +118,7 @@ namespace BasicFacebookFeatures.Models
                     flowLayoutPanelFriendPhotos.Controls.Add(picture);
                     picture.BringToFront();
                     picture.Visible = true;
-                    m_ProgressBar.PerformStep();
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
                 }
             }
         }
@@ -130,7 +134,7 @@ namespace BasicFacebookFeatures.Models
                     string languageName = languagePage.Name.Remove(languagePage.Name.Length - "Language".Length - 1);
 
                     languages.Append($"{languageName}, ");
-                    m_ProgressBar.PerformStep();
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
                 }
             }
 
@@ -143,7 +147,7 @@ namespace BasicFacebookFeatures.Models
             statusesModelFriendStatuses.ShowSelectedStatus(status);
             flowLayoutPanelFriendPhotos.Hide();
             statusesModelFriendStatuses.Show();
-            m_ProgressBar.PerformStep();
+            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
         }
     }
 }

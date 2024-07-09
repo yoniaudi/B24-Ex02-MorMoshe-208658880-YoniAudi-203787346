@@ -1,5 +1,7 @@
 ﻿using FacebookWrapper.ObjectModel;
+using System;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace BasicFacebookFeatures.Models
 {
@@ -7,7 +9,7 @@ namespace BasicFacebookFeatures.Models
     {
         public string DisplayMember { get { return "Message"; } }
         public object DataSource { get; set; }
-        private ProgressBar m_ProgressBar = null;
+        private System.Windows.Forms.ProgressBar m_ProgressBar = null;
 
         public StatusController()
         {
@@ -24,10 +26,13 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(FacebookObjectCollection<FacebookWrapper.ObjectModel.Status> i_Statuses)
         {
-            m_ProgressBar.Minimum = 1;
-            m_ProgressBar.Maximum = i_Statuses.Count;
-            m_ProgressBar.Value = 1;
-            m_ProgressBar.Step = 1;
+            m_ProgressBar.Invoke(new Action(() =>
+            {
+                m_ProgressBar.Minimum = 1;
+                m_ProgressBar.Maximum = i_Statuses.Count;
+                m_ProgressBar.Value = 1;
+                m_ProgressBar.Step = 1;
+            }));
         }
 
         private object filterStatusesWithProgress(FacebookObjectCollection<FacebookWrapper.ObjectModel.Status> i_Statuses)
@@ -41,7 +46,7 @@ namespace BasicFacebookFeatures.Models
                     filteredStatuses.Add(status);
                 }
 
-                m_ProgressBar.PerformStep();
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
             }
 
             return filteredStatuses;

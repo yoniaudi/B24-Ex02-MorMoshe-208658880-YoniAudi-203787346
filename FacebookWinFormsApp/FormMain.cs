@@ -213,60 +213,76 @@ namespace BasicFacebookFeatures
                 panelPages.Controls.Clear();
                 panelPages.Controls.Add(m_Pages);
             }));
-
             searchableListBoxMain.Invoke(new Action(() =>
             {
                 searchableListBoxMain.DisplayMember = m_Pages.DisplayMember;
                 searchableListBoxMain.DataSource = m_Pages.DataSource;
             }));
-
             displayPanel(panelPages);
             progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
 
         private void buttonProfile_Click(object sender, EventArgs e)
         {
-            fetchProfile();
+            new Thread(fetchProfile).Start();
         }
 
         private void fetchProfile()
         {
             m_Profile = new Models.ProfileController(m_LoginResult.LoggedInUser);
-            searchableListBoxMain.DataSource = null;
-            panelProfile.Controls.Add(m_Profile);
+            searchableListBoxMain.Invoke(new Action(() => searchableListBoxMain.DataSource = null));
+            panelProfile.Invoke(new Action(() =>
+            {
+                panelProfile.Controls.Clear();
+                panelProfile.Controls.Add(m_Profile);
+            }));
             displayPanel(panelProfile);
         }
 
         private void buttonFriends_Click(object sender, EventArgs e)
         {
-            fetchFriends();
+            new Thread(fetchFriends).Start();
         }
 
         private void fetchFriends()
         {
-            progressBar.Visible = true;
+            progressBar.Invoke(new Action(() => progressBar.Visible = true));
             m_Friends = new FriendController(m_LoginResult.LoggedInUser.Friends, progressBar);
-            panelFriends.Controls.Add(m_Friends);
-            searchableListBoxMain.DisplayMember = m_Friends.DisplayMember;
-            searchableListBoxMain.DataSource = m_Friends.DataSource;
+            panelFriends.Invoke(new Action(() =>
+            {
+                panelFriends.Controls.Clear();
+                panelFriends.Controls.Add(m_Friends);
+            }));
+            searchableListBoxMain.Invoke(new Action(() =>
+            {
+                searchableListBoxMain.DisplayMember = m_Friends.DisplayMember;
+                searchableListBoxMain.DataSource = m_Friends.DataSource;
+            }));
             displayPanel(panelFriends);
-            progressBar.Visible = false;
+            progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
 
         private void buttonStatuses_Click(object sender, EventArgs e)
         {
-            fetchStatus();
+            new Thread(fetchStatus).Start();
         }
 
         private void fetchStatus()
         {
-            progressBar.Visible = true;
+            progressBar.Invoke(new Action(() => progressBar.Visible = true));
             m_Statuses = new Models.StatusController(m_LoginResult.LoggedInUser.Statuses, progressBar);
-            panelStatuses.Controls.Add(m_Statuses);
-            searchableListBoxMain.DisplayMember = m_Statuses.DisplayMember;
-            searchableListBoxMain.DataSource = m_Statuses.DataSource;
+            panelStatuses.Invoke(new Action(() =>
+            {
+                panelStatuses.Controls.Clear();
+                panelStatuses.Controls.Add(m_Statuses);
+            }));
+            searchableListBoxMain.Invoke(new Action(() =>
+            {
+                searchableListBoxMain.DisplayMember = m_Statuses.DisplayMember;
+                searchableListBoxMain.DataSource = m_Statuses.DataSource;
+            }));
             displayPanel(panelStatuses);
-            progressBar.Visible = false;
+            progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
         
         private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -318,17 +334,5 @@ namespace BasicFacebookFeatures
 
             i_Panel.Invoke(new Action(() => i_Panel.Visible = true));
         }
-
-        /*private void displayPanel(Panel i_Panel)
-        {
-            panelProfile.Visible = false;
-            panelFriends.Visible = false;
-            panelStatuses.Visible = false;
-            panelInbox.Visible = false;
-            panelPhotos.Visible = false;
-            panelPosts.Visible = false;
-            panelPages.Visible = false;
-            i_Panel.Invoke(new Action(() => i_Panel.Visible = true));
-        }*/
     }
 }

@@ -104,7 +104,8 @@ namespace BasicFacebookFeatures.Models
 
         private void listBoxMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Invoke(new Action(() => SelectedIndexChanged?.Invoke(this, EventArgs.Empty)));
+            SelectedIndexChanged?.Invoke(this, EventArgs.Empty);
+            //Invoke(new Action(() => SelectedIndexChanged?.Invoke(this, EventArgs.Empty)));
         }
     }
 }
