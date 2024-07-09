@@ -53,7 +53,6 @@ namespace BasicFacebookFeatures.Models
 
         private void buttonSort_Click(object sender, EventArgs e)
         {
-            textBoxSearch.Text = "";
             sortListBoxMain();
         }
 
@@ -61,7 +60,6 @@ namespace BasicFacebookFeatures.Models
         {
             bool isSortReverse = true;
 
-            textBoxSearch.Text = "";
             sortListBoxMain(isSortReverse);
         }
 
@@ -88,6 +86,7 @@ namespace BasicFacebookFeatures.Models
                 Array.Reverse(items);
             }
 
+            textBoxSearch.Text = "";
             listBoxMain.Invoke(new Action(() =>
             {
                 listBoxMain.DataSource = null;
@@ -105,7 +104,6 @@ namespace BasicFacebookFeatures.Models
         private void listBoxMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedIndexChanged?.Invoke(this, EventArgs.Empty);
-            //Invoke(new Action(() => SelectedIndexChanged?.Invoke(this, EventArgs.Empty)));
         }
     }
 }
