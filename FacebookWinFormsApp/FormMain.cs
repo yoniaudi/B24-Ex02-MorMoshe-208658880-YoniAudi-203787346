@@ -155,7 +155,7 @@ namespace BasicFacebookFeatures
 
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
-            new Thread(fetchPhotos).Start(); // Is it ok to declare it this way? new
+            new Thread(fetchPhotos).Start();
         }
 
         private void fetchPhotos()
