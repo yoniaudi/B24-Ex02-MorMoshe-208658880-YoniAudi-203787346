@@ -27,41 +27,53 @@ namespace BasicFacebookFeatures.Features.Volunteering
             EndAvailableDate = i_EndDate;
         }
 
-        public bool ValidateDates()
+        public bool ValidateData(VolunteerPerson volunteerPerson, out string errorMessage)
         {
-            return StartAvailableDate <= EndAvailableDate;
-        }
+            var errorMessages = new List<string>();
 
-        public bool ValidateData(string i_Subject, string i_Location, out string o_ErrorMessage)
-        {
-            o_ErrorMessage = string.Empty;
+            validateSubject(volunteerPerson.Subject, errorMessages);
+            validateLocation(volunteerPerson.Location, errorMessages);
+            validateDates(volunteerPerson.StartDate, volunteerPerson.EndDate, errorMessages);
 
-            if (string.IsNullOrEmpty(i_Subject))
+            if (errorMessages.Count > 0)
             {
-                o_ErrorMessage = "Choose subject";
+                errorMessage = string.Join(Environment.NewLine, errorMessages);
                 return false;
             }
 
-            if (string.IsNullOrEmpty(i_Location))
-            {
-                o_ErrorMessage = "Choose location";
-                return false;
-            }
-
-            if (!ValidateDates())
-            {
-                o_ErrorMessage = "Invalid dates";
-                return false;
-            }
-
+            errorMessage = string.Empty;
             return true;
         }
 
-        public List<VolunteerPerson> FindMatchingOpportunities(string i_Subject, string i_Location)
+        private void validateSubject(string subject, List<string> errorMessages)
+        {
+            if (string.IsNullOrEmpty(subject))
+            {
+                errorMessages.Add("Choose subject");
+            }
+        }
+
+        private void validateLocation(string location, List<string> errorMessages)
+        {
+            if (string.IsNullOrEmpty(location))
+            {
+                errorMessages.Add("Choose location");
+            }
+        }
+
+        private void validateDates(DateTime startAvailableDate, DateTime endAvailableDate, List<string> errorMessages)
+        {
+            if (startAvailableDate > endAvailableDate)
+            {
+                errorMessages.Add("Invalid dates");
+            }
+        }
+
+        public List<VolunteerPerson> FindMatchingOpportunities(VolunteerPerson volunteerPerson)
         {
             List<VolunteerPerson> opportunities = new List<VolunteerPerson>();
-            opportunities.AddRange(findOpportunitiesFromFriends(i_Subject, i_Location));
-            opportunities.AddRange(findOpportunitiesFromFile(i_Subject, i_Location));
+            opportunities.AddRange(findOpportunitiesFromFriends(volunteerPerson.Subject, volunteerPerson.Location));
+            opportunities.AddRange(findOpportunitiesFromFile(volunteerPerson.Subject, volunteerPerson.Location));
             return opportunities;
         }
 
@@ -81,8 +93,8 @@ namespace BasicFacebookFeatures.Features.Volunteering
                     DateTime eventStartTime = userEvent.StartTime.GetValueOrDefault();
                     DateTime eventEndTime = userEvent.EndTime.GetValueOrDefault();
 
-                    if (eventName.ToLower().Contains(i_Subject.ToLower()) &&
-                        eventLocation.ToLower().Contains(i_Location.ToLower()) &&
+                    if (eventName.ToLower() == i_Subject.ToLower() &&
+                        eventLocation.ToLower() == i_Location.ToLower() &&
                         eventStartTime.Date >= StartAvailableDate.Date && eventEndTime.Date <= EndAvailableDate.Date)
                     {
                         VolunteerPerson opportunity = new VolunteerPerson
@@ -115,8 +127,8 @@ namespace BasicFacebookFeatures.Features.Volunteering
                     DateTime eventStartTime = person.StartDate;
                     DateTime eventEndTime = person.EndDate;
 
-                    if (eventName.ToLower().Contains(i_Subject.ToLower()) &&
-                        eventLocation.ToLower().Contains(i_Location.ToLower()) &&
+                    if (eventName.ToLower() == i_Subject.ToLower() &&
+                        eventLocation.ToLower() == i_Location.ToLower() &&
                         eventStartTime.Date >= StartAvailableDate.Date && eventEndTime.Date <= EndAvailableDate.Date)
                     {
                         opportunities.Add(person);

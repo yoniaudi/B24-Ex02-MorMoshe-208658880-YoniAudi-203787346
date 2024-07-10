@@ -42,7 +42,7 @@
             this.listBoxVolunteers.Location = new System.Drawing.Point(19, 79);
             this.listBoxVolunteers.Name = "listBoxVolunteers";
             this.listBoxVolunteers.Size = new System.Drawing.Size(387, 173);
-            this.listBoxVolunteers.TabIndex = 0;
+            this.listBoxVolunteers.TabIndex = 50;
             // 
             // labelRemoveVolunteers
             // 
@@ -51,7 +51,7 @@
             this.labelRemoveVolunteers.Location = new System.Drawing.Point(126, 9);
             this.labelRemoveVolunteers.Name = "labelRemoveVolunteers";
             this.labelRemoveVolunteers.Size = new System.Drawing.Size(173, 20);
-            this.labelRemoveVolunteers.TabIndex = 22;
+            this.labelRemoveVolunteers.TabIndex = 10;
             this.labelRemoveVolunteers.Text = "Remove My Volunteers";
             // 
             // labelPhone
@@ -60,7 +60,7 @@
             this.labelPhone.Location = new System.Drawing.Point(52, 45);
             this.labelPhone.Name = "labelPhone";
             this.labelPhone.Size = new System.Drawing.Size(41, 13);
-            this.labelPhone.TabIndex = 23;
+            this.labelPhone.TabIndex = 20;
             this.labelPhone.Text = "Phone:";
             // 
             // textBoxPhone
@@ -68,7 +68,7 @@
             this.textBoxPhone.Location = new System.Drawing.Point(100, 42);
             this.textBoxPhone.Name = "textBoxPhone";
             this.textBoxPhone.Size = new System.Drawing.Size(132, 20);
-            this.textBoxPhone.TabIndex = 24;
+            this.textBoxPhone.TabIndex = 30;
             this.textBoxPhone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPhone_KeyPress);
             // 
             // buttonRemoveVolunteer
@@ -76,7 +76,7 @@
             this.buttonRemoveVolunteer.Location = new System.Drawing.Point(159, 275);
             this.buttonRemoveVolunteer.Name = "buttonRemoveVolunteer";
             this.buttonRemoveVolunteer.Size = new System.Drawing.Size(114, 48);
-            this.buttonRemoveVolunteer.TabIndex = 25;
+            this.buttonRemoveVolunteer.TabIndex = 60;
             this.buttonRemoveVolunteer.Text = "Remove Volunteer";
             this.buttonRemoveVolunteer.UseVisualStyleBackColor = true;
             this.buttonRemoveVolunteer.Click += new System.EventHandler(this.buttonRemoveVolunteer_Click);
@@ -86,7 +86,7 @@
             this.buttonFindMyVolunteers.Location = new System.Drawing.Point(252, 35);
             this.buttonFindMyVolunteers.Name = "buttonFindMyVolunteers";
             this.buttonFindMyVolunteers.Size = new System.Drawing.Size(110, 33);
-            this.buttonFindMyVolunteers.TabIndex = 26;
+            this.buttonFindMyVolunteers.TabIndex = 40;
             this.buttonFindMyVolunteers.Text = "Find My Volunteers";
             this.buttonFindMyVolunteers.UseVisualStyleBackColor = true;
             this.buttonFindMyVolunteers.Click += new System.EventHandler(this.buttonFindMyVolunteers_Click);

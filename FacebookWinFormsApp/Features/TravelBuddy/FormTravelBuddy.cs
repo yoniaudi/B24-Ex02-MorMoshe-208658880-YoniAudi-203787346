@@ -12,7 +12,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
         private readonly TravelBuddyService m_TravelBuddyService;
         private DateTime m_ArrivalDate;
         private DateTime m_DepartureDate;
-        private string m_SelectedCountry;
+        private string m_SelectedCountry = null;
         private string m_Gender = null;
         private int m_MinAge = 0;
         private int m_MaxAge = 0;

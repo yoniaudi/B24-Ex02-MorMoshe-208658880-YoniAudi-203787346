@@ -50,7 +50,7 @@
             this.labelFindVolunteer.Location = new System.Drawing.Point(167, 9);
             this.labelFindVolunteer.Name = "labelFindVolunteer";
             this.labelFindVolunteer.Size = new System.Drawing.Size(113, 20);
-            this.labelFindVolunteer.TabIndex = 0;
+            this.labelFindVolunteer.TabIndex = 10;
             this.labelFindVolunteer.Text = "Find Volunteer";
             // 
             // labelSubject
@@ -59,7 +59,7 @@
             this.labelSubject.Location = new System.Drawing.Point(93, 61);
             this.labelSubject.Name = "labelSubject";
             this.labelSubject.Size = new System.Drawing.Size(46, 13);
-            this.labelSubject.TabIndex = 1;
+            this.labelSubject.TabIndex = 20;
             this.labelSubject.Text = "Subject:";
             // 
             // labelLocation
@@ -68,7 +68,7 @@
             this.labelLocation.Location = new System.Drawing.Point(93, 88);
             this.labelLocation.Name = "labelLocation";
             this.labelLocation.Size = new System.Drawing.Size(47, 13);
-            this.labelLocation.TabIndex = 2;
+            this.labelLocation.TabIndex = 40;
             this.labelLocation.Text = "location:";
             // 
             // labelAvailableTime
@@ -77,7 +77,7 @@
             this.labelAvailableTime.Location = new System.Drawing.Point(93, 119);
             this.labelAvailableTime.Name = "labelAvailableTime";
             this.labelAvailableTime.Size = new System.Drawing.Size(82, 13);
-            this.labelAvailableTime.TabIndex = 3;
+            this.labelAvailableTime.TabIndex = 60;
             this.labelAvailableTime.Text = "-Available Time-";
             // 
             // dateTimePickerStartDate
@@ -85,7 +85,7 @@
             this.dateTimePickerStartDate.Location = new System.Drawing.Point(153, 145);
             this.dateTimePickerStartDate.Name = "dateTimePickerStartDate";
             this.dateTimePickerStartDate.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePickerStartDate.TabIndex = 4;
+            this.dateTimePickerStartDate.TabIndex = 80;
             this.dateTimePickerStartDate.ValueChanged += new System.EventHandler(this.dateTimePickerStartDate_ValueChanged);
             // 
             // textBoxLocation
@@ -93,7 +93,7 @@
             this.textBoxLocation.Location = new System.Drawing.Point(156, 84);
             this.textBoxLocation.Name = "textBoxLocation";
             this.textBoxLocation.Size = new System.Drawing.Size(200, 20);
-            this.textBoxLocation.TabIndex = 5;
+            this.textBoxLocation.TabIndex = 50;
             // 
             // comboBoxSubject
             // 
@@ -108,14 +108,14 @@
             this.comboBoxSubject.Location = new System.Drawing.Point(156, 57);
             this.comboBoxSubject.Name = "comboBoxSubject";
             this.comboBoxSubject.Size = new System.Drawing.Size(200, 21);
-            this.comboBoxSubject.TabIndex = 6;
+            this.comboBoxSubject.TabIndex = 30;
             // 
             // buttonFindOpportunities
             // 
             this.buttonFindOpportunities.Location = new System.Drawing.Point(318, 198);
             this.buttonFindOpportunities.Name = "buttonFindOpportunities";
             this.buttonFindOpportunities.Size = new System.Drawing.Size(119, 42);
-            this.buttonFindOpportunities.TabIndex = 7;
+            this.buttonFindOpportunities.TabIndex = 110;
             this.buttonFindOpportunities.Text = "Find Opportunities";
             this.buttonFindOpportunities.UseVisualStyleBackColor = true;
             this.buttonFindOpportunities.Click += new System.EventHandler(this.buttonFindOpportunities_Click);
@@ -126,7 +126,7 @@
             this.listBoxFoundOpportunities.Location = new System.Drawing.Point(12, 246);
             this.listBoxFoundOpportunities.Name = "listBoxFoundOpportunities";
             this.listBoxFoundOpportunities.Size = new System.Drawing.Size(431, 212);
-            this.listBoxFoundOpportunities.TabIndex = 8;
+            this.listBoxFoundOpportunities.TabIndex = 130;
             // 
             // labelOpportunities
             // 
@@ -134,7 +134,7 @@
             this.labelOpportunities.Location = new System.Drawing.Point(14, 230);
             this.labelOpportunities.Name = "labelOpportunities";
             this.labelOpportunities.Size = new System.Drawing.Size(70, 13);
-            this.labelOpportunities.TabIndex = 9;
+            this.labelOpportunities.TabIndex = 120;
             this.labelOpportunities.Text = "Opportunites:";
             // 
             // dateTimePickerEndDate
@@ -142,7 +142,7 @@
             this.dateTimePickerEndDate.Location = new System.Drawing.Point(153, 171);
             this.dateTimePickerEndDate.Name = "dateTimePickerEndDate";
             this.dateTimePickerEndDate.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePickerEndDate.TabIndex = 10;
+            this.dateTimePickerEndDate.TabIndex = 100;
             this.dateTimePickerEndDate.ValueChanged += new System.EventHandler(this.dateTimePickerEndDate_ValueChanged);
             // 
             // labelStartDate
@@ -151,7 +151,7 @@
             this.labelStartDate.Location = new System.Drawing.Point(90, 149);
             this.labelStartDate.Name = "labelStartDate";
             this.labelStartDate.Size = new System.Drawing.Size(58, 13);
-            this.labelStartDate.TabIndex = 11;
+            this.labelStartDate.TabIndex = 70;
             this.labelStartDate.Text = "Start Date:";
             // 
             // labelEndDate
@@ -160,7 +160,7 @@
             this.labelEndDate.Location = new System.Drawing.Point(90, 175);
             this.labelEndDate.Name = "labelEndDate";
             this.labelEndDate.Size = new System.Drawing.Size(55, 13);
-            this.labelEndDate.TabIndex = 12;
+            this.labelEndDate.TabIndex = 90;
             this.labelEndDate.Text = "End Date:";
             // 
             // FormFindVolunteer

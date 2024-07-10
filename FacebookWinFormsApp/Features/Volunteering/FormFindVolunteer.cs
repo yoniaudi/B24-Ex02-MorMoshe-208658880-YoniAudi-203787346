@@ -29,13 +29,12 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void buttonFindOpportunities_Click(object sender, EventArgs e)
         {
-            string subject = comboBoxSubject.Text;
-            string location = textBoxLocation.Text;
+            VolunteerPerson volunteerPerson = collectFormData();
 
-            if (m_VolunteerService.ValidateData(subject, location, out string errorMessage))
+            if (m_VolunteerService.ValidateData(volunteerPerson, out string errorMessage))
             {
                 buttonFindOpportunities.Cursor = Cursors.AppStarting;
-                List<VolunteerPerson> foundOpportunities = m_VolunteerService.FindMatchingOpportunities(subject, location);
+                List<VolunteerPerson> foundOpportunities = m_VolunteerService.FindMatchingOpportunities(volunteerPerson);
                 displayVolunteerPlaces(foundOpportunities);
                 buttonFindOpportunities.Cursor = Cursors.Default;
             }
@@ -43,6 +42,17 @@ namespace BasicFacebookFeatures.Features.Volunteering
             {
                 MessageBox.Show(errorMessage);
             }
+        }
+
+        private VolunteerPerson collectFormData()
+        {
+            return new VolunteerPerson
+            {
+                Subject = comboBoxSubject.Text,
+                Location = textBoxLocation.Text,
+                StartDate = dateTimePickerStartDate.Value,
+                EndDate = dateTimePickerEndDate.Value
+            };
         }
 
         private void displayVolunteerPlaces(List<VolunteerPerson> i_VolunteerPersons)

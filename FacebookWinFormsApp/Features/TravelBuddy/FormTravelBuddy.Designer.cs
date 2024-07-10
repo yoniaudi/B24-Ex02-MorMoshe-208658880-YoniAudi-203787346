@@ -58,7 +58,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.labelCountry.Location = new System.Drawing.Point(13, 47);
             this.labelCountry.Name = "labelCountry";
             this.labelCountry.Size = new System.Drawing.Size(46, 13);
-            this.labelCountry.TabIndex = 0;
+            this.labelCountry.TabIndex = 30;
             this.labelCountry.Text = "Country:";
             // 
             // monthCalendar
@@ -66,7 +66,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.monthCalendar.Location = new System.Drawing.Point(16, 124);
             this.monthCalendar.Margin = new System.Windows.Forms.Padding(8);
             this.monthCalendar.Name = "monthCalendar";
-            this.monthCalendar.TabIndex = 2;
+            this.monthCalendar.TabIndex = 90;
             this.monthCalendar.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar_DateSelected);
             // 
             // comboBoxGender
@@ -78,7 +78,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.comboBoxGender.Location = new System.Drawing.Point(77, 321);
             this.comboBoxGender.Name = "comboBoxGender";
             this.comboBoxGender.Size = new System.Drawing.Size(166, 21);
-            this.comboBoxGender.TabIndex = 5;
+            this.comboBoxGender.TabIndex = 150;
             this.comboBoxGender.Visible = false;
             // 
             // textBoxMinAge
@@ -86,7 +86,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.textBoxMinAge.Location = new System.Drawing.Point(130, 295);
             this.textBoxMinAge.Name = "textBoxMinAge";
             this.textBoxMinAge.Size = new System.Drawing.Size(52, 20);
-            this.textBoxMinAge.TabIndex = 6;
+            this.textBoxMinAge.TabIndex = 120;
             this.textBoxMinAge.Visible = false;
             this.textBoxMinAge.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxMinAge_KeyPress);
             // 
@@ -95,7 +95,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.buttonFindMatch.Location = new System.Drawing.Point(16, 350);
             this.buttonFindMatch.Name = "buttonFindMatch";
             this.buttonFindMatch.Size = new System.Drawing.Size(227, 36);
-            this.buttonFindMatch.TabIndex = 7;
+            this.buttonFindMatch.TabIndex = 160;
             this.buttonFindMatch.Text = "Find Match!";
             this.buttonFindMatch.UseVisualStyleBackColor = true;
             this.buttonFindMatch.Click += new System.EventHandler(this.buttonFindMatch_Click);
@@ -106,7 +106,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.checkBoxAge.Location = new System.Drawing.Point(16, 297);
             this.checkBoxAge.Name = "checkBoxAge";
             this.checkBoxAge.Size = new System.Drawing.Size(45, 17);
-            this.checkBoxAge.TabIndex = 8;
+            this.checkBoxAge.TabIndex = 100;
             this.checkBoxAge.Text = "Age";
             this.checkBoxAge.UseVisualStyleBackColor = true;
             this.checkBoxAge.CheckedChanged += new System.EventHandler(this.checkBoxAge_CheckedChanged);
@@ -117,7 +117,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.checkBoxGender.Location = new System.Drawing.Point(16, 323);
             this.checkBoxGender.Name = "checkBoxGender";
             this.checkBoxGender.Size = new System.Drawing.Size(61, 17);
-            this.checkBoxGender.TabIndex = 9;
+            this.checkBoxGender.TabIndex = 140;
             this.checkBoxGender.Text = "Gender";
             this.checkBoxGender.UseVisualStyleBackColor = true;
             this.checkBoxGender.CheckedChanged += new System.EventHandler(this.checkBoxGender_CheckedChanged);
@@ -127,7 +127,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.textBoxArrivalDate.Location = new System.Drawing.Point(77, 70);
             this.textBoxArrivalDate.Name = "textBoxArrivalDate";
             this.textBoxArrivalDate.Size = new System.Drawing.Size(166, 20);
-            this.textBoxArrivalDate.TabIndex = 10;
+            this.textBoxArrivalDate.TabIndex = 60;
             this.textBoxArrivalDate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxArrivalDate_KeyPress);
             // 
             // textBoxDepartureDate
@@ -135,7 +135,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.textBoxDepartureDate.Location = new System.Drawing.Point(77, 97);
             this.textBoxDepartureDate.Name = "textBoxDepartureDate";
             this.textBoxDepartureDate.Size = new System.Drawing.Size(166, 20);
-            this.textBoxDepartureDate.TabIndex = 11;
+            this.textBoxDepartureDate.TabIndex = 80;
             this.textBoxDepartureDate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxDepartureDate_KeyPress);
             // 
             // labelStartDate
@@ -144,7 +144,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.labelStartDate.Location = new System.Drawing.Point(13, 74);
             this.labelStartDate.Name = "labelStartDate";
             this.labelStartDate.Size = new System.Drawing.Size(58, 13);
-            this.labelStartDate.TabIndex = 12;
+            this.labelStartDate.TabIndex = 50;
             this.labelStartDate.Text = "Start Date:";
             // 
             // labelEndDate
@@ -153,7 +153,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.labelEndDate.Location = new System.Drawing.Point(13, 101);
             this.labelEndDate.Name = "labelEndDate";
             this.labelEndDate.Size = new System.Drawing.Size(55, 13);
-            this.labelEndDate.TabIndex = 13;
+            this.labelEndDate.TabIndex = 70;
             this.labelEndDate.Text = "End Date:";
             // 
             // comboBoxCountries
@@ -162,7 +162,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.comboBoxCountries.Location = new System.Drawing.Point(77, 43);
             this.comboBoxCountries.Name = "comboBoxCountries";
             this.comboBoxCountries.Size = new System.Drawing.Size(166, 21);
-            this.comboBoxCountries.TabIndex = 14;
+            this.comboBoxCountries.TabIndex = 40;
             // 
             // listBoxTravelBuddies
             // 
@@ -170,7 +170,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.listBoxTravelBuddies.Location = new System.Drawing.Point(6, 409);
             this.listBoxTravelBuddies.Name = "listBoxTravelBuddies";
             this.listBoxTravelBuddies.Size = new System.Drawing.Size(147, 147);
-            this.listBoxTravelBuddies.TabIndex = 15;
+            this.listBoxTravelBuddies.TabIndex = 180;
             // 
             // labelTravelBuddies
             // 
@@ -178,7 +178,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.labelTravelBuddies.Location = new System.Drawing.Point(3, 393);
             this.labelTravelBuddies.Name = "labelTravelBuddies";
             this.labelTravelBuddies.Size = new System.Drawing.Size(81, 13);
-            this.labelTravelBuddies.TabIndex = 16;
+            this.labelTravelBuddies.TabIndex = 170;
             this.labelTravelBuddies.Text = "Travel Buddies:";
             // 
             // labelTraveledFriends
@@ -187,7 +187,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.labelTraveledFriends.Location = new System.Drawing.Point(156, 393);
             this.labelTraveledFriends.Name = "labelTraveledFriends";
             this.labelTraveledFriends.Size = new System.Drawing.Size(120, 13);
-            this.labelTraveledFriends.TabIndex = 18;
+            this.labelTraveledFriends.TabIndex = 190;
             this.labelTraveledFriends.Text = "Friends who were there:";
             // 
             // listBoxTraveledFriends
@@ -196,7 +196,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.listBoxTraveledFriends.Location = new System.Drawing.Point(159, 409);
             this.listBoxTraveledFriends.Name = "listBoxTraveledFriends";
             this.listBoxTraveledFriends.Size = new System.Drawing.Size(147, 147);
-            this.listBoxTraveledFriends.TabIndex = 17;
+            this.listBoxTraveledFriends.TabIndex = 200;
             // 
             // labelAgeRange
             // 
@@ -204,7 +204,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.labelAgeRange.Location = new System.Drawing.Point(70, 299);
             this.labelAgeRange.Name = "labelAgeRange";
             this.labelAgeRange.Size = new System.Drawing.Size(42, 13);
-            this.labelAgeRange.TabIndex = 19;
+            this.labelAgeRange.TabIndex = 110;
             this.labelAgeRange.Text = "Range:";
             this.labelAgeRange.Visible = false;
             // 
@@ -213,7 +213,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.textBoxMaxAge.Location = new System.Drawing.Point(191, 295);
             this.textBoxMaxAge.Name = "textBoxMaxAge";
             this.textBoxMaxAge.Size = new System.Drawing.Size(52, 20);
-            this.textBoxMaxAge.TabIndex = 20;
+            this.textBoxMaxAge.TabIndex = 130;
             this.textBoxMaxAge.Visible = false;
             this.textBoxMaxAge.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxMaxAge_KeyPress);
             // 
@@ -224,7 +224,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.labelTravelBuddy.Location = new System.Drawing.Point(12, 9);
             this.labelTravelBuddy.Name = "labelTravelBuddy";
             this.labelTravelBuddy.Size = new System.Drawing.Size(100, 20);
-            this.labelTravelBuddy.TabIndex = 21;
+            this.labelTravelBuddy.TabIndex = 10;
             this.labelTravelBuddy.Text = "Travel Buddy";
             // 
             // labelDetail
@@ -233,7 +233,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             this.labelDetail.Location = new System.Drawing.Point(118, 16);
             this.labelDetail.Name = "labelDetail";
             this.labelDetail.Size = new System.Drawing.Size(136, 13);
-            this.labelDetail.TabIndex = 22;
+            this.labelDetail.TabIndex = 20;
             this.labelDetail.Text = "Find someone to travel with";
             // 
             // FormTravelBuddy

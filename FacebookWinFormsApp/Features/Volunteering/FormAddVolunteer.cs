@@ -5,9 +5,6 @@ namespace BasicFacebookFeatures.Features.Volunteering
 {
     public partial class FormAddVolunteer : Form
     {
-        private string m_Subject;
-        private string m_Location;
-        private string m_Phone;
         private DateTime m_StartAvailableDate;
         private DateTime m_EndAvailableDate;
         private readonly AddVolunteerService m_VolunteerService;
@@ -40,38 +37,31 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void buttonAddVolunteer_Click(object sender, EventArgs e)
         {
-            if (collectFormData() && validateData())
+            if (validateData(out VolunteerPerson volunteerPerson))
             {
-                var volunteerPerson = new VolunteerPerson()
-                {
-                    Subject = m_Subject,
-                    Location = m_Location,
-                    PhoneNumber = m_Phone,
-                    StartDate = m_StartAvailableDate,
-                    EndDate = m_EndAvailableDate
-                };
-
                 m_VolunteerService.SaveVolunteerPerson(volunteerPerson);
                 MessageBox.Show("Data Saved Successfully!");
             }
         }
 
-        private bool collectFormData()
+        private VolunteerPerson collectFormData()
         {
-            m_Subject = comboBoxSubject.Text;
-            m_Location = textBoxLocation.Text;
-            m_Phone = textBoxPhone.Text;
-
-            return !string.IsNullOrEmpty(m_Subject) &&
-                   !string.IsNullOrEmpty(m_Location) &&
-                   !string.IsNullOrEmpty(m_Phone) &&
-                   m_StartAvailableDate <= m_EndAvailableDate;
+            return new VolunteerPerson()
+            {
+                Subject = comboBoxSubject.Text,
+                Location = textBoxLocation.Text,
+                PhoneNumber = textBoxPhone.Text,
+                StartDate = m_StartAvailableDate,
+                EndDate = m_EndAvailableDate
+            };
         }
 
-        private bool validateData()
+        private bool validateData(out VolunteerPerson volunteerPerson)
         {
+            volunteerPerson = collectFormData();
+
             string errorMessage;
-            bool isValid = m_VolunteerService.ValidateData(m_Subject, m_Location, m_StartAvailableDate, m_EndAvailableDate, m_Phone, out errorMessage);
+            bool isValid = m_VolunteerService.ValidateData(volunteerPerson, out errorMessage);
 
             if (!isValid)
             {

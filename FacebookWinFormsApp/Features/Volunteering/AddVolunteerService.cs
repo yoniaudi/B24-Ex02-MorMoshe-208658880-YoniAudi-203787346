@@ -1,36 +1,58 @@
 ﻿using BasicFacebookFeatures.Features.Volunteering;
 using System;
+using System.Collections.Generic;
 
 public class AddVolunteerService
 {
-    public bool ValidateData(string subject, string location, DateTime startAvailableDate, DateTime endAvailableDate, string phone, out string errorMessage)
+    public bool ValidateData(VolunteerPerson volunteerPerson, out string errorMessage)
     {
-        if (string.IsNullOrEmpty(subject))
-        {
-            errorMessage = "Choose subject";
-            return false;
-        }
+        var errorMessages = new List<string>();
 
-        if (string.IsNullOrEmpty(location))
-        {
-            errorMessage = "Choose location";
-            return false;
-        }
+        validateSubject(volunteerPerson.Subject, errorMessages);
+        validateLocation(volunteerPerson.Location, errorMessages);
+        validateDates(volunteerPerson.StartDate, volunteerPerson.EndDate, errorMessages);
+        validatePhone(volunteerPerson.PhoneNumber, errorMessages);
 
-        if (startAvailableDate > endAvailableDate)
+        if (errorMessages.Count > 0)
         {
-            errorMessage = "Invalid dates";
-            return false;
-        }
-
-        if (string.IsNullOrEmpty(phone))
-        {
-            errorMessage = "Enter phone number";
+            errorMessage = string.Join(Environment.NewLine, errorMessages);
             return false;
         }
 
         errorMessage = string.Empty;
         return true;
+    }
+
+    private void validateSubject(string subject, List<string> errorMessages)
+    {
+        if (string.IsNullOrEmpty(subject))
+        {
+            errorMessages.Add("Choose subject");
+        }
+    }
+
+    private void validateLocation(string location, List<string> errorMessages)
+    {
+        if (string.IsNullOrEmpty(location))
+        {
+            errorMessages.Add("Choose location");
+        }
+    }
+
+    private void validateDates(DateTime startAvailableDate, DateTime endAvailableDate, List<string> errorMessages)
+    {
+        if (startAvailableDate > endAvailableDate)
+        {
+            errorMessages.Add("Invalid dates");
+        }
+    }
+
+    private void validatePhone(string phone, List<string> errorMessages)
+    {
+        if (string.IsNullOrEmpty(phone))
+        {
+            errorMessages.Add("Enter phone number");
+        }
     }
 
     public void SaveVolunteerPerson(VolunteerPerson volunteerPerson)
