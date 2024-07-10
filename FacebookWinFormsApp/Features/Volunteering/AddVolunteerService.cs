@@ -57,6 +57,6 @@ public class AddVolunteerService
 
     public void SaveVolunteerPerson(VolunteerPerson volunteerPerson)
     {
-        FileOperations.SaveVolunteerPersonToFile(volunteerPerson);
+        Singleton<SingletonFileOperations>.Instance.SaveVolunteerPersonToFile(volunteerPerson);
     }
 }

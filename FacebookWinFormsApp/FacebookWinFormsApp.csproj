@@ -104,7 +104,7 @@
     <Compile Include="Features\TravelBuddy\TravelBuddyValidationData.cs" />
     <Compile Include="Features\TravelBuddy\TravelPlanModel.cs" />
     <Compile Include="Features\Volunteering\AddVolunteerService.cs" />
-    <Compile Include="Features\Volunteering\FileOperations.cs" />
+    <Compile Include="Features\Volunteering\SingletonFileOperations.cs" />
     <Compile Include="Features\Volunteering\FindVolunteerService.cs" />
     <Compile Include="Features\Volunteering\FormAddVolunteer.cs">
       <SubType>Form</SubType>
@@ -131,6 +131,7 @@
       <DependentUpon>FormRemoveVolunteer.cs</DependentUpon>
     </Compile>
     <Compile Include="Features\Volunteering\RemoveVolunteerService.cs" />
+    <Compile Include="Features\Volunteering\Singleton.cs" />
     <Compile Include="Features\Volunteering\VolunteerPerson.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>

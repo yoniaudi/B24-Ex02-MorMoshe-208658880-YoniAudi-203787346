@@ -116,7 +116,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
         private List<VolunteerPerson> findOpportunitiesFromFile(string i_Subject, string i_Location)
         {
             List<VolunteerPerson> opportunities = new List<VolunteerPerson>();
-            List<VolunteerPerson> opportunitiesFromFile = FileOperations.LoadFromFile();
+            List<VolunteerPerson> opportunitiesFromFile = Singleton<SingletonFileOperations>.Instance.LoadFromFile();
 
             if (opportunitiesFromFile != null)
             {

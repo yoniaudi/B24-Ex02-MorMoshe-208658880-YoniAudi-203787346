@@ -7,12 +7,12 @@ public class RemoveVolunteerService
 {
     public List<VolunteerPerson> LoadVolunteers()
     {
-        return FileOperations.LoadFromFile();
+        return Singleton<SingletonFileOperations>.Instance.LoadFromFile();
     }
 
     public void SaveVolunteers(List<VolunteerPerson> volunteerPeople)
     {
-        FileOperations.SaveToFile(volunteerPeople);
+        Singleton<SingletonFileOperations>.Instance.SaveToFile(volunteerPeople);
     }
 
     public List<VolunteerPerson> FilterVolunteersByPhoneNumber(List<VolunteerPerson> volunteerPeople, string phoneNumber)

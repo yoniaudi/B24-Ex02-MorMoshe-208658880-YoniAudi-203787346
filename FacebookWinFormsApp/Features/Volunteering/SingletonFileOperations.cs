@@ -1,20 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace BasicFacebookFeatures.Features.Volunteering
 {
-    public static class FileOperations
+    public sealed class SingletonFileOperations
     {
-        private static readonly string sr_FileName;
+        private readonly string r_FileName = null;
 
-        static FileOperations()
+        private SingletonFileOperations()
         {
-            sr_FileName = Application.ExecutablePath + "volunteers.xml";
+            r_FileName = Application.ExecutablePath + "volunteers.xml";
         }
 
-        public static void SaveVolunteerPersonToFile(VolunteerPerson i_VoluinteerPerson)
+        public void SaveVolunteerPersonToFile(VolunteerPerson i_VoluinteerPerson)
         {
             List<VolunteerPerson> existingVolunteers = new List<VolunteerPerson>();
             VolunteerPerson volunteerPerson = new VolunteerPerson()
@@ -26,9 +27,9 @@ namespace BasicFacebookFeatures.Features.Volunteering
                 EndDate = i_VoluinteerPerson.EndDate
             };
 
-            if (File.Exists(sr_FileName))
+            if (File.Exists(r_FileName))
             {
-                using (FileStream stream = new FileStream(sr_FileName, FileMode.Open))
+                using (FileStream stream = new FileStream(r_FileName, FileMode.Open))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(List<VolunteerPerson>));
 
@@ -38,7 +39,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
             existingVolunteers.Add(volunteerPerson);
 
-            using (FileStream stream = new FileStream(sr_FileName, FileMode.Create))
+            using (FileStream stream = new FileStream(r_FileName, FileMode.Create))
             {
                 XmlSerializer listSerializer = new XmlSerializer(typeof(List<VolunteerPerson>));
                 
@@ -46,9 +47,9 @@ namespace BasicFacebookFeatures.Features.Volunteering
             }
         }
 
-        public static void SaveToFile(List<VolunteerPerson> i_VoluinteerPerson)
+        public void SaveToFile(List<VolunteerPerson> i_VoluinteerPerson)
         {
-            using (FileStream stream = new FileStream(sr_FileName, FileMode.Create))
+            using (FileStream stream = new FileStream(r_FileName, FileMode.Create))
             {
                 XmlSerializer listSerializer = new XmlSerializer(typeof(List<VolunteerPerson>));
                 
@@ -56,13 +57,13 @@ namespace BasicFacebookFeatures.Features.Volunteering
             }
         }
 
-        public static List<VolunteerPerson> LoadFromFile()
+        public List<VolunteerPerson> LoadFromFile()
         {
             List<VolunteerPerson> volunteerPeople = new List<VolunteerPerson>();
 
-            if (File.Exists(sr_FileName))
+            if (File.Exists(r_FileName))
             {
-                using (FileStream stream = new FileStream(sr_FileName, FileMode.Open))
+                using (FileStream stream = new FileStream(r_FileName, FileMode.Open))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(List<VolunteerPerson>));
                     
