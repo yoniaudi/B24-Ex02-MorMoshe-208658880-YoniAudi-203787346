@@ -28,9 +28,9 @@ namespace BasicFacebookFeatures.Models
             m_ProgressBar.Invoke(new Action(() =>
             {
                 m_ProgressBar.Visible = true;
-                m_ProgressBar.Minimum = 1;
+                m_ProgressBar.Minimum = 0;
                 m_ProgressBar.Maximum = i_Albums != null ? i_Albums.Count : (i_Album != null ? i_Album.Photos.Count : 0);
-                m_ProgressBar.Value = 1;
+                m_ProgressBar.Value = 0;
                 m_ProgressBar.Step = 1;
                 m_ProgressBar.Visible = false;
             }));
