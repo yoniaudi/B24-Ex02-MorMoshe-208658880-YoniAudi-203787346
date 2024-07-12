@@ -58,7 +58,7 @@ namespace BasicFacebookFeatures.Models
             m_ProgressBar.Invoke(new Action(() => 
             { 
                 m_ProgressBar.Minimum = 1; 
-                m_ProgressBar.Maximum = i_Friend.Statuses.Count + i_Friend.Albums.Count;
+                //m_ProgressBar.Maximum = i_Friend.Statuses.Count + i_Friend.Albums.Count;
                 m_ProgressBar.Value = 1;
                 m_ProgressBar.Step = 1;
             }));
@@ -85,7 +85,7 @@ namespace BasicFacebookFeatures.Models
         {
             List<Album> filteredAlbums = new List<Album>();
 
-            foreach (Album album in i_Friend.Albums)
+            /*foreach (Album album in i_Friend.Albums)
             {
                 if (album.Count > 0)
                 {
@@ -93,7 +93,7 @@ namespace BasicFacebookFeatures.Models
                 }
 
                 m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
-            }
+            }*/
 
             return filteredAlbums;
         }

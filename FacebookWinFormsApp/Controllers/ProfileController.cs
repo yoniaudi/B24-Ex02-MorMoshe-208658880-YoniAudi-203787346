@@ -22,11 +22,12 @@ namespace BasicFacebookFeatures.Models
 
         private void fetchProfileData()
         {
-            labelUserFirstName.Text = m_LoggedInUser.FirstName;
+            userBindingSource.DataSource = m_LoggedInUser;
+            /*labelUserFirstName.Text = m_LoggedInUser.FirstName;
             labelUserLastName.Text = m_LoggedInUser.LastName;
             labelUserBirthday.Text = m_LoggedInUser.Birthday;
             labelUserLocation.Text = m_LoggedInUser.Location.Name;
-            labelUserEmailAddress.Text = m_LoggedInUser.Email;
+            labelUserEmailAddress.Text = m_LoggedInUser.Email;*/
             labelUserLanguages.Text = getLanguagesStr(m_LoggedInUser.Languages);
         }
 

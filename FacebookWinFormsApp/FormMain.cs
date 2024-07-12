@@ -229,7 +229,7 @@ namespace BasicFacebookFeatures
 
         private void fetchProfile()
         {
-            m_Profile = new Models.ProfileController(m_LoginResult.LoggedInUser);
+            m_Profile = new ProfileController(m_LoginResult.LoggedInUser);
             searchableListBoxMain.Invoke(new Action(() => searchableListBoxMain.DataSource = null));
             panelProfile.Invoke(new Action(() =>
             {
