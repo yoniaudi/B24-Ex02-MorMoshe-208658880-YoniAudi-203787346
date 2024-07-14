@@ -1,4 +1,5 @@
-﻿using FacebookWrapper.ObjectModel;
+﻿using BasicFacebookFeatures.Features.ValidationStrategy;
+using FacebookWrapper.ObjectModel;
 using System;
 using System.Collections.Generic;
 
@@ -9,12 +10,14 @@ namespace BasicFacebookFeatures.Features.Volunteering
         public DateTime StartAvailableDate { get; private set; }
         public DateTime EndAvailableDate { get; private set; }
         private readonly User m_LoggedInUser;
+        public IValidationStrategy<VolunteerPerson> ValidationStrategy { get; set; }
 
         public FindVolunteerService(User i_LoggedInUser)
         {
             m_LoggedInUser = i_LoggedInUser;
             StartAvailableDate = DateTime.Now;
             EndAvailableDate = DateTime.Now;
+            ValidationStrategy = new FindVolunteerValidationStrategy();
         }
 
         public void UpdateStartDate(DateTime i_StartDate)
@@ -29,44 +32,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         public bool ValidateData(VolunteerPerson volunteerPerson, out string errorMessage)
         {
-            var errorMessages = new List<string>();
-
-            validateSubject(volunteerPerson.Subject, errorMessages);
-            validateLocation(volunteerPerson.Location, errorMessages);
-            validateDates(volunteerPerson.StartDate, volunteerPerson.EndDate, errorMessages);
-
-            if (errorMessages.Count > 0)
-            {
-                errorMessage = string.Join(Environment.NewLine, errorMessages);
-                return false;
-            }
-
-            errorMessage = string.Empty;
-            return true;
-        }
-
-        private void validateSubject(string subject, List<string> errorMessages)
-        {
-            if (string.IsNullOrEmpty(subject))
-            {
-                errorMessages.Add("Choose subject");
-            }
-        }
-
-        private void validateLocation(string location, List<string> errorMessages)
-        {
-            if (string.IsNullOrEmpty(location))
-            {
-                errorMessages.Add("Choose location");
-            }
-        }
-
-        private void validateDates(DateTime startAvailableDate, DateTime endAvailableDate, List<string> errorMessages)
-        {
-            if (startAvailableDate > endAvailableDate)
-            {
-                errorMessages.Add("Invalid dates");
-            }
+            return ValidationStrategy.Validate(volunteerPerson, out errorMessage);
         }
 
         public List<VolunteerPerson> FindMatchingOpportunities(VolunteerPerson volunteerPerson)

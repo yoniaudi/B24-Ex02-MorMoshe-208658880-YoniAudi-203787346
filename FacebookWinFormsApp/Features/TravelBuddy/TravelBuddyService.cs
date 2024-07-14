@@ -1,4 +1,5 @@
-﻿using FacebookWrapper.ObjectModel;
+﻿using BasicFacebookFeatures.Features.ValidationStrategy;
+using FacebookWrapper.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,23 +10,25 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
     public class TravelBuddyService
     {
         private readonly User m_LoggedInUser;
+        public IValidationStrategy<TravelBuddyValidationData> ValidationStrategy { get; set; }
 
         public TravelBuddyService(User loggedInUser)
         {
             m_LoggedInUser = loggedInUser;
+            ValidationStrategy = new TravelBuddyValidationStrategy();
         }
 
         public List<TravelBuddyModel> LoadFriends()
         {
-            var friends = m_LoggedInUser.Friends;
-            var friendList = new List<TravelBuddyModel>();
+            FacebookObjectCollection<User> friends = m_LoggedInUser.Friends;
+            List<TravelBuddyModel> friendList = new List<TravelBuddyModel>();
 
             foreach (User fbFriend in friends)
             {
                 int age = fbFriend.Birthday != null ? CalculateAge(fbFriend.Birthday) : 0;
                 List<string> traveledCountries = GetTraveledCountries(fbFriend);
 
-                var travelBuddyFriend = new TravelBuddyModel
+                TravelBuddyModel travelBuddyFriend = new TravelBuddyModel
                 {
                     Name = fbFriend.Name,
                     Age = age,
@@ -42,7 +45,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private List<string> GetTraveledCountries(User fbFriend)
         {
-            var traveledCountries = new List<string>();
+            List<string> traveledCountries = new List<string>();
 
             if (fbFriend.Albums != null)
             {
@@ -63,7 +66,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private List<TravelPlanModel> GetTravelPlans(User fbFriend)
         {
-            var travelPlans = new List<TravelPlanModel>();
+            List<TravelPlanModel> travelPlans = new List<TravelPlanModel>();
 
             if (fbFriend.Events != null)
             {
@@ -116,61 +119,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         public bool ValidateData(TravelBuddyValidationData validationData, out string errorMessage)
         {
-            var errorMessages = new List<string>();
-
-            validateCountry(validationData.SelectedCountry, errorMessages);
-            validateDates(validationData.ArrivalDate, validationData.DepartureDate, errorMessages);
-
-            if (validationData.AgeChecked)
-            {
-                validateAgeRange(validationData.MinAge, validationData.MaxAge, errorMessages);
-            }
-
-            if (validationData.GenderChecked)
-            {
-                validateGender(validationData.Gender, errorMessages);
-            }
-
-            if (errorMessages.Count > 0)
-            {
-                errorMessage = string.Join(Environment.NewLine, errorMessages);
-                return false;
-            }
-
-            errorMessage = string.Empty;
-            return true;
-        }
-
-        private void validateCountry(string country, List<string> errorMessages)
-        {
-            if (string.IsNullOrEmpty(country))
-            {
-                errorMessages.Add("Choose country");
-            }
-        }
-
-        private void validateDates(string arrivalDate, string departureDate, List<string> errorMessages)
-        {
-            if (string.IsNullOrEmpty(arrivalDate) || string.IsNullOrEmpty(departureDate) || DateTime.Parse(departureDate) < DateTime.Parse(arrivalDate))
-            {
-                errorMessages.Add("Invalid Dates");
-            }
-        }
-
-        private void validateAgeRange(int minAge, int maxAge, List<string> errorMessages)
-        {
-            if (minAge < 1 || minAge > 120 || maxAge < 1 || maxAge > 120 || maxAge < minAge)
-            {
-                errorMessages.Add("Choose valid age range");
-            }
-        }
-
-        private void validateGender(string gender, List<string> errorMessages)
-        {
-            if (string.IsNullOrEmpty(gender))
-            {
-                errorMessages.Add("Choose gender");
-            }
+            return ValidationStrategy.Validate(validationData, out errorMessage);
         }
     }
 }

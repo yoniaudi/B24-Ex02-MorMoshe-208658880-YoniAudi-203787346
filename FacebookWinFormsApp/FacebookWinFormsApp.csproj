@@ -102,8 +102,12 @@
     </Compile>
     <Compile Include="Features\TravelBuddy\TravelBuddyService.cs" />
     <Compile Include="Features\TravelBuddy\TravelBuddyValidationData.cs" />
+    <Compile Include="Features\TravelBuddy\TravelBuddyValidationStrategy.cs" />
     <Compile Include="Features\TravelBuddy\TravelPlanModel.cs" />
+    <Compile Include="Features\ValidationStrategy\IValidationStrategy.cs" />
     <Compile Include="Features\Volunteering\AddVolunteerService.cs" />
+    <Compile Include="Features\Volunteering\AddVolunteerValidationStrategy.cs" />
+    <Compile Include="Features\Volunteering\FindVolunteerValidationStrategy.cs" />
     <Compile Include="Features\Volunteering\SingletonFileOperations.cs" />
     <Compile Include="Features\Volunteering\FindVolunteerService.cs" />
     <Compile Include="Features\Volunteering\FormAddVolunteer.cs">
@@ -185,42 +189,55 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Features\TravelBuddy\FormTravelBuddy.resx">
       <DependentUpon>FormTravelBuddy.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Features\Volunteering\FormAddVolunteer.resx">
       <DependentUpon>FormAddVolunteer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Features\Volunteering\FormVolunteer.resx">
       <DependentUpon>FormVolunteer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Features\Volunteering\FormFindVolunteer.resx">
       <DependentUpon>FormFindVolunteer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Features\Volunteering\FormRemoveVolunteer.resx">
       <DependentUpon>FormRemoveVolunteer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controllers\PageController.resx">
       <DependentUpon>PageController.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controllers\FriendController.resx">
       <DependentUpon>FriendController.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controllers\PhotosController.resx">
       <DependentUpon>PhotosController.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controllers\PostController.resx">
       <DependentUpon>PostController.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controllers\ProfileController.resx">
       <DependentUpon>ProfileController.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controllers\SearchableListBoxController.resx">
       <DependentUpon>SearchableListBoxController.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controllers\StatusController.resx">
       <DependentUpon>StatusController.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
