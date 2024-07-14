@@ -6,7 +6,7 @@ public class AddVolunteerService
 {
     public bool ValidateData(VolunteerPerson volunteerPerson, out string errorMessage)
     {
-        var errorMessages = new List<string>();
+        List<string> errorMessages = new List<string>();
 
         validateSubject(volunteerPerson.Subject, errorMessages);
         validateLocation(volunteerPerson.Location, errorMessages);

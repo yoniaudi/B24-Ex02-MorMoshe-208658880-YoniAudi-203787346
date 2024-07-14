@@ -92,7 +92,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private void buttonFindMatch_Click(object sender, EventArgs e)
         {
-            var validationData = new TravelBuddyValidationData
+            TravelBuddyValidationData validationData = new TravelBuddyValidationData
             {
                 SelectedCountry = comboBoxCountries.Text,
                 ArrivalDate = textBoxArrivalDate.Text,
@@ -112,7 +112,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
                 listBoxTraveledFriends.Items.Clear();
                 buttonFindMatch.Cursor = Cursors.AppStarting;
 
-                var friendsList = m_TravelBuddyService.LoadFriends();
+                List<TravelBuddyModel> friendsList = m_TravelBuddyService.LoadFriends();
                 findMatch(friendsList);
                 findFriendsWhoTraveledDestCountry(friendsList);
 
@@ -126,14 +126,14 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private void findMatch(List<TravelBuddyModel> friendsList)
         {
-            var friendsWithPlannedTravel = m_TravelBuddyService.FindFriendsWithPlannedTravel(friendsList, m_SelectedCountry, m_ArrivalDate, m_DepartureDate, m_MinAge, m_MaxAge, m_Gender);
+            List<TravelBuddyModel> friendsWithPlannedTravel = m_TravelBuddyService.FindFriendsWithPlannedTravel(friendsList, m_SelectedCountry, m_ArrivalDate, m_DepartureDate, m_MinAge, m_MaxAge, m_Gender);
             listBoxTravelBuddies.DisplayMember = "Name";
             listBoxTravelBuddies.DataSource = friendsWithPlannedTravel;
         }
 
         private void findFriendsWhoTraveledDestCountry(List<TravelBuddyModel> friendsList)
         {
-            var friendsTraveledDesiredCountry = m_TravelBuddyService.FindFriendsForDesiredCountry(friendsList, m_SelectedCountry);
+            List<TravelBuddyModel> friendsTraveledDesiredCountry = m_TravelBuddyService.FindFriendsForDesiredCountry(friendsList, m_SelectedCountry);
             listBoxTraveledFriends.DisplayMember = "Name";
             listBoxTraveledFriends.DataSource = friendsTraveledDesiredCountry;
         }

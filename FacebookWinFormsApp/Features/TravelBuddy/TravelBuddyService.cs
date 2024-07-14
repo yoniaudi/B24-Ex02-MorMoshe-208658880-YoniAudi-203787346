@@ -17,15 +17,15 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         public List<TravelBuddyModel> LoadFriends()
         {
-            var friends = m_LoggedInUser.Friends;
-            var friendList = new List<TravelBuddyModel>();
+            FacebookObjectCollection<User> friends = m_LoggedInUser.Friends;
+            List<TravelBuddyModel> friendList = new List<TravelBuddyModel>();
 
             foreach (User fbFriend in friends)
             {
                 int age = fbFriend.Birthday != null ? CalculateAge(fbFriend.Birthday) : 0;
                 List<string> traveledCountries = GetTraveledCountries(fbFriend);
 
-                var travelBuddyFriend = new TravelBuddyModel
+                TravelBuddyModel travelBuddyFriend = new TravelBuddyModel
                 {
                     Name = fbFriend.Name,
                     Age = age,
@@ -42,7 +42,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private List<string> GetTraveledCountries(User fbFriend)
         {
-            var traveledCountries = new List<string>();
+            List<string> traveledCountries = new List<string>();
 
             if (fbFriend.Albums != null)
             {
@@ -63,7 +63,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private List<TravelPlanModel> GetTravelPlans(User fbFriend)
         {
-            var travelPlans = new List<TravelPlanModel>();
+            List<TravelPlanModel> travelPlans = new List<TravelPlanModel>();
 
             if (fbFriend.Events != null)
             {
@@ -116,7 +116,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         public bool ValidateData(TravelBuddyValidationData validationData, out string errorMessage)
         {
-            var errorMessages = new List<string>();
+            List<string> errorMessages = new List<string>();
 
             validateCountry(validationData.SelectedCountry, errorMessages);
             validateDates(validationData.ArrivalDate, validationData.DepartureDate, errorMessages);
