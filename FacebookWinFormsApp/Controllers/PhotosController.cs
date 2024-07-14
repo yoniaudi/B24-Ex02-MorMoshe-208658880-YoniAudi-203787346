@@ -39,15 +39,21 @@ namespace BasicFacebookFeatures.Models
         private object filterAlbumsWithProgress(FacebookObjectCollection<Album> i_Albums)
         {
             FacebookObjectCollection<Album> filteredAlbums = new FacebookObjectCollection<Album>();
-
-            foreach (FacebookWrapper.ObjectModel.Album album in i_Albums)
+            try
             {
-                if (album.Count > 0)
+                foreach (FacebookWrapper.ObjectModel.Album album in i_Albums)
                 {
-                    filteredAlbums.Add(album);
-                }
+                    if (album.Count > 0)
+                    {
+                        filteredAlbums.Add(album);
+                    }
 
-                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
 
             return filteredAlbums;

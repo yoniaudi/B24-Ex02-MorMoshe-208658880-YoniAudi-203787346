@@ -161,19 +161,28 @@ namespace BasicFacebookFeatures
         private void fetchPhotos()
         {
             progressBar.Invoke(new Action(() => progressBar.Visible = true));
-            m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
-            panelPhotos.Invoke(new Action(() =>
+
+            try
             {
-                panelPhotos.Controls.Clear();
-                panelPhotos.Controls.Add(m_Photos);
-            }));
-            searchableListBoxMain.Invoke(new Action(() =>
+                m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
+                panelPhotos.Invoke(new Action(() =>
+                {
+                    panelPhotos.Controls.Clear();
+                    panelPhotos.Controls.Add(m_Photos);
+                }));
+                searchableListBoxMain.Invoke(new Action(() =>
+                {
+                    searchableListBoxMain.DisplayMember = m_Photos.DisplayMember;
+                    searchableListBoxMain.DataSource = m_Photos.DataSource;
+                }));
+                displayPanel(panelPhotos);
+            }
+            catch (Exception ex)
             {
-                searchableListBoxMain.DisplayMember = m_Photos.DisplayMember;
-                searchableListBoxMain.DataSource = m_Photos.DataSource;
-            }));
+                MessageBox.Show($"Getting albums is not supported by Meta anymore.{Environment.NewLine}Error: {ex.Message}");
+            }
+            
             progressBar.Invoke(new Action(() => progressBar.Visible = false));
-            displayPanel(panelPhotos);
         }
 
         private void buttonPosts_Click(object sender, EventArgs e)
