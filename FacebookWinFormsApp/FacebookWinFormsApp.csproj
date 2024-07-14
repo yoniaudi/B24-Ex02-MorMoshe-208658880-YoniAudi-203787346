@@ -102,8 +102,12 @@
     </Compile>
     <Compile Include="Features\TravelBuddy\TravelBuddyService.cs" />
     <Compile Include="Features\TravelBuddy\TravelBuddyValidationData.cs" />
+    <Compile Include="Features\TravelBuddy\TravelBuddyValidationStrategy.cs" />
     <Compile Include="Features\TravelBuddy\TravelPlanModel.cs" />
+    <Compile Include="Features\ValidationStrategy\IValidationStrategy.cs" />
     <Compile Include="Features\Volunteering\AddVolunteerService.cs" />
+    <Compile Include="Features\Volunteering\AddVolunteerValidationStrategy.cs" />
+    <Compile Include="Features\Volunteering\FindVolunteerValidationStrategy.cs" />
     <Compile Include="Features\Volunteering\SingletonFileOperations.cs" />
     <Compile Include="Features\Volunteering\FindVolunteerService.cs" />
     <Compile Include="Features\Volunteering\FormAddVolunteer.cs">
