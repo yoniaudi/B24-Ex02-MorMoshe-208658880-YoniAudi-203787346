@@ -179,7 +179,10 @@ namespace BasicFacebookFeatures
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Getting albums is not supported by Meta anymore.{Environment.NewLine}Error: {ex.Message}");
+                string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
+                    Environment.NewLine, ex.Message);
+
+                MessageBox.Show(exMsg);
             }
             
             progressBar.Invoke(new Action(() => progressBar.Visible = false));
@@ -238,7 +241,7 @@ namespace BasicFacebookFeatures
 
         private void fetchProfile()
         {
-            m_Profile = new ProfileController(m_LoginResult.LoggedInUser);
+            m_Profile = new ProfileController(m_LoginResult.LoggedInUser, labelFullName);
             searchableListBoxMain.Invoke(new Action(() => searchableListBoxMain.DataSource = null));
             panelProfile.Invoke(new Action(() =>
             {

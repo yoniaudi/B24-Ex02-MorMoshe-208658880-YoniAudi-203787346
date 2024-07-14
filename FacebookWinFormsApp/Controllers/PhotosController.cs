@@ -18,9 +18,20 @@ namespace BasicFacebookFeatures.Models
         public PhotosController(FacebookObjectCollection<Album> i_Albums, ProgressBar i_ProgressBar)
         {
             InitializeComponent();
-            m_ProgressBar = i_ProgressBar;
-            initializeProgressBar(i_Albums);
-            DataSource = filterAlbumsWithProgress(i_Albums);
+
+            try
+            {
+                m_ProgressBar = i_ProgressBar;
+                initializeProgressBar(i_Albums);
+                DataSource = filterAlbumsWithProgress(i_Albums);
+            }
+            catch(Exception ex)
+            {
+                string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
+                    Environment.NewLine, ex.Message);
+
+                MessageBox.Show(exMsg);
+            }
         }
 
         private void initializeProgressBar(FacebookObjectCollection<Album> i_Albums = null, FacebookWrapper.ObjectModel.Album i_Album = null)
@@ -39,21 +50,15 @@ namespace BasicFacebookFeatures.Models
         private object filterAlbumsWithProgress(FacebookObjectCollection<Album> i_Albums)
         {
             FacebookObjectCollection<Album> filteredAlbums = new FacebookObjectCollection<Album>();
-            try
-            {
-                foreach (FacebookWrapper.ObjectModel.Album album in i_Albums)
-                {
-                    if (album.Count > 0)
-                    {
-                        filteredAlbums.Add(album);
-                    }
 
-                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
-                }
-            }
-            catch (Exception ex)
+            foreach (FacebookWrapper.ObjectModel.Album album in i_Albums)
             {
-                Console.WriteLine(ex.ToString());
+                if (album.Count > 0)
+                {
+                    filteredAlbums.Add(album);
+                }
+
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
             }
 
             return filteredAlbums;

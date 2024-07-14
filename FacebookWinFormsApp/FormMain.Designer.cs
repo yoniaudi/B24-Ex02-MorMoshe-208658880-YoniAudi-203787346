@@ -31,6 +31,7 @@ namespace BasicFacebookFeatures
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.buttonLogin = new System.Windows.Forms.Button();
             this.buttonLogout = new System.Windows.Forms.Button();
             this.labelInstractions = new System.Windows.Forms.Label();
@@ -57,11 +58,13 @@ namespace BasicFacebookFeatures
             this.checkBoxRememberMe = new System.Windows.Forms.CheckBox();
             this.pictureBoxAppVisability = new System.Windows.Forms.PictureBox();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
+            this.userBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.searchableListBoxMain = new BasicFacebookFeatures.Models.SearchableListBoxController();
             this.panelMain.SuspendLayout();
             this.panelSecondary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAppVisability)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonLogin
@@ -112,6 +115,7 @@ namespace BasicFacebookFeatures
             // labelFullName
             // 
             this.labelFullName.AutoSize = true;
+            this.labelFullName.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "Name", true));
             this.labelFullName.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelFullName.Location = new System.Drawing.Point(16, 106);
             this.labelFullName.Name = "labelFullName";
@@ -312,6 +316,10 @@ namespace BasicFacebookFeatures
             this.pictureBoxProfile.TabIndex = 55;
             this.pictureBoxProfile.TabStop = false;
             // 
+            // userBindingSource
+            // 
+            this.userBindingSource.DataSource = typeof(FacebookWrapper.ObjectModel.User);
+            // 
             // searchableListBoxMain
             // 
             this.searchableListBoxMain.AutoSize = true;
@@ -361,6 +369,7 @@ namespace BasicFacebookFeatures
             this.panelSecondary.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAppVisability)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -395,6 +404,7 @@ namespace BasicFacebookFeatures
         private System.Windows.Forms.Button buttonVolunteer;
         private SearchableListBoxController searchableListBoxMain;
         private CheckBox checkBoxRememberMe;
+        private BindingSource userBindingSource;
     }
 }
 

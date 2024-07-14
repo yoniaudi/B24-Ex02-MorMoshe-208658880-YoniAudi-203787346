@@ -34,12 +34,12 @@
             System.Windows.Forms.Label labelFirstName;
             System.Windows.Forms.Label labelLastName;
             this.userBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dateTimePickerBirthday = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerUserBirthday = new System.Windows.Forms.DateTimePicker();
             this.labelUserEmail = new System.Windows.Forms.Label();
-            this.labelUserFirstName = new System.Windows.Forms.Label();
-            this.labelUserLastName = new System.Windows.Forms.Label();
             this.labelLanguages = new System.Windows.Forms.Label();
             this.labelUserLanguages = new System.Windows.Forms.Label();
+            this.textBoxUserFirstName = new System.Windows.Forms.TextBox();
+            this.textBoxUserLastName = new System.Windows.Forms.TextBox();
             labelBirthday = new System.Windows.Forms.Label();
             labelEmail = new System.Windows.Forms.Label();
             labelFirstName = new System.Windows.Forms.Label();
@@ -71,7 +71,7 @@
             labelFirstName.Location = new System.Drawing.Point(3, 9);
             labelFirstName.Name = "labelFirstName";
             labelFirstName.Size = new System.Drawing.Size(60, 13);
-            labelFirstName.TabIndex = 6;
+            labelFirstName.TabIndex = 11;
             labelFirstName.Text = "First Name:";
             // 
             // labelLastName
@@ -80,20 +80,20 @@
             labelLastName.Location = new System.Drawing.Point(3, 34);
             labelLastName.Name = "labelLastName";
             labelLastName.Size = new System.Drawing.Size(61, 13);
-            labelLastName.TabIndex = 8;
+            labelLastName.TabIndex = 12;
             labelLastName.Text = "Last Name:";
             // 
             // userBindingSource
             // 
             this.userBindingSource.DataSource = typeof(FacebookWrapper.ObjectModel.User);
             // 
-            // dateTimePickerBirthday
+            // dateTimePickerUserBirthday
             // 
-            this.dateTimePickerBirthday.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.userBindingSource, "Birthday", true));
-            this.dateTimePickerBirthday.Location = new System.Drawing.Point(69, 83);
-            this.dateTimePickerBirthday.Name = "dateTimePickerBirthday";
-            this.dateTimePickerBirthday.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePickerBirthday.TabIndex = 3;
+            this.dateTimePickerUserBirthday.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.userBindingSource, "Birthday", true));
+            this.dateTimePickerUserBirthday.Location = new System.Drawing.Point(69, 83);
+            this.dateTimePickerUserBirthday.Name = "dateTimePickerUserBirthday";
+            this.dateTimePickerUserBirthday.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerUserBirthday.TabIndex = 3;
             // 
             // labelUserEmail
             // 
@@ -103,24 +103,6 @@
             this.labelUserEmail.Size = new System.Drawing.Size(200, 23);
             this.labelUserEmail.TabIndex = 5;
             this.labelUserEmail.Text = "User Email";
-            // 
-            // labelUserFirstName
-            // 
-            this.labelUserFirstName.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "FirstName", true));
-            this.labelUserFirstName.Location = new System.Drawing.Point(69, 9);
-            this.labelUserFirstName.Name = "labelUserFirstName";
-            this.labelUserFirstName.Size = new System.Drawing.Size(200, 23);
-            this.labelUserFirstName.TabIndex = 7;
-            this.labelUserFirstName.Text = "User First Name";
-            // 
-            // labelUserLastName
-            // 
-            this.labelUserLastName.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "LastName", true));
-            this.labelUserLastName.Location = new System.Drawing.Point(69, 35);
-            this.labelUserLastName.Name = "labelUserLastName";
-            this.labelUserLastName.Size = new System.Drawing.Size(200, 23);
-            this.labelUserLastName.TabIndex = 9;
-            this.labelUserLastName.Text = "User Last Name";
             // 
             // labelLanguages
             // 
@@ -140,22 +122,40 @@
             this.labelUserLanguages.TabIndex = 11;
             this.labelUserLanguages.Text = "User Languages";
             // 
+            // textBoxUserFirstName
+            // 
+            this.textBoxUserFirstName.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "FirstName", true));
+            this.textBoxUserFirstName.Location = new System.Drawing.Point(70, 6);
+            this.textBoxUserFirstName.Name = "textBoxUserFirstName";
+            this.textBoxUserFirstName.Size = new System.Drawing.Size(199, 20);
+            this.textBoxUserFirstName.TabIndex = 12;
+            this.textBoxUserFirstName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxUserFirstName_Validating);
+            // 
+            // textBoxUserLastName
+            // 
+            this.textBoxUserLastName.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "LastName", true));
+            this.textBoxUserLastName.Location = new System.Drawing.Point(70, 31);
+            this.textBoxUserLastName.Name = "textBoxUserLastName";
+            this.textBoxUserLastName.Size = new System.Drawing.Size(199, 20);
+            this.textBoxUserLastName.TabIndex = 13;
+            this.textBoxUserLastName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxUserLastName_Validating);
+            // 
             // ProfileController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(labelLastName);
+            this.Controls.Add(this.textBoxUserLastName);
+            this.Controls.Add(labelFirstName);
+            this.Controls.Add(this.textBoxUserFirstName);
             this.Controls.Add(this.labelUserLanguages);
             this.Controls.Add(this.labelLanguages);
             this.Controls.Add(labelBirthday);
-            this.Controls.Add(this.dateTimePickerBirthday);
+            this.Controls.Add(this.dateTimePickerUserBirthday);
             this.Controls.Add(labelEmail);
             this.Controls.Add(this.labelUserEmail);
-            this.Controls.Add(labelFirstName);
-            this.Controls.Add(this.labelUserFirstName);
-            this.Controls.Add(labelLastName);
-            this.Controls.Add(this.labelUserLastName);
             this.Name = "ProfileController";
-            this.Size = new System.Drawing.Size(272, 129);
+            this.Size = new System.Drawing.Size(276, 132);
             ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -165,11 +165,11 @@
         #endregion
 
         private System.Windows.Forms.BindingSource userBindingSource;
-        private System.Windows.Forms.DateTimePicker dateTimePickerBirthday;
+        private System.Windows.Forms.DateTimePicker dateTimePickerUserBirthday;
         private System.Windows.Forms.Label labelUserEmail;
-        private System.Windows.Forms.Label labelUserFirstName;
-        private System.Windows.Forms.Label labelUserLastName;
         private System.Windows.Forms.Label labelLanguages;
         private System.Windows.Forms.Label labelUserLanguages;
+        private System.Windows.Forms.TextBox textBoxUserFirstName;
+        private System.Windows.Forms.TextBox textBoxUserLastName;
     }
 }

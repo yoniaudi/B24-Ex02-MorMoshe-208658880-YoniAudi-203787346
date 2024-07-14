@@ -55,10 +55,10 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(User i_Friend)
         {
-            m_ProgressBar.Invoke(new Action(() => 
-            { 
-                m_ProgressBar.Minimum = 0; 
-                //m_ProgressBar.Maximum = i_Friend.Statuses.Count + i_Friend.Albums.Count;
+            m_ProgressBar.Invoke(new Action(() =>
+            {
+                m_ProgressBar.Minimum = 0;
+                m_ProgressBar.Maximum = i_Friend.Statuses.Count;
                 m_ProgressBar.Value = 0;
                 m_ProgressBar.Step = 1;
             }));
@@ -99,7 +99,10 @@ namespace BasicFacebookFeatures.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Getting albums is not supported by Meta anymore.{Environment.NewLine}Error: {ex.Message}");
+                string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
+                    Environment.NewLine, ex.Message);
+                
+                MessageBox.Show(exMsg);
             }
 
             return filteredAlbums;

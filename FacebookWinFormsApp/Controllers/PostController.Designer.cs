@@ -141,7 +141,7 @@
             this.labelUserPostMessage.TabIndex = 30;
             this.labelUserPostMessage.Text = "";
             // 
-            // PostModel
+            // PostController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -157,7 +157,7 @@
             this.Controls.Add(this.labelPostinMessage);
             this.Controls.Add(this.labelPostDateCreated);
             this.Controls.Add(this.labelPostinAuthor);
-            this.Name = "PostModel";
+            this.Name = "PostController";
             this.Size = new System.Drawing.Size(466, 350);
             ((System.ComponentModel.ISupportInitialize)(this.picturePost)).EndInit();
             this.ResumeLayout(false);

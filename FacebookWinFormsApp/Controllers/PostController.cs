@@ -15,7 +15,7 @@ namespace BasicFacebookFeatures.Models
             InitializeComponent();
         }
 
-        public PostController(FacebookWrapper.ObjectModel.FacebookObjectCollection<Post> i_Posts, System.Windows.Forms.ProgressBar i_ProgressBar)
+        public PostController(FacebookObjectCollection<Post> i_Posts, ProgressBar i_ProgressBar)
         {
             InitializeComponent();
             m_ProgressBar = i_ProgressBar;
