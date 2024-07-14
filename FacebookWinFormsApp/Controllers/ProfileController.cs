@@ -44,28 +44,52 @@ namespace BasicFacebookFeatures.Models
 
         private void textBoxUserFirstName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            updateUserFullName(sender, e);
+            validatingUserFullName(sender, e);
         }
 
         private void textBoxUserLastName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            updateUserFullName(sender, e);
+            validatingUserFullName(sender, e);
         }
 
-        private void updateUserFullName(object i_Sender, System.ComponentModel.CancelEventArgs i_E)
+        private void validatingUserFullName(object i_Sender, System.ComponentModel.CancelEventArgs i_E)
         {
-            if ((i_Sender as TextBox).Text.Length == 0)
+            TextBox textBoxNewName = i_Sender as TextBox;
+
+            if (textBoxNewName.Text.Length == 0)
             {
+                string[] fullName = m_LoggedInUser.Name.Split(' ');
+
+                if (textBoxNewName.Name == "textBoxUserFirstName")
+                {
+                    textBoxNewName.Text = fullName[0];
+                }
+                else
+                {
+                    textBoxNewName.Text = fullName[1];
+                }
+
                 MessageBox.Show("Textbox can't be empty.");
                 i_E.Cancel = true;
             }
-            else
-            {
-                string fullName = $"{m_LoggedInUser.FirstName} {m_LoggedInUser.LastName}";
+        }
 
-                m_LoggedInUser.Name = fullName;
-                m_LabelUserFullName.Text = fullName;
-            }
+        private void textBoxUserFirstName_Validated(object sender, System.EventArgs e)
+        {
+            updateUserFullName();
+        }
+
+        private void textBoxUserLastName_Validated(object sender, System.EventArgs e)
+        {
+            updateUserFullName();
+        }
+
+        private void updateUserFullName()
+        {
+            string fullName = $"{m_LoggedInUser.FirstName} {m_LoggedInUser.LastName}";
+
+            m_LoggedInUser.Name = fullName;
+            m_LabelUserFullName.Text = fullName;
         }
     }
 }

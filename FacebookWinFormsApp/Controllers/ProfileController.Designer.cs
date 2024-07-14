@@ -130,6 +130,7 @@
             this.textBoxUserFirstName.Size = new System.Drawing.Size(199, 20);
             this.textBoxUserFirstName.TabIndex = 12;
             this.textBoxUserFirstName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxUserFirstName_Validating);
+            this.textBoxUserFirstName.Validated += new System.EventHandler(this.textBoxUserFirstName_Validated);
             // 
             // textBoxUserLastName
             // 
@@ -139,6 +140,7 @@
             this.textBoxUserLastName.Size = new System.Drawing.Size(199, 20);
             this.textBoxUserLastName.TabIndex = 13;
             this.textBoxUserLastName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxUserLastName_Validating);
+            this.textBoxUserLastName.Validated += new System.EventHandler(this.textBoxUserLastName_Validated);
             // 
             // ProfileController
             // 
