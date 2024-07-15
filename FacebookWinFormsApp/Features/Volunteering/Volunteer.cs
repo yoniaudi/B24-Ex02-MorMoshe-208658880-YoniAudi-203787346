@@ -12,7 +12,8 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         public override string ToString()
         {
-            string personFormat = string.Format($"{this.Subject} at {this.Location} from {this.StartDate.ToShortDateString()} to {this.EndDate.ToShortDateString()} Phone:{this.PhoneNumber}");
+            string personFormat = string.Format(@"{0} at {1} from {2} to {3} Phone:{4}",
+                this.Subject, this.Location, this.StartDate.ToShortDateString(), this.EndDate.ToShortDateString(), this.PhoneNumber);
 
             return personFormat;
         }
