@@ -9,45 +9,49 @@ namespace BasicFacebookFeatures.Features.Volunteering
 {
     public class FindVolunteerValidationStrategy : IValidationStrategy<Volunteer>
     {
-        public bool Validate(Volunteer volunteerPerson, out string errorMessage)
+        public bool Validate(Volunteer i_Volunteer, out string o_ErrorMessage)
         {
             List<string> errorMessages = new List<string>();
+            bool isDataValid = true;
 
-            validateSubject(volunteerPerson.Subject, errorMessages);
-            validateLocation(volunteerPerson.Location, errorMessages);
-            validateDates(volunteerPerson.StartDate, volunteerPerson.EndDate, errorMessages);
+            validateSubject(i_Volunteer.Subject, errorMessages);
+            validateLocation(i_Volunteer.Location, errorMessages);
+            validateDates(i_Volunteer.StartDate, i_Volunteer.EndDate, errorMessages);
 
             if (errorMessages.Count > 0)
             {
-                errorMessage = string.Join(Environment.NewLine, errorMessages);
-                return false;
+                o_ErrorMessage = string.Join(Environment.NewLine, errorMessages);
+                isDataValid = false;
+            }
+            else
+            {
+                o_ErrorMessage = string.Empty;
             }
 
-            errorMessage = string.Empty;
-            return true;
+            return isDataValid;
         }
 
-        private void validateSubject(string subject, List<string> errorMessages)
+        private void validateSubject(string i_Subject, List<string> o_ErrorMessages)
         {
-            if (string.IsNullOrEmpty(subject))
+            if (string.IsNullOrEmpty(i_Subject) == true)
             {
-                errorMessages.Add("Choose subject");
-            }
-        }
-
-        private void validateLocation(string location, List<string> errorMessages)
-        {
-            if (string.IsNullOrEmpty(location))
-            {
-                errorMessages.Add("Choose location");
+                o_ErrorMessages.Add("Choose a subject.");
             }
         }
 
-        private void validateDates(DateTime startDate, DateTime endDate, List<string> errorMessages)
+        private void validateLocation(string i_Location, List<string> o_ErrorMessages)
         {
-            if (startDate > endDate)
+            if (string.IsNullOrEmpty(i_Location) == true)
             {
-                errorMessages.Add("Invalid dates");
+                o_ErrorMessages.Add("Choose a location.");
+            }
+        }
+
+        private void validateDates(DateTime i_StartDate, DateTime i_EndDate, List<string> o_ErrorMessages)
+        {
+            if (i_StartDate > i_EndDate)
+            {
+                o_ErrorMessages.Add("Invalid dates.");
             }
         }
     }
