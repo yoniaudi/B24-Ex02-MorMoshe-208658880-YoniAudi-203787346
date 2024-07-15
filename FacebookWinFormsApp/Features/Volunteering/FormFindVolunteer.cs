@@ -7,34 +7,42 @@ namespace BasicFacebookFeatures.Features.Volunteering
 {
     public partial class FormFindVolunteer : Form
     {
-        private readonly FindVolunteerService m_VolunteerService;
+        private readonly FindVolunteerService r_VolunteerService = null;
 
         public FormFindVolunteer(User i_LoggedInUser)
         {
             InitializeComponent();
-            m_VolunteerService = new FindVolunteerService(i_LoggedInUser);
+            r_VolunteerService = new FindVolunteerService(i_LoggedInUser);
             dateTimePickerStartDate.Value = DateTime.Now;
             dateTimePickerEndDate.Value = DateTime.Now;
         }
 
         private void dateTimePickerStartDate_ValueChanged(object sender, EventArgs e)
         {
-            m_VolunteerService.UpdateStartDate(dateTimePickerStartDate.Value);
+            r_VolunteerService.UpdateStartDate(dateTimePickerStartDate.Value);
         }
 
         private void dateTimePickerEndDate_ValueChanged(object sender, EventArgs e)
         {
-            m_VolunteerService.UpdateEndDate(dateTimePickerEndDate.Value);
+            r_VolunteerService.UpdateEndDate(dateTimePickerEndDate.Value);
         }
 
         private void buttonFindOpportunities_Click(object sender, EventArgs e)
         {
-            Volunteer volunteerPerson = collectFormData();
+            findOpportunities();
+        }
 
-            if (m_VolunteerService.ValidateData(volunteerPerson, out string errorMessage))
+        private void findOpportunities()
+        {
+            Volunteer volunteer = collectDataFromForm();
+            bool isDataValid = r_VolunteerService.ValidateData(volunteer, out string errorMessage);
+
+            if (isDataValid == true)
             {
+                List<Volunteer> foundOpportunities = null;
+
                 buttonFindOpportunities.Cursor = Cursors.AppStarting;
-                List<Volunteer> foundOpportunities = m_VolunteerService.FindMatchingOpportunities(volunteerPerson);
+                foundOpportunities = r_VolunteerService.FindMatchingOpportunities(volunteer);
                 displayVolunteerPlaces(foundOpportunities);
                 buttonFindOpportunities.Cursor = Cursors.Default;
             }
@@ -44,7 +52,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
             }
         }
 
-        private Volunteer collectFormData()
+        private Volunteer collectDataFromForm()
         {
             return new Volunteer
             {
@@ -55,13 +63,13 @@ namespace BasicFacebookFeatures.Features.Volunteering
             };
         }
 
-        private void displayVolunteerPlaces(List<Volunteer> i_VolunteerPersons)
+        private void displayVolunteerPlaces(List<Volunteer> i_Volunteers)
         {
             List<string> volunteers = new List<string>();
 
-            foreach (Volunteer person in i_VolunteerPersons)
+            foreach (Volunteer volunteer in i_Volunteers)
             {
-                volunteers.Add(person.ToString());
+                volunteers.Add(volunteer.ToString());
             }
 
             listBoxFoundOpportunities.DataSource = volunteers;
