@@ -1,7 +1,5 @@
 ﻿using BasicFacebookFeatures.Features.ValidationStrategy;
 using BasicFacebookFeatures.Features.Volunteering;
-using System;
-using System.Collections.Generic;
 
 public class AddVolunteerService
 {
@@ -12,13 +10,13 @@ public class AddVolunteerService
         ValidationStrategy = new AddVolunteerValidationStrategy();
     }
 
-    public bool ValidateData(VolunteerPerson volunteerPerson, out string errorMessage)
+    public bool ValidateData(VolunteerPerson i_VolunteerPerson, out string o_ErrorMessage)
     {
-        return ValidationStrategy.Validate(volunteerPerson, out errorMessage);
+        return ValidationStrategy.Validate(i_VolunteerPerson, out o_ErrorMessage);
     }
 
-    public void SaveVolunteerPerson(VolunteerPerson volunteerPerson)
+    public void SaveVolunteerPerson(VolunteerPerson i_VolunteerPerson)
     {
-        Singleton<SingletonFileOperations>.Instance.SaveVolunteerPersonToFile(volunteerPerson);
+        Singleton<SingletonFileOperations>.Instance.SaveVolunteerPersonToFile(i_VolunteerPerson);
     }
 }
