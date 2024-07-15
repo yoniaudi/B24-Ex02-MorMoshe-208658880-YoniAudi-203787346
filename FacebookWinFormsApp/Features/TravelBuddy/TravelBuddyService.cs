@@ -10,24 +10,24 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 {
     public class TravelBuddyService
     {
-        private readonly User m_LoggedInUser = null;
-        public IValidationStrategy<TravelBuddyValidationData> ValidationStrategy { get; set; }
+        private readonly User r_LoggedInUser = null;
+        public IValidationStrategy<TravelBuddyValidationData> ValidationStrategy { get; set; } = null;
 
         public TravelBuddyService(User loggedInUser)
         {
-            m_LoggedInUser = loggedInUser;
+            r_LoggedInUser = loggedInUser;
             ValidationStrategy = new TravelBuddyValidationStrategy();
         }
 
         public List<TravelBuddyModel> LoadFriends()
         {
-            FacebookObjectCollection<User> friends = m_LoggedInUser.Friends;
+            FacebookObjectCollection<User> friends = r_LoggedInUser.Friends;
             List<TravelBuddyModel> friendList = new List<TravelBuddyModel>();
 
             foreach (User friend in friends)
             {
-                int age = friend.Birthday != null ? CalculateAge(friend.Birthday) : 0;
-                List<string> traveledCountries = GetTraveledCountries(friend);
+                int age = friend.Birthday != null ? calculateAge(friend.Birthday) : 0;
+                List<string> traveledCountries = getTraveledCountries(friend);
 
                 TravelBuddyModel travelBuddyFriend = new TravelBuddyModel
                 {
@@ -35,7 +35,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
                     Age = age,
                     Gender = friend.Gender.ToString(),
                     TraveledCountries = traveledCountries,
-                    TravelPlans = GetTravelPlans(friend)
+                    TravelPlans = getTravelPlans(friend)
                 };
 
                 friendList.Add(travelBuddyFriend);
@@ -44,19 +44,22 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             return friendList;
         }
 
-        private List<string> GetTraveledCountries(User fbFriend)
+        private List<string> getTraveledCountries(User i_Friend)
         {
             List<string> traveledCountries = new List<string>();
 
             try
             {
-                if (fbFriend.Albums != null)
+                if (i_Friend.Albums != null)
                 {
-                    foreach (Album album in fbFriend.Albums)
+                    foreach (Album album in i_Friend.Albums)
                     {
                         foreach (Photo photo in album.Photos)
                         {
-                            if (photo.Place?.Location?.Country != null && !traveledCountries.Contains(photo.Place.Location.Country))
+                            bool hasBeenInThisCountry = photo.Place?.Location?.Country != null
+                                && !traveledCountries.Contains(photo.Place.Location.Country);
+
+                            if (hasBeenInThisCountry == true)
                             {
                                 traveledCountries.Add(photo.Place.Location.Country);
                             }
@@ -75,21 +78,21 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             return traveledCountries;
         }
 
-        private List<TravelPlanModel> GetTravelPlans(User fbFriend)
+        private List<TravelPlanModel> getTravelPlans(User i_Friend)
         {
             List<TravelPlanModel> travelPlans = new List<TravelPlanModel>();
 
-            if (fbFriend.Events != null)
+            if (i_Friend.Events != null)
             {
-                foreach (Event fbEvent in fbFriend.Events)
+                foreach (Event friendEvent in i_Friend.Events)
                 {
-                    if (fbEvent.Place?.Location?.Country != null)
+                    if (friendEvent.Place?.Location?.Country != null)
                     {
                         travelPlans.Add(new TravelPlanModel
                         {
-                            Country = fbEvent.Place.Location.Country,
-                            StartDate = fbEvent.StartTime ?? DateTime.MinValue,
-                            EndDate = fbEvent.EndTime ?? fbEvent.StartTime ?? DateTime.MinValue
+                            Country = friendEvent.Place.Location.Country,
+                            StartDate = friendEvent.StartTime ?? DateTime.MinValue,
+                            EndDate = friendEvent.EndTime ?? friendEvent.StartTime ?? DateTime.MinValue
                         });
                     }
                 }
@@ -98,39 +101,43 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             return travelPlans;
         }
 
-        public int CalculateAge(string birthday)
+        private int calculateAge(string i_Birthday)
         {
-            if (DateTime.TryParse(birthday, out DateTime birthDate))
+            int age = 0;
+
+            if (DateTime.TryParse(i_Birthday, out DateTime birthDate))
             {
-                int age = DateTime.Now.Year - birthDate.Year;
+                age = DateTime.Now.Year - birthDate.Year;
+
                 if (DateTime.Now.DayOfYear < birthDate.DayOfYear)
                 {
                     age--;
                 }
-                return age;
             }
-            return 0;
+
+            return age;
         }
 
-        public List<TravelBuddyModel> FindFriendsForDesiredCountry(List<TravelBuddyModel> friendsList, string desiredCountry)
+        public List<TravelBuddyModel> FindFriendsForDesiredCountry(List<TravelBuddyModel> i_FriendList, string i_DesiredCountry)
         {
-            return friendsList.Where(friend => friend.TraveledCountries.Contains(desiredCountry)).ToList();
+            return i_FriendList.Where(friend => friend.TraveledCountries.Contains(i_DesiredCountry)).ToList();
         }
 
-        public List<TravelBuddyModel> FindFriendsWithPlannedTravel(List<TravelBuddyModel> friendsList, string desiredCountry, DateTime startDate, DateTime endDate, int minAge = 0, int maxAge = 0, string gender = null)
+        public List<TravelBuddyModel> FindFriendsWithPlannedTravel(List<TravelBuddyModel> i_FriendList, string i_DesiredCountry,
+            DateTime i_StartDate, DateTime i_EndDate, int i_MinAge = 0, int i_MaxAge = 0, string i_Gender = null)
         {
-            return friendsList.Where(friend =>
-                friend.TravelPlans.Any(plan =>
-                    plan.Country == desiredCountry &&
-                    plan.StartDate <= endDate &&
-                    plan.EndDate >= startDate) &&
-                (minAge == 0 && maxAge == 0 || (friend.Age >= minAge && friend.Age <= maxAge)) &&
-                (gender == null || friend.Gender == gender)).ToList();
+            return i_FriendList.Where(friend =>
+                friend.TravelPlans.Any(travelPlan =>
+                    travelPlan.Country == i_DesiredCountry &&
+                    travelPlan.StartDate <= i_EndDate &&
+                    travelPlan.EndDate >= i_StartDate) &&
+                (i_MinAge == 0 && i_MaxAge == 0 || friend.Age >= i_MinAge && friend.Age <= i_MaxAge) &&
+                (i_Gender == null || friend.Gender == i_Gender)).ToList();
         }
 
-        public bool ValidateData(TravelBuddyValidationData validationData, out string errorMessage)
+        public bool ValidateData(TravelBuddyValidationData i_ValidationData, out string o_ErrorMessage)
         {
-            return ValidationStrategy.Validate(validationData, out errorMessage);
+            return ValidationStrategy.Validate(i_ValidationData, out o_ErrorMessage);
         }
     }
 }
