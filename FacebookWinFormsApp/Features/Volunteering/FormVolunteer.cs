@@ -20,9 +20,9 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void buttonFindVolunteer_Click(object sender, EventArgs e)
         {
-            FormFindVolunteer formVolunteerMatch = new FormFindVolunteer(m_LoggedInUser);
+            FormFindVolunteer formMatchVolunteer = new FormFindVolunteer(m_LoggedInUser);
 
-            formVolunteerMatch.ShowDialog();
+            formMatchVolunteer.ShowDialog();
         }
 
         private void buttonAddVolunteer_Click(object sender, EventArgs e)

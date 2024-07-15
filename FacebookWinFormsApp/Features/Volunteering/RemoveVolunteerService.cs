@@ -10,36 +10,36 @@ public class RemoveVolunteerService
         return Singleton<SingletonFileOperations>.Instance.LoadFromFile();
     }
 
-    public void SaveVolunteers(List<Volunteer> volunteerPeople)
+    public void SaveVolunteers(List<Volunteer> i_Volunteers)
     {
-        Singleton<SingletonFileOperations>.Instance.SaveToFile(volunteerPeople);
+        Singleton<SingletonFileOperations>.Instance.SaveToFile(i_Volunteers);
     }
 
-    public List<Volunteer> FilterVolunteersByPhoneNumber(List<Volunteer> volunteerPeople, string phoneNumber)
+    public List<Volunteer> FilterVolunteersByPhoneNumber(List<Volunteer> i_Volunteers, string i_PhoneNumber)
     {
-        return volunteerPeople.Where(v => v.PhoneNumber == phoneNumber).ToList();
+        return i_Volunteers.Where(volunteer => volunteer.PhoneNumber == i_PhoneNumber).ToList();
     }
 
-    public Volunteer ExtractVolunteerDetails(string volunteerString)
+    public Volunteer ExtractVolunteerDetails(string i_volunteerStr)
     {
-        Volunteer details = new Volunteer();
-        string[] parts = volunteerString.Split(new string[] { " at ", " from ", " to ", " Phone:" }, StringSplitOptions.None);
+        Volunteer volunteer = new Volunteer();
+        string[] details = i_volunteerStr.Split(new string[] { " at ", " from ", " to ", " Phone:" }, StringSplitOptions.None);
 
-        if (parts.Length == 5)
+        if (details.Length == 5)
         {
-            details.Subject = parts[0].Trim();
-            details.Location = parts[1].Trim();
-            details.StartDate = DateTime.Parse(parts[2].Trim()).Date;
-            details.EndDate = DateTime.Parse(parts[3].Trim()).Date;
-            details.PhoneNumber = parts[4].Trim();
+            volunteer.Subject = details[0].Trim();
+            volunteer.Location = details[1].Trim();
+            volunteer.StartDate = DateTime.Parse(details[2].Trim()).Date;
+            volunteer.EndDate = DateTime.Parse(details[3].Trim()).Date;
+            volunteer.PhoneNumber = details[4].Trim();
         }
 
-        return details;
+        return volunteer;
     }
 
-    public void RemoveVolunteer(List<Volunteer> volunteerPeople, Volunteer volunteerToRemove)
+    public void RemoveVolunteer(List<Volunteer> i_Volunteer, Volunteer i_VolunteerToRemove)
     {
-        volunteerPeople.Remove(volunteerToRemove);
-        SaveVolunteers(volunteerPeople);
+        i_Volunteer.Remove(i_VolunteerToRemove);
+        SaveVolunteers(i_Volunteer);
     }
 }
