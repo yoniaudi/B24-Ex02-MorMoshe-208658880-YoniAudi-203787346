@@ -1,70 +1,72 @@
 ﻿using BasicFacebookFeatures.Features.ValidationStrategy;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BasicFacebookFeatures.Features.TravelBuddy
 {
     public class TravelBuddyValidationStrategy : IValidationStrategy<TravelBuddyValidationData>
     {
-        public bool Validate(TravelBuddyValidationData validationData, out string errorMessage)
+        public bool Validate(TravelBuddyValidationData i_ValidationData, out string o_ErrorMessage)
         {
             List<string> errorMessages = new List<string>();
+            bool isDataValid = true;
 
-            validateCountry(validationData.SelectedCountry, errorMessages);
-            validateDates(validationData.ArrivalDate, validationData.DepartureDate, errorMessages);
+            validateTravelCountry(i_ValidationData.SelectedCountry, errorMessages);
+            validateTravelDates(i_ValidationData.ArrivalDate, i_ValidationData.DepartureDate, errorMessages);
 
-            if (validationData.AgeChecked)
+            if (i_ValidationData.AgeChecked == true)
             {
-                validateAgeRange(validationData.MinAge, validationData.MaxAge, errorMessages);
+                validateAgeRange(i_ValidationData.MinAge, i_ValidationData.MaxAge, errorMessages);
             }
 
-            if (validationData.GenderChecked)
+            if (i_ValidationData.GenderChecked == true)
             {
-                validateGender(validationData.Gender, errorMessages);
+                validateGender(i_ValidationData.Gender, errorMessages);
             }
 
             if (errorMessages.Count > 0)
             {
-                errorMessage = string.Join(Environment.NewLine, errorMessages);
-                return false;
+                o_ErrorMessage = string.Join(Environment.NewLine, errorMessages);
+                isDataValid = false;
+            }
+            else
+            {
+                o_ErrorMessage = string.Empty;
             }
 
-            errorMessage = string.Empty;
-            return true;
+            return isDataValid;
         }
 
-        private void validateCountry(string country, List<string> errorMessages)
+        private void validateTravelCountry(string i_Country, List<string> o_ErrorMessages)
         {
-            if (string.IsNullOrEmpty(country))
+            if (string.IsNullOrEmpty(i_Country) == true)
             {
-                errorMessages.Add("Choose country");
-            }
-        }
-
-        private void validateDates(string arrivalDate, string departureDate, List<string> errorMessages)
-        {
-            if (string.IsNullOrEmpty(arrivalDate) || string.IsNullOrEmpty(departureDate) || DateTime.Parse(departureDate) < DateTime.Parse(arrivalDate))
-            {
-                errorMessages.Add("Invalid Dates");
+                o_ErrorMessages.Add("Choose a country.");
             }
         }
 
-        private void validateAgeRange(int minAge, int maxAge, List<string> errorMessages)
+        private void validateTravelDates(string i_ArrivalDate, string i_DepartureDate, List<string> o_ErrorMessages)
         {
-            if (minAge < 1 || minAge > 120 || maxAge < 1 || maxAge > 120 || maxAge < minAge)
+            if (string.IsNullOrEmpty(i_ArrivalDate) == true || string.IsNullOrEmpty(i_DepartureDate) == true ||
+                DateTime.Parse(i_DepartureDate) < DateTime.Parse(i_ArrivalDate))
             {
-                errorMessages.Add("Choose valid age range");
+                o_ErrorMessages.Add("Invalid Dates.");
             }
         }
 
-        private void validateGender(string gender, List<string> errorMessages)
+        private void validateAgeRange(int i_MinAge, int i_MaxAge, List<string> o_ErrorMessages)
         {
-            if (string.IsNullOrEmpty(gender))
+            if (i_MinAge < 1 || i_MinAge > 120 || i_MaxAge < 1 || i_MaxAge > 120 || i_MaxAge < i_MinAge)
             {
-                errorMessages.Add("Choose gender");
+                o_ErrorMessages.Add("Choose valid age range");
+            }
+        }
+
+        private void validateGender(string i_Gender, List<string> o_ErrorMessages)
+        {
+            if (string.IsNullOrEmpty(i_Gender) == true)
+            {
+                o_ErrorMessages.Add("Choose gender");
             }
         }
     }
