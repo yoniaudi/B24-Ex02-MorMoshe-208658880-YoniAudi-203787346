@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Features.TravelBuddy
 {
     public class TravelBuddyService
     {
-        private readonly User m_LoggedInUser;
+        private readonly User m_LoggedInUser = null;
         public IValidationStrategy<TravelBuddyValidationData> ValidationStrategy { get; set; }
 
         public TravelBuddyService(User loggedInUser)
@@ -23,18 +24,18 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             FacebookObjectCollection<User> friends = m_LoggedInUser.Friends;
             List<TravelBuddyModel> friendList = new List<TravelBuddyModel>();
 
-            foreach (User fbFriend in friends)
+            foreach (User friend in friends)
             {
-                int age = fbFriend.Birthday != null ? CalculateAge(fbFriend.Birthday) : 0;
-                List<string> traveledCountries = GetTraveledCountries(fbFriend);
+                int age = friend.Birthday != null ? CalculateAge(friend.Birthday) : 0;
+                List<string> traveledCountries = GetTraveledCountries(friend);
 
                 TravelBuddyModel travelBuddyFriend = new TravelBuddyModel
                 {
-                    Name = fbFriend.Name,
+                    Name = friend.Name,
                     Age = age,
-                    Gender = fbFriend.Gender.ToString(),
+                    Gender = friend.Gender.ToString(),
                     TraveledCountries = traveledCountries,
-                    TravelPlans = GetTravelPlans(fbFriend)
+                    TravelPlans = GetTravelPlans(friend)
                 };
 
                 friendList.Add(travelBuddyFriend);
@@ -47,18 +48,28 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
         {
             List<string> traveledCountries = new List<string>();
 
-            if (fbFriend.Albums != null)
+            try
             {
-                foreach (Album album in fbFriend.Albums)
+                if (fbFriend.Albums != null)
                 {
-                    foreach (Photo photo in album.Photos)
+                    foreach (Album album in fbFriend.Albums)
                     {
-                        if (photo.Place?.Location?.Country != null && !traveledCountries.Contains(photo.Place.Location.Country))
+                        foreach (Photo photo in album.Photos)
                         {
-                            traveledCountries.Add(photo.Place.Location.Country);
+                            if (photo.Place?.Location?.Country != null && !traveledCountries.Contains(photo.Place.Location.Country))
+                            {
+                                traveledCountries.Add(photo.Place.Location.Country);
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
+                    Environment.NewLine, ex.Message);
+
+                MessageBox.Show(exMsg);
             }
 
             return traveledCountries;
