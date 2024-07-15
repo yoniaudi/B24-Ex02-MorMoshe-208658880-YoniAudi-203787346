@@ -5,16 +5,16 @@ namespace BasicFacebookFeatures.Features.Volunteering
 {
     public partial class FormAddVolunteer : Form
     {
+        private readonly AddVolunteerService r_VolunteerService = null;
         private DateTime m_StartAvailableDate;
         private DateTime m_EndAvailableDate;
-        private readonly AddVolunteerService m_VolunteerService;
 
         public FormAddVolunteer()
         {
             InitializeComponent();
             m_StartAvailableDate = DateTime.Now;
             m_EndAvailableDate = DateTime.Now;
-            m_VolunteerService = new AddVolunteerService();
+            r_VolunteerService = new AddVolunteerService();
         }
 
         private void dateTimePickerStartDate_ValueChanged(object sender, EventArgs e)
@@ -37,9 +37,11 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void buttonAddVolunteer_Click(object sender, EventArgs e)
         {
-            if (validateData(out Volunteer volunteerPerson))
+            bool isDataValid = validateData(out Volunteer volunteer);
+
+            if (isDataValid == true)
             {
-                m_VolunteerService.SaveVolunteerPerson(volunteerPerson);
+                r_VolunteerService.SaveVolunteerPerson(volunteer);
                 MessageBox.Show("Data Saved Successfully!");
             }
         }
@@ -56,12 +58,13 @@ namespace BasicFacebookFeatures.Features.Volunteering
             };
         }
 
-        private bool validateData(out Volunteer volunteerPerson)
+        private bool validateData(out Volunteer io_Volunteer)
         {
-            volunteerPerson = collectFormData();
+            string errorMessage = "";
+            bool isValid = true;
 
-            string errorMessage;
-            bool isValid = m_VolunteerService.ValidateData(volunteerPerson, out errorMessage);
+            io_Volunteer = collectFormData();
+            isValid = r_VolunteerService.ValidateData(io_Volunteer, out errorMessage);
 
             if (!isValid)
             {
