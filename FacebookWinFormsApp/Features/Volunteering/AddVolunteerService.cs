@@ -3,20 +3,20 @@ using BasicFacebookFeatures.Features.Volunteering;
 
 public class AddVolunteerService
 {
-    public IValidationStrategy<VolunteerPerson> ValidationStrategy { get; set; }
+    public IValidationStrategy<Volunteer> ValidationStrategy { get; set; }
 
     public AddVolunteerService()
     {
         ValidationStrategy = new AddVolunteerValidationStrategy();
     }
 
-    public bool ValidateData(VolunteerPerson i_VolunteerPerson, out string o_ErrorMessage)
+    public bool ValidateData(Volunteer i_Volunteer, out string o_ErrorMessage)
     {
-        return ValidationStrategy.Validate(i_VolunteerPerson, out o_ErrorMessage);
+        return ValidationStrategy.Validate(i_Volunteer, out o_ErrorMessage);
     }
 
-    public void SaveVolunteerPerson(VolunteerPerson i_VolunteerPerson)
+    public void SaveVolunteerPerson(Volunteer i_Volunteer)
     {
-        Singleton<SingletonFileOperations>.Instance.SaveVolunteerPersonToFile(i_VolunteerPerson);
+        Singleton<SingletonFileOperations>.Instance.SaveVolunteerPersonToFile(i_Volunteer);
     }
 }

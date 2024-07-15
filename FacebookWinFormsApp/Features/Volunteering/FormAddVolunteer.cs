@@ -37,16 +37,16 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void buttonAddVolunteer_Click(object sender, EventArgs e)
         {
-            if (validateData(out VolunteerPerson volunteerPerson))
+            if (validateData(out Volunteer volunteerPerson))
             {
                 m_VolunteerService.SaveVolunteerPerson(volunteerPerson);
                 MessageBox.Show("Data Saved Successfully!");
             }
         }
 
-        private VolunteerPerson collectFormData()
+        private Volunteer collectFormData()
         {
-            return new VolunteerPerson()
+            return new Volunteer()
             {
                 Subject = comboBoxSubject.Text,
                 Location = textBoxLocation.Text,
@@ -56,7 +56,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
             };
         }
 
-        private bool validateData(out VolunteerPerson volunteerPerson)
+        private bool validateData(out Volunteer volunteerPerson)
         {
             volunteerPerson = collectFormData();
 

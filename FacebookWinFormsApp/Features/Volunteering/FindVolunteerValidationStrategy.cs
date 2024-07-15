@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace BasicFacebookFeatures.Features.Volunteering
 {
-    public class FindVolunteerValidationStrategy : IValidationStrategy<VolunteerPerson>
+    public class FindVolunteerValidationStrategy : IValidationStrategy<Volunteer>
     {
-        public bool Validate(VolunteerPerson volunteerPerson, out string errorMessage)
+        public bool Validate(Volunteer volunteerPerson, out string errorMessage)
         {
             List<string> errorMessages = new List<string>();
 

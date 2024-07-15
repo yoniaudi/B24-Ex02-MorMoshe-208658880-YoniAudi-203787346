@@ -25,8 +25,8 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void displayVolunteersWithPhoneNumber(string selectedPhoneNumber)
         {
-            List<VolunteerPerson> volunteerPeople = m_VolunteerService.LoadVolunteers();
-            List<VolunteerPerson> filteredVolunteers = m_VolunteerService.FilterVolunteersByPhoneNumber(volunteerPeople, selectedPhoneNumber);
+            List<Volunteer> volunteerPeople = m_VolunteerService.LoadVolunteers();
+            List<Volunteer> filteredVolunteers = m_VolunteerService.FilterVolunteersByPhoneNumber(volunteerPeople, selectedPhoneNumber);
             List<string> volunteerPeopleToDisplay = filteredVolunteers.Select(person => person.ToString()).ToList();
 
             listBoxVolunteers.DataSource = volunteerPeopleToDisplay;
@@ -51,9 +51,9 @@ namespace BasicFacebookFeatures.Features.Volunteering
             if (listBoxVolunteers.SelectedIndex != -1)
             {
                 string selectedVolunteerString = (string)listBoxVolunteers.SelectedItem;
-                VolunteerPerson details = m_VolunteerService.ExtractVolunteerDetails(selectedVolunteerString);
-                List<VolunteerPerson> volunteerPeople = m_VolunteerService.LoadVolunteers();
-                VolunteerPerson selectedVolunteer = volunteerPeople.FirstOrDefault(vp =>
+                Volunteer details = m_VolunteerService.ExtractVolunteerDetails(selectedVolunteerString);
+                List<Volunteer> volunteerPeople = m_VolunteerService.LoadVolunteers();
+                Volunteer selectedVolunteer = volunteerPeople.FirstOrDefault(vp =>
                     vp.Subject == details.Subject &&
                     vp.Location == details.Location &&
                     vp.StartDate.Date == details.StartDate.Date &&

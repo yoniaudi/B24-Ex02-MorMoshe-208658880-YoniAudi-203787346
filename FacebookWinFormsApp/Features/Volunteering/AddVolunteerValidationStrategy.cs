@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 namespace BasicFacebookFeatures.Features.Volunteering
 {
-    public class AddVolunteerValidationStrategy : IValidationStrategy<VolunteerPerson>
+    public class AddVolunteerValidationStrategy : IValidationStrategy<Volunteer>
     {
-        public bool Validate(VolunteerPerson i_VolunteerPerson, out string o_ErrorMessage)
+        public bool Validate(Volunteer i_Volunteer, out string o_ErrorMessage)
         {
             List<string> errorMessages = new List<string>();
             bool isDataValid = true;
 
-            validateSubject(i_VolunteerPerson.Subject, errorMessages);
-            validateLocation(i_VolunteerPerson.Location, errorMessages);
-            validateDates(i_VolunteerPerson.StartDate, i_VolunteerPerson.EndDate, errorMessages);
-            validatePhone(i_VolunteerPerson.PhoneNumber, errorMessages);
+            validateSubject(i_Volunteer.Subject, errorMessages);
+            validateLocation(i_Volunteer.Location, errorMessages);
+            validateDates(i_Volunteer.StartDate, i_Volunteer.EndDate, errorMessages);
+            validatePhone(i_Volunteer.PhoneNumber, errorMessages);
 
             if (errorMessages.Count > 0)
             {

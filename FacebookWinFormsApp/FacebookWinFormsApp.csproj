@@ -136,7 +136,7 @@
     </Compile>
     <Compile Include="Features\Volunteering\RemoveVolunteerService.cs" />
     <Compile Include="Features\Volunteering\Singleton.cs" />
-    <Compile Include="Features\Volunteering\VolunteerPerson.cs" />
+    <Compile Include="Features\Volunteering\Volunteer.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

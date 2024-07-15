@@ -9,12 +9,12 @@ namespace BasicFacebookFeatures.Features.Volunteering
     {
         public DateTime StartAvailableDate { get; private set; }
         public DateTime EndAvailableDate { get; private set; }
-        private readonly User m_LoggedInUser;
-        public IValidationStrategy<VolunteerPerson> ValidationStrategy { get; set; }
+        public IValidationStrategy<Volunteer> ValidationStrategy { get; set; }
+        private readonly User r_LoggedInUser;
 
         public FindVolunteerService(User i_LoggedInUser)
         {
-            m_LoggedInUser = i_LoggedInUser;
+            r_LoggedInUser = i_LoggedInUser;
             StartAvailableDate = DateTime.Now;
             EndAvailableDate = DateTime.Now;
             ValidationStrategy = new FindVolunteerValidationStrategy();
@@ -30,40 +30,43 @@ namespace BasicFacebookFeatures.Features.Volunteering
             EndAvailableDate = i_EndDate;
         }
 
-        public bool ValidateData(VolunteerPerson volunteerPerson, out string errorMessage)
+        public bool ValidateData(Volunteer i_Volunteer, out string o_ErrorMessage)
         {
-            return ValidationStrategy.Validate(volunteerPerson, out errorMessage);
+            return ValidationStrategy.Validate(i_Volunteer, out o_ErrorMessage);
         }
 
-        public List<VolunteerPerson> FindMatchingOpportunities(VolunteerPerson volunteerPerson)
+        public List<Volunteer> FindMatchingOpportunities(Volunteer i_Volunteer)
         {
-            List<VolunteerPerson> opportunities = new List<VolunteerPerson>();
-            opportunities.AddRange(findOpportunitiesFromFriends(volunteerPerson.Subject, volunteerPerson.Location));
-            opportunities.AddRange(findOpportunitiesFromFile(volunteerPerson.Subject, volunteerPerson.Location));
+            List<Volunteer> opportunities = new List<Volunteer>();
+
+            opportunities.AddRange(findOpportunitiesFromFriends(i_Volunteer.Subject, i_Volunteer.Location));
+            opportunities.AddRange(findOpportunitiesFromFile(i_Volunteer.Subject, i_Volunteer.Location));
+
             return opportunities;
         }
 
-        private List<VolunteerPerson> findOpportunitiesFromFriends(string i_Subject, string i_Location)
+        private List<Volunteer> findOpportunitiesFromFriends(string i_Subject, string i_Location)
         {
-            FacebookObjectCollection<User> friends = m_LoggedInUser.Friends;
-            List<VolunteerPerson> opportunities = new List<VolunteerPerson>();
+            FacebookObjectCollection<User> friends = r_LoggedInUser.Friends;
+            List<Volunteer> opportunities = new List<Volunteer>();
 
-            foreach (User user in friends)
+            foreach (User friend in friends)
             {
-                FacebookObjectCollection<Event> userEvents = user.Events;
+                FacebookObjectCollection<Event> friendEvents = friend.Events;
 
-                foreach (Event userEvent in userEvents)
+                foreach (Event friendEvent in friendEvents)
                 {
-                    string eventName = userEvent.Name;
-                    string eventLocation = userEvent.Location;
-                    DateTime eventStartTime = userEvent.StartTime.GetValueOrDefault();
-                    DateTime eventEndTime = userEvent.EndTime.GetValueOrDefault();
+                    string eventName = friendEvent.Name;
+                    string eventLocation = friendEvent.Location;
+                    DateTime eventStartTime = friendEvent.StartTime.GetValueOrDefault();
+                    DateTime eventEndTime = friendEvent.EndTime.GetValueOrDefault();
 
                     if (eventName.ToLower() == i_Subject.ToLower() &&
                         eventLocation.ToLower() == i_Location.ToLower() &&
-                        eventStartTime.Date >= StartAvailableDate.Date && eventEndTime.Date <= EndAvailableDate.Date)
+                        eventStartTime.Date >= StartAvailableDate.Date &&
+                        eventEndTime.Date <= EndAvailableDate.Date)
                     {
-                        VolunteerPerson opportunity = new VolunteerPerson
+                        Volunteer opportunity = new Volunteer
                         {
                             Subject = i_Subject,
                             Location = eventLocation,
@@ -79,25 +82,26 @@ namespace BasicFacebookFeatures.Features.Volunteering
             return opportunities;
         }
 
-        private List<VolunteerPerson> findOpportunitiesFromFile(string i_Subject, string i_Location)
+        private List<Volunteer> findOpportunitiesFromFile(string i_Subject, string i_Location)
         {
-            List<VolunteerPerson> opportunities = new List<VolunteerPerson>();
-            List<VolunteerPerson> opportunitiesFromFile = Singleton<SingletonFileOperations>.Instance.LoadFromFile();
+            List<Volunteer> opportunities = new List<Volunteer>();
+            List<Volunteer> opportunitiesFromFile = Singleton<SingletonFileOperations>.Instance.LoadFromFile();
 
             if (opportunitiesFromFile != null)
             {
-                foreach (VolunteerPerson person in opportunitiesFromFile)
+                foreach (Volunteer volunteer in opportunitiesFromFile)
                 {
-                    string eventName = person.Subject;
-                    string eventLocation = person.Location;
-                    DateTime eventStartTime = person.StartDate;
-                    DateTime eventEndTime = person.EndDate;
+                    string eventName = volunteer.Subject;
+                    string eventLocation = volunteer.Location;
+                    DateTime eventStartTime = volunteer.StartDate;
+                    DateTime eventEndTime = volunteer.EndDate;
 
                     if (eventName.ToLower() == i_Subject.ToLower() &&
                         eventLocation.ToLower() == i_Location.ToLower() &&
-                        eventStartTime.Date >= StartAvailableDate.Date && eventEndTime.Date <= EndAvailableDate.Date)
+                        eventStartTime.Date >= StartAvailableDate.Date &&
+                        eventEndTime.Date <= EndAvailableDate.Date)
                     {
-                        opportunities.Add(person);
+                        opportunities.Add(volunteer);
                     }
                 }
             }

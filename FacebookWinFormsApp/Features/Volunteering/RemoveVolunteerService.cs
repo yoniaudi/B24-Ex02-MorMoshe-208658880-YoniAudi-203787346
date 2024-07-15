@@ -5,24 +5,24 @@ using System.Linq;
 
 public class RemoveVolunteerService
 {
-    public List<VolunteerPerson> LoadVolunteers()
+    public List<Volunteer> LoadVolunteers()
     {
         return Singleton<SingletonFileOperations>.Instance.LoadFromFile();
     }
 
-    public void SaveVolunteers(List<VolunteerPerson> volunteerPeople)
+    public void SaveVolunteers(List<Volunteer> volunteerPeople)
     {
         Singleton<SingletonFileOperations>.Instance.SaveToFile(volunteerPeople);
     }
 
-    public List<VolunteerPerson> FilterVolunteersByPhoneNumber(List<VolunteerPerson> volunteerPeople, string phoneNumber)
+    public List<Volunteer> FilterVolunteersByPhoneNumber(List<Volunteer> volunteerPeople, string phoneNumber)
     {
         return volunteerPeople.Where(v => v.PhoneNumber == phoneNumber).ToList();
     }
 
-    public VolunteerPerson ExtractVolunteerDetails(string volunteerString)
+    public Volunteer ExtractVolunteerDetails(string volunteerString)
     {
-        VolunteerPerson details = new VolunteerPerson();
+        Volunteer details = new Volunteer();
         string[] parts = volunteerString.Split(new string[] { " at ", " from ", " to ", " Phone:" }, StringSplitOptions.None);
 
         if (parts.Length == 5)
@@ -37,7 +37,7 @@ public class RemoveVolunteerService
         return details;
     }
 
-    public void RemoveVolunteer(List<VolunteerPerson> volunteerPeople, VolunteerPerson volunteerToRemove)
+    public void RemoveVolunteer(List<Volunteer> volunteerPeople, Volunteer volunteerToRemove)
     {
         volunteerPeople.Remove(volunteerToRemove);
         SaveVolunteers(volunteerPeople);
