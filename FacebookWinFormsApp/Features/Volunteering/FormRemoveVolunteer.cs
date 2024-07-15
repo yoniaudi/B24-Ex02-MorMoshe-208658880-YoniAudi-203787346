@@ -7,12 +7,12 @@ namespace BasicFacebookFeatures.Features.Volunteering
 {
     public partial class FormRemoveVolunteer : Form
     {
-        private readonly RemoveVolunteerService m_VolunteerService;
+        private readonly RemoveVolunteerService r_VolunteerService = null;
 
         public FormRemoveVolunteer()
         {
             InitializeComponent();
-            m_VolunteerService = new RemoveVolunteerService();
+            r_VolunteerService = new RemoveVolunteerService();
         }
 
         private void textBoxPhone_KeyPress(object sender, KeyPressEventArgs e)
@@ -23,16 +23,23 @@ namespace BasicFacebookFeatures.Features.Volunteering
             }
         }
 
-        private void displayVolunteersWithPhoneNumber(string selectedPhoneNumber)
+        private void displayVolunteersWithPhoneNumber(string i_SelectedPhoneNumber)
         {
-            List<Volunteer> volunteerPeople = m_VolunteerService.LoadVolunteers();
-            List<Volunteer> filteredVolunteers = m_VolunteerService.FilterVolunteersByPhoneNumber(volunteerPeople, selectedPhoneNumber);
-            List<string> volunteerPeopleToDisplay = filteredVolunteers.Select(person => person.ToString()).ToList();
+            List<Volunteer> volunteers = r_VolunteerService.LoadVolunteers();
+            List<Volunteer> volunteersWithMatchingPhoneNumber = r_VolunteerService.
+                FilterVolunteersByPhoneNumber(volunteers, i_SelectedPhoneNumber);
+            List<string> volunteersForDisplay = volunteersWithMatchingPhoneNumber.
+                Select(volunteer => volunteer.ToString()).ToList();
 
-            listBoxVolunteers.DataSource = volunteerPeopleToDisplay;
+            listBoxVolunteers.DataSource = volunteersForDisplay;
         }
 
         private void buttonFindMyVolunteers_Click(object sender, EventArgs e)
+        {
+            findMyVolunteers();
+        }
+
+        private void findMyVolunteers()
         {
             string phoneNumber = textBoxPhone.Text;
 
@@ -42,28 +49,33 @@ namespace BasicFacebookFeatures.Features.Volunteering
             }
             else
             {
-                MessageBox.Show("Enter phone number");
+                MessageBox.Show("Enter a phone number.");
             }
         }
 
         private void buttonRemoveVolunteer_Click(object sender, EventArgs e)
         {
+            removeVolunteer();
+        }
+
+        private void removeVolunteer()
+        {
             if (listBoxVolunteers.SelectedIndex != -1)
             {
-                string selectedVolunteerString = (string)listBoxVolunteers.SelectedItem;
-                Volunteer details = m_VolunteerService.ExtractVolunteerDetails(selectedVolunteerString);
-                List<Volunteer> volunteerPeople = m_VolunteerService.LoadVolunteers();
-                Volunteer selectedVolunteer = volunteerPeople.FirstOrDefault(vp =>
-                    vp.Subject == details.Subject &&
-                    vp.Location == details.Location &&
-                    vp.StartDate.Date == details.StartDate.Date &&
-                    vp.EndDate.Date == details.EndDate.Date &&
-                    vp.PhoneNumber == details.PhoneNumber);
+                string selectedVolunteerStr = (string)listBoxVolunteers.SelectedItem;
+                Volunteer volunteerDetails = r_VolunteerService.ExtractVolunteerDetails(selectedVolunteerStr);
+                List<Volunteer> volunteers = r_VolunteerService.LoadVolunteers();
+                Volunteer selectedVolunteer = volunteers.FirstOrDefault(volunteer =>
+                    volunteer.Subject == volunteerDetails.Subject &&
+                    volunteer.Location == volunteerDetails.Location &&
+                    volunteer.StartDate.Date == volunteerDetails.StartDate.Date &&
+                    volunteer.EndDate.Date == volunteerDetails.EndDate.Date &&
+                    volunteer.PhoneNumber == volunteerDetails.PhoneNumber);
 
                 if (selectedVolunteer != null)
                 {
-                    m_VolunteerService.RemoveVolunteer(volunteerPeople, selectedVolunteer);
-                    displayVolunteersWithPhoneNumber(details.PhoneNumber);
+                    r_VolunteerService.RemoveVolunteer(volunteers, selectedVolunteer);
+                    displayVolunteersWithPhoneNumber(volunteerDetails.PhoneNumber);
                 }
             }
         }
