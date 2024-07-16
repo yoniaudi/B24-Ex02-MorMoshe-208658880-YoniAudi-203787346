@@ -17,12 +17,7 @@ namespace BasicFacebookFeatures
     {
         private LoginResult m_LoginResult = null;
         private User m_LoggedInUser = null;
-        private PhotosController m_Photos = null;
-        private PostController m_Posts = null;
-        private PageController m_Pages = null;
         private ProfileController m_Profile = null;
-        private FriendController m_Friends = null;
-        private StatusController m_Statuses = null;
         private Panel[] m_Panels = null;
         private ControllersFacade.Controllers m_Controllers = null;
 
