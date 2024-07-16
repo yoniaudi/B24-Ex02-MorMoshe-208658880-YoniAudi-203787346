@@ -11,16 +11,18 @@ namespace BasicFacebookFeatures.Models
         public string DisplayMember { get { return "Message"; } }
         public object DataSource { get; set; }
         private System.Windows.Forms.ProgressBar m_ProgressBar = null;
+        private SearchableListBoxController m_SearchableListBox = null;
 
         public StatusController()
         {
             InitializeComponent();
         }
 
-        public StatusController(FacebookObjectCollection<FacebookWrapper.ObjectModel.Status> i_Statuses, System.Windows.Forms.ProgressBar i_ProgressBar)
+        public StatusController(FacebookObjectCollection<FacebookWrapper.ObjectModel.Status> i_Statuses, SearchableListBoxController i_SearchableListBox, System.Windows.Forms.ProgressBar i_ProgressBar)
         {
             InitializeComponent();
             m_ProgressBar = i_ProgressBar;
+            m_SearchableListBox = i_SearchableListBox;
             initializeProgressBar(i_Statuses);
             DataSource = filterStatusesWithProgress(i_Statuses);
         }
@@ -67,9 +69,18 @@ namespace BasicFacebookFeatures.Models
             }
         }*/
 
-        public void Show(object i_Object)
+        public void ShowController()
         {
-            FacebookWrapper.ObjectModel.Status status = i_Object as FacebookWrapper.ObjectModel.Status;
+            m_SearchableListBox.Invoke(new Action(() =>
+            {
+                m_SearchableListBox.DisplayMember = DisplayMember;
+                m_SearchableListBox.DataSource = DataSource;
+            }));
+        }
+
+        public void ShowSelectedItem(object i_Status)
+        {
+            FacebookWrapper.ObjectModel.Status status = i_Status as FacebookWrapper.ObjectModel.Status;
 
             if (status != null)
             {

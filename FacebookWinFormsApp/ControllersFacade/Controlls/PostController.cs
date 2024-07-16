@@ -9,16 +9,18 @@ namespace BasicFacebookFeatures.Models
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
         private ProgressBar m_ProgressBar = null;
+        private SearchableListBoxController m_SearchableListBox = null;
 
         public PostController()
         {
             InitializeComponent();
         }
 
-        public PostController(FacebookObjectCollection<Post> i_Posts, ProgressBar i_ProgressBar)
+        public PostController(FacebookObjectCollection<Post> i_Posts, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
             InitializeComponent();
             m_ProgressBar = i_ProgressBar;
+            m_SearchableListBox = i_SearchableListBox;
             initializeProgressBar(i_Posts);
             DataSource = filterPostsWithProgress(i_Posts);
         }
@@ -27,9 +29,9 @@ namespace BasicFacebookFeatures.Models
         {
             m_ProgressBar.Invoke(new Action(() =>
             {
-                m_ProgressBar.Minimum = 1;
+                m_ProgressBar.Minimum = 0;
                 m_ProgressBar.Maximum = i_Posts.Count;
-                m_ProgressBar.Value = 1;
+                m_ProgressBar.Value = 0;
                 m_ProgressBar.Step = 1;
             }));
         }
@@ -63,9 +65,18 @@ namespace BasicFacebookFeatures.Models
             labelUserPostMessage.Text = propValue ?? "";
         }*/
 
-        public void Show(object i_Object)
+        public void ShowController()
         {
-            Post post = i_Object as Post;
+            m_SearchableListBox.Invoke(new Action(() =>
+            {
+                m_SearchableListBox.DisplayMember = DisplayMember;
+                m_SearchableListBox.DataSource = DataSource;
+            }));
+        }
+
+        public void ShowSelectedItem(object i_Post)
+        {
+            Post post = i_Post as Post;
             string propValue = getPropertyValue(post, "Message") ?? getPropertyValue(post, "Description");
 
             labelUserPostAuthor.Text = post.Name != null ? post.Name : "";

@@ -5,11 +5,10 @@ using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class ProfileController : UserControl, IControllers
+    public partial class ProfileController : UserControl
     {
         private User m_LoggedInUser = null;
         private Label m_LabelUserFullName = null;
-
         public string DisplayMember { get { return ""; } }
         public object DataSource { get; set; }
 
@@ -20,11 +19,17 @@ namespace BasicFacebookFeatures.Models
             InitializeComponent();
         }
 
-        public ProfileController(User i_LoggedInUser, Label i_LabelUserFullName)
+        public ProfileController(User i_LoggedInUser)
         {
             InitializeComponent();
             m_LoggedInUser = i_LoggedInUser;
-            m_LabelUserFullName = i_LabelUserFullName;
+            populateProfileData();
+        }
+
+        private void populateProfileData()
+        {
+            userBindingSource.DataSource = m_LoggedInUser;
+            labelUserLanguages.Text = getLanguagesStr(m_LoggedInUser.Languages);
         }
 
         private string getLanguagesStr(Page[] i_Languages)
@@ -89,12 +94,6 @@ namespace BasicFacebookFeatures.Models
 
             m_LoggedInUser.Name = newUserName;
             UserNameChanged?.Invoke();
-        }
-
-        public void Show(object i_Object = null)
-        {
-            userBindingSource.DataSource = m_LoggedInUser;
-            labelUserLanguages.Text = getLanguagesStr(m_LoggedInUser.Languages);
         }
     }
 }

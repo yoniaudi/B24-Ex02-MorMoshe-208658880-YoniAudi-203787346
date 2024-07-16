@@ -297,7 +297,6 @@
         private System.Windows.Forms.Label labelFriendLanguages;
         private System.Windows.Forms.Label labelUserFriendLanguages;
         private System.Windows.Forms.Label labelFriendStatuses;
-        private SearchableListBoxController searchableListBoxControllerFriendsStatuses;
         private SearchableListBoxController searchableListBoxControllerFriendsStatus;
         private SearchableListBoxController searchableListBoxControllerFriendAlbums;
         private SearchableListBoxController searchableListBoxControllerFriendsOfFriend;

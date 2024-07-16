@@ -9,19 +9,21 @@ namespace BasicFacebookFeatures.Models
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
         private ProgressBar m_ProgressBar = null;
+        private SearchableListBoxController m_SearchableListBox = null;
 
         public PhotosController()
         {
             InitializeComponent();
         }
 
-        public PhotosController(FacebookObjectCollection<Album> i_Albums, ProgressBar i_ProgressBar)
+        public PhotosController(FacebookObjectCollection<Album> i_Albums, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
             InitializeComponent();
 
             try
             {
                 m_ProgressBar = i_ProgressBar;
+                m_SearchableListBox = i_SearchableListBox;
                 initializeProgressBar(i_Albums);
                 DataSource = filterAlbumsWithProgress(i_Albums);
             }
@@ -64,28 +66,15 @@ namespace BasicFacebookFeatures.Models
             return filteredAlbums;
         }
 
-        /*public void ShowSelectedAlbum(FacebookWrapper.ObjectModel.Album i_Album)
+        public void ShowController()
         {
-            initializeProgressBar(null, i_Album);
-            flowLayoutPanelPhotos.Controls.Clear();
+            m_SearchableListBox.DisplayMember = DisplayMember;
+            m_SearchableListBox.DataSource = DataSource;
+        }
 
-            for (int i = 0; i < i_Album.Photos.Count; i++)
-            {
-                PictureBox picture = new PictureBox();
-
-                picture.Name = $"pictureBox{i}";
-                picture.SizeMode = PictureBoxSizeMode.AutoSize;
-                picture.ImageLocation = i_Album.Photos[i].PictureThumbURL;
-                flowLayoutPanelPhotos.Controls.Add(picture);
-                picture.BringToFront();
-                picture.Visible = true;
-                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
-            }
-        }*/
-
-        public void Show(object i_Object)
+        public void ShowSelectedItem(object i_Album)
         {
-            Album album = i_Object as Album;
+            Album album = i_Album as Album;
 
             initializeProgressBar(null, album);
             flowLayoutPanelPhotos.Controls.Clear();

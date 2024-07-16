@@ -15,17 +15,19 @@ namespace BasicFacebookFeatures.Models
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
         private System.Windows.Forms.ProgressBar m_ProgressBar = null;
+        private SearchableListBoxController m_SearchableListBox = null;
 
         public FriendController()
         {
             InitializeComponent();
         }
 
-        public FriendController(FacebookObjectCollection<User> i_Friends, System.Windows.Forms.ProgressBar i_ProgressBar)
+        public FriendController(FacebookObjectCollection<User> i_Friends, SearchableListBoxController i_SearchableListBox, System.Windows.Forms.ProgressBar i_ProgressBar)
         {
             InitializeComponent();
             DataSource = i_Friends;
             m_ProgressBar = i_ProgressBar;
+            m_SearchableListBox = i_SearchableListBox;
         }
 
         /*public void ShowSelectedFriend(User i_Friend)
@@ -154,15 +156,24 @@ namespace BasicFacebookFeatures.Models
         private void searchableListBoxControllerFriendsStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             FacebookWrapper.ObjectModel.Status status = searchableListBoxControllerFriendsStatus.SelectedItem as FacebookWrapper.ObjectModel.Status;
-            statusesModelFriendStatuses.Show(status);
+            statusesModelFriendStatuses.ShowSelectedItem(status);
             flowLayoutPanelFriendPhotos.Hide();
             statusesModelFriendStatuses.Show();
             m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
         }
 
-        public void Show(object i_Object)
+        public void ShowController()
         {
-            User friend = i_Object as User;
+            m_SearchableListBox.Invoke(new Action(() =>
+            {
+                m_SearchableListBox.DisplayMember = DisplayMember;
+                m_SearchableListBox.DataSource = DataSource;
+            }));
+        }
+
+        public void ShowSelectedItem(object i_Friend)
+        {
+            User friend = i_Friend as User;
             FacebookObjectCollection<User> mainUserFriends = (FacebookObjectCollection<User>)DataSource;
 
             initializeProgressBar(friend);
