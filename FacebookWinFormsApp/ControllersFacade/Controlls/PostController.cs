@@ -53,19 +53,7 @@ namespace BasicFacebookFeatures.Models
             return filteredPosts;
         }
 
-        /*internal void ShowSelectedPost(Post i_Post)
-        {
-            string propValue = getPropertyValue(i_Post, "Message") ?? getPropertyValue(i_Post, "Description");
-
-            labelUserPostAuthor.Text = i_Post.Name != null ? i_Post.Name : "";
-            labelUserPostDateCreated.Text = i_Post.CreatedTime.ToString();
-            labelUserPostFrom.Text = i_Post.From != null ? i_Post.From.Name : "";
-            labelUserPostPlace.Text = i_Post.Place != null ? i_Post.Place.Name : "";
-            picturePost.ImageLocation = i_Post.PictureURL;
-            labelUserPostMessage.Text = propValue ?? "";
-        }*/
-
-        public void ShowController()
+        public void LoadData()
         {
             m_SearchableListBox.Invoke(new Action(() =>
             {

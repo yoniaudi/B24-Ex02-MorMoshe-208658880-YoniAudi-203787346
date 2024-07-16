@@ -2,6 +2,7 @@
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 using System;
+using System.Threading;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -15,19 +16,27 @@ namespace BasicFacebookFeatures.ControllersFacade
         private IControllers m_ProfileController = null;
         private IControllers m_FriendController = null;
         private IControllers m_StatusController = null;
+        private User m_LoggedInUser = null;
+        private System.Windows.Forms.ProgressBar m_ProgressBar = null;
         private SearchableListBoxController m_SearchableListBox = null;
 
         public Controllers(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, System.Windows.Forms.ProgressBar i_ProgressBar)
         {
-            m_PostController = new PostController(i_LoggedInUser.Posts, i_SearchableListBox, i_ProgressBar);
-            m_PageController = new PageController(i_LoggedInUser.LikedPages, i_SearchableListBox, i_ProgressBar);
-            m_FriendController = new FriendController(i_LoggedInUser.Friends, i_SearchableListBox, i_ProgressBar);
-            m_StatusController = new StatusController(i_LoggedInUser.Statuses, i_SearchableListBox, i_ProgressBar);
+            m_LoggedInUser = i_LoggedInUser;
             m_SearchableListBox = i_SearchableListBox;
-            
+            m_ProgressBar = i_ProgressBar;
+            new Thread(fetchPhotos).Start();
+            new Thread(fetchPosts).Start();
+            new Thread(fetchPages).Start();
+            new Thread(fetchFriends).Start();
+            new Thread(fetchStatuses).Start();
+        }
+
+        private void fetchPhotos()
+        {
             try
             {
-                m_PhotosController = new PhotosController(i_LoggedInUser.Albums, i_SearchableListBox, i_ProgressBar);
+                m_PhotosController = new PhotosController(m_LoggedInUser.Albums, m_SearchableListBox, m_ProgressBar);
             }
             catch (Exception ex)
             {
@@ -38,25 +47,52 @@ namespace BasicFacebookFeatures.ControllersFacade
             }
         }
 
+        private void fetchPosts()
+        {
+            m_PostController = new PostController(m_LoggedInUser.Posts, m_SearchableListBox, m_ProgressBar);
+        }
+        
+        private void fetchPages()
+        {
+            m_PageController = new PageController(m_LoggedInUser.LikedPages, m_SearchableListBox, m_ProgressBar);
+        }
+        
+        private void fetchFriends()
+        {
+            m_FriendController = new FriendController(m_LoggedInUser.Friends, m_SearchableListBox, m_ProgressBar);
+        }
+
+        private void fetchStatuses()
+        {
+            m_StatusController = new StatusController(m_LoggedInUser.Statuses, m_SearchableListBox, m_ProgressBar);
+        }
+
         public object GetController(object i_ControllerType)
         {
+            object controller = null;
+
             switch (i_ControllerType)
             {
                 case Album album:
-                    return m_PhotosController;
+                    controller = m_PhotosController;
+                    break;
                 case Post post:
-                    return m_PostController;
+                    controller = m_PostController;
+                    break;
                 case FacebookWrapper.ObjectModel.Page page:
-                    return m_PageController;
+                    controller = m_PageController;
+                    break;
                 case User user:
-                    return m_FriendController;
+                    controller = m_FriendController;
+                    break;
                 case FacebookWrapper.ObjectModel.Status status:
-                    return m_StatusController;
+                    controller = m_StatusController;
+                    break;
                 default:
                     break;
             }
 
-            return null;
+            return controller;
         }
 
         public void ShowSelectedFriend(object i_User)
@@ -88,7 +124,7 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             try
             {
-                m_PhotosController?.ShowController();
+                m_PhotosController?.LoadData();
             }
             catch (Exception ex)
             {
@@ -101,22 +137,22 @@ namespace BasicFacebookFeatures.ControllersFacade
 
         public void ShowPosts()
         {
-            m_PostController.ShowController();
+            m_PostController.LoadData();
         }
 
         public void ShowPages()
         {
-            m_PageController.ShowController();
+            m_PageController.LoadData();
         }
 
         public void ShowFriends()
         {
-            m_FriendController.ShowController();
+            m_FriendController.LoadData();
         }
 
         public void ShowStatuses()
         {
-            m_StatusController.ShowController();
+            m_StatusController.LoadData();
         }
     }
 }

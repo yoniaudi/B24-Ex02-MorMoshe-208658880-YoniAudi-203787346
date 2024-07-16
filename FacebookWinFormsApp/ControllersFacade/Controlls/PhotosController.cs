@@ -66,7 +66,7 @@ namespace BasicFacebookFeatures.Models
             return filteredAlbums;
         }
 
-        public void ShowController()
+        public void LoadData()
         {
             m_SearchableListBox.DisplayMember = DisplayMember;
             m_SearchableListBox.DataSource = DataSource;

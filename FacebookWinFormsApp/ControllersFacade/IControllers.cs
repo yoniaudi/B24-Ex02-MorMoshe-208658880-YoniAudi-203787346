@@ -6,7 +6,7 @@ namespace BasicFacebookFeatures
     {
         string DisplayMember { get; }
         object DataSource { get; set; }
-        void ShowController();
+        void LoadData();
         void ShowSelectedItem(object i_Item);
     }
 }

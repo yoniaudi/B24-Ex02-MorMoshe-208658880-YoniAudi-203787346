@@ -162,7 +162,7 @@ namespace BasicFacebookFeatures.Models
             m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
         }
 
-        public void ShowController()
+        public void LoadData()
         {
             m_SearchableListBox.Invoke(new Action(() =>
             {

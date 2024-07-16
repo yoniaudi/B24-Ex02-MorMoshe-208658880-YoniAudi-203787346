@@ -59,7 +59,7 @@ namespace BasicFacebookFeatures.Models
             pictureBoxCheckin.ImageLocation = i_Page.PictureURL;
         }*/
 
-        public void ShowController()
+        public void LoadData()
         {
             m_SearchableListBox.Invoke(new Action(() =>
             {
