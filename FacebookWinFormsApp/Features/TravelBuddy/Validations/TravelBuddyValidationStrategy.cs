@@ -37,36 +37,36 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             return isDataValid;
         }
 
-        private void validateTravelCountry(string i_Country, List<string> o_ErrorMessages)
+        private void validateTravelCountry(string i_Country, List<string> i_ErrorMessages)
         {
             if (string.IsNullOrEmpty(i_Country) == true)
             {
-                o_ErrorMessages.Add("Choose a country.");
+                i_ErrorMessages.Add("Choose a country.");
             }
         }
 
-        private void validateTravelDates(string i_ArrivalDate, string i_DepartureDate, List<string> o_ErrorMessages)
+        private void validateTravelDates(string i_ArrivalDate, string i_DepartureDate, List<string> i_ErrorMessages)
         {
             if (string.IsNullOrEmpty(i_ArrivalDate) == true || string.IsNullOrEmpty(i_DepartureDate) == true ||
                 DateTime.Parse(i_DepartureDate) < DateTime.Parse(i_ArrivalDate))
             {
-                o_ErrorMessages.Add("Invalid Dates.");
+                i_ErrorMessages.Add("Invalid Dates.");
             }
         }
 
-        private void validateAgeRange(int i_MinAge, int i_MaxAge, List<string> o_ErrorMessages)
+        private void validateAgeRange(int i_MinAge, int i_MaxAge, List<string> i_ErrorMessages)
         {
             if (i_MinAge < 1 || i_MinAge > 120 || i_MaxAge < 1 || i_MaxAge > 120 || i_MaxAge < i_MinAge)
             {
-                o_ErrorMessages.Add("Choose valid age range");
+                i_ErrorMessages.Add("Choose valid age range");
             }
         }
 
-        private void validateGender(string i_Gender, List<string> o_ErrorMessages)
+        private void validateGender(string i_Gender, List<string> i_ErrorMessages)
         {
             if (string.IsNullOrEmpty(i_Gender) == true)
             {
-                o_ErrorMessages.Add("Choose gender");
+                i_ErrorMessages.Add("Choose gender");
             }
         }
     }

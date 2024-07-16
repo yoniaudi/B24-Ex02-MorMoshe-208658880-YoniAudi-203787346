@@ -153,6 +153,11 @@ namespace BasicFacebookFeatures
 			pictureBoxAppVisability.Visible = true;
 		}
 
+        private void reportUserNameChange()
+        {
+            labelFullName.Text = m_LoginResult.LoggedInUser.Name;
+        }
+
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
             new Thread(fetchPhotos).Start();
@@ -164,7 +169,11 @@ namespace BasicFacebookFeatures
 
             try
             {
-                m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
+                if (m_Photos == null)
+                {
+                    m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
+                }
+
                 panelPhotos.Invoke(new Action(() =>
                 {
                     panelPhotos.Controls.Clear();
@@ -196,7 +205,12 @@ namespace BasicFacebookFeatures
         private void fetchPosts()
         {
             progressBar.Invoke(new Action(() => progressBar.Visible = true));
-            m_Posts = new Models.PostController(m_LoginResult.LoggedInUser.Posts, progressBar);
+
+            if (m_Posts == null)
+            {
+                m_Posts = new Models.PostController(m_LoginResult.LoggedInUser.Posts, progressBar);
+            }
+
             panelPosts.Invoke(new Action(() =>
             {
                 panelPosts.Controls.Clear();
@@ -219,7 +233,12 @@ namespace BasicFacebookFeatures
         private void fetchPages()
         {
             progressBar.Invoke(new Action(() => progressBar.Visible = true));
-            m_Pages = new Models.PageController(m_LoginResult.LoggedInUser.LikedPages, progressBar);
+            
+            if (m_Pages == null)
+            {
+                m_Pages = new Models.PageController(m_LoginResult.LoggedInUser.LikedPages, progressBar);
+            }
+
             panelPages.Invoke(new Action(() =>
             {
                 panelPages.Controls.Clear();
@@ -241,7 +260,12 @@ namespace BasicFacebookFeatures
 
         private void fetchProfile()
         {
-            m_Profile = new ProfileController(m_LoginResult.LoggedInUser, labelFullName);
+            if (m_Profile == null)
+            {
+                m_Profile = new ProfileController(m_LoginResult.LoggedInUser, labelFullName);
+                m_Profile.UserNameChanged += reportUserNameChange;
+            }
+
             searchableListBoxMain.Invoke(new Action(() => searchableListBoxMain.DataSource = null));
             panelProfile.Invoke(new Action(() =>
             {
@@ -259,7 +283,12 @@ namespace BasicFacebookFeatures
         private void fetchFriends()
         {
             progressBar.Invoke(new Action(() => progressBar.Visible = true));
-            m_Friends = new FriendController(m_LoginResult.LoggedInUser.Friends, progressBar);
+            
+            if (m_Friends == null)
+            {
+                m_Friends = new FriendController(m_LoginResult.LoggedInUser.Friends, progressBar);
+            }
+
             panelFriends.Invoke(new Action(() =>
             {
                 panelFriends.Controls.Clear();
@@ -282,7 +311,12 @@ namespace BasicFacebookFeatures
         private void fetchStatus()
         {
             progressBar.Invoke(new Action(() => progressBar.Visible = true));
-            m_Statuses = new Models.StatusController(m_LoginResult.LoggedInUser.Statuses, progressBar);
+            
+            if (m_Statuses == null)
+            {
+                m_Statuses = new Models.StatusController(m_LoginResult.LoggedInUser.Statuses, progressBar);
+            }
+
             panelStatuses.Invoke(new Action(() =>
             {
                 panelStatuses.Controls.Clear();
@@ -307,10 +341,10 @@ namespace BasicFacebookFeatures
                     m_Photos.ShowSelectedAlbum(album);
                     break;
                 case Post post:
-                    m_Posts.Invoke(new Action(() => m_Posts.ShowSelectedPost(post)));
+                    m_Posts.ShowSelectedPost(post);
                     break;
                 case Page page:
-                    m_Pages.Invoke(new Action(() => m_Pages.ShowSelectedPage(page)));
+                    m_Pages.ShowSelectedPage(page);
                     break;
                 case User user:
                     m_Friends.ShowSelectedFriend(user);

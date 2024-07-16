@@ -1,4 +1,5 @@
 ﻿using FacebookWrapper.ObjectModel;
+using System;
 using System.Text;
 using System.Windows.Forms;
 
@@ -8,6 +9,7 @@ namespace BasicFacebookFeatures.Models
     {
         private User m_LoggedInUser = null;
         private Label m_LabelUserFullName = null;
+        public event Action UserNameChanged = null;
 
         public ProfileController()
         {
@@ -76,20 +78,20 @@ namespace BasicFacebookFeatures.Models
 
         private void textBoxUserFirstName_Validated(object sender, System.EventArgs e)
         {
-            updateUserFullName();
+            OnUserNameChanged();
         }
 
         private void textBoxUserLastName_Validated(object sender, System.EventArgs e)
         {
-            updateUserFullName();
+            OnUserNameChanged();
         }
 
-        private void updateUserFullName()
+        private void OnUserNameChanged()
         {
-            string fullName = $"{m_LoggedInUser.FirstName} {m_LoggedInUser.LastName}";
+            string newUserName = $"{m_LoggedInUser.FirstName} {m_LoggedInUser.LastName}";
 
-            m_LoggedInUser.Name = fullName;
-            m_LabelUserFullName.Text = fullName;
+            m_LoggedInUser.Name = newUserName;
+            UserNameChanged?.Invoke();
         }
     }
 }

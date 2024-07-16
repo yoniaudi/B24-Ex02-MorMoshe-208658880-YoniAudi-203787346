@@ -185,6 +185,7 @@
     <Compile Include="Controllers\StatusController.Designer.cs">
       <DependentUpon>StatusController.cs</DependentUpon>
     </Compile>
+    <Compile Include="ICommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Features\TravelBuddy\FormTravelBuddy.resx">
