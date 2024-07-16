@@ -25,8 +25,8 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void displayVolunteersWithPhoneNumber(string i_SelectedPhoneNumber)
         {
-            List<Volunteer> volunteers = r_VolunteerService.LoadVolunteers();
-            List<Volunteer> volunteersWithMatchingPhoneNumber = r_VolunteerService.
+            List<VolunteerModel> volunteers = r_VolunteerService.LoadVolunteers();
+            List<VolunteerModel> volunteersWithMatchingPhoneNumber = r_VolunteerService.
                 FilterVolunteersByPhoneNumber(volunteers, i_SelectedPhoneNumber);
             List<string> volunteersForDisplay = volunteersWithMatchingPhoneNumber.
                 Select(volunteer => volunteer.ToString()).ToList();
@@ -63,9 +63,9 @@ namespace BasicFacebookFeatures.Features.Volunteering
             if (listBoxVolunteers.SelectedIndex != -1)
             {
                 string selectedVolunteerStr = (string)listBoxVolunteers.SelectedItem;
-                Volunteer volunteerDetails = r_VolunteerService.ExtractVolunteerDetails(selectedVolunteerStr);
-                List<Volunteer> volunteers = r_VolunteerService.LoadVolunteers();
-                Volunteer selectedVolunteer = volunteers.FirstOrDefault(volunteer =>
+                VolunteerModel volunteerDetails = r_VolunteerService.ExtractVolunteerDetails(selectedVolunteerStr);
+                List<VolunteerModel> volunteers = r_VolunteerService.LoadVolunteers();
+                VolunteerModel selectedVolunteer = volunteers.FirstOrDefault(volunteer =>
                     volunteer.Subject == volunteerDetails.Subject &&
                     volunteer.Location == volunteerDetails.Location &&
                     volunteer.StartDate.Date == volunteerDetails.StartDate.Date &&

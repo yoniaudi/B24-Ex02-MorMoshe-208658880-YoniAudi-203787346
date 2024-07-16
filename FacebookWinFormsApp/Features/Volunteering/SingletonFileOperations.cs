@@ -15,10 +15,10 @@ namespace BasicFacebookFeatures.Features.Volunteering
             r_FileName = Application.ExecutablePath + "volunteers.xml";
         }
 
-        public void SaveVolunteerPersonToFile(Volunteer i_Volunteer)
+        public void SaveVolunteerPersonToFile(VolunteerModel i_Volunteer)
         {
-            List<Volunteer> existingVolunteers = new List<Volunteer>();
-            Volunteer volunteer = new Volunteer()
+            List<VolunteerModel> existingVolunteers = new List<VolunteerModel>();
+            VolunteerModel volunteer = new VolunteerModel()
             {
                 Subject = i_Volunteer.Subject,
                 Location = i_Volunteer.Location,
@@ -31,9 +31,9 @@ namespace BasicFacebookFeatures.Features.Volunteering
             {
                 using (FileStream stream = new FileStream(r_FileName, FileMode.Open))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(List<Volunteer>));
+                    XmlSerializer serializer = new XmlSerializer(typeof(List<VolunteerModel>));
 
-                    existingVolunteers = (List<Volunteer>)serializer.Deserialize(stream);
+                    existingVolunteers = (List<VolunteerModel>)serializer.Deserialize(stream);
                 }
             }
 
@@ -41,33 +41,33 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
             using (FileStream stream = new FileStream(r_FileName, FileMode.Create))
             {
-                XmlSerializer listSerializer = new XmlSerializer(typeof(List<Volunteer>));
+                XmlSerializer listSerializer = new XmlSerializer(typeof(List<VolunteerModel>));
                 
                 listSerializer.Serialize(stream, existingVolunteers);
             }
         }
 
-        public void SaveToFile(List<Volunteer> i_Volunteers)
+        public void SaveToFile(List<VolunteerModel> i_Volunteers)
         {
             using (FileStream stream = new FileStream(r_FileName, FileMode.Create))
             {
-                XmlSerializer listSerializer = new XmlSerializer(typeof(List<Volunteer>));
+                XmlSerializer listSerializer = new XmlSerializer(typeof(List<VolunteerModel>));
                 
                 listSerializer.Serialize(stream, i_Volunteers);
             }
         }
 
-        public List<Volunteer> LoadFromFile()
+        public List<VolunteerModel> LoadFromFile()
         {
-            List<Volunteer> volunteers = new List<Volunteer>();
+            List<VolunteerModel> volunteers = new List<VolunteerModel>();
 
             if (File.Exists(r_FileName))
             {
                 using (FileStream stream = new FileStream(r_FileName, FileMode.Open))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(List<Volunteer>));
+                    XmlSerializer serializer = new XmlSerializer(typeof(List<VolunteerModel>));
                     
-                    volunteers = (List<Volunteer>)serializer.Deserialize(stream);
+                    volunteers = (List<VolunteerModel>)serializer.Deserialize(stream);
                 }
             }
 

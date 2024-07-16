@@ -37,7 +37,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void buttonAddVolunteer_Click(object sender, EventArgs e)
         {
-            bool isDataValid = validateData(out Volunteer volunteer);
+            bool isDataValid = validateData(out VolunteerModel volunteer);
 
             if (isDataValid == true)
             {
@@ -46,9 +46,9 @@ namespace BasicFacebookFeatures.Features.Volunteering
             }
         }
 
-        private Volunteer collectFormData()
+        private VolunteerModel collectFormData()
         {
-            return new Volunteer()
+            return new VolunteerModel()
             {
                 Subject = comboBoxSubject.Text,
                 Location = textBoxLocation.Text,
@@ -58,7 +58,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
             };
         }
 
-        private bool validateData(out Volunteer io_Volunteer)
+        private bool validateData(out VolunteerModel io_Volunteer)
         {
             string errorMessage = "";
             bool isValid = true;

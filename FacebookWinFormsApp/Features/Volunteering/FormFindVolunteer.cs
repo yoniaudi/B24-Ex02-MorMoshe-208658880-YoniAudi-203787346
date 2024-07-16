@@ -34,12 +34,12 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         private void findOpportunities()
         {
-            Volunteer volunteer = collectDataFromForm();
+            VolunteerModel volunteer = collectDataFromForm();
             bool isDataValid = r_VolunteerService.ValidateData(volunteer, out string errorMessage);
 
             if (isDataValid == true)
             {
-                List<Volunteer> foundOpportunities = null;
+                List<VolunteerModel> foundOpportunities = null;
 
                 buttonFindOpportunities.Cursor = Cursors.AppStarting;
                 foundOpportunities = r_VolunteerService.FindMatchingOpportunities(volunteer);
@@ -52,9 +52,9 @@ namespace BasicFacebookFeatures.Features.Volunteering
             }
         }
 
-        private Volunteer collectDataFromForm()
+        private VolunteerModel collectDataFromForm()
         {
-            return new Volunteer
+            return new VolunteerModel
             {
                 Subject = comboBoxSubject.Text,
                 Location = textBoxLocation.Text,
@@ -63,11 +63,11 @@ namespace BasicFacebookFeatures.Features.Volunteering
             };
         }
 
-        private void displayVolunteerPlaces(List<Volunteer> i_Volunteers)
+        private void displayVolunteerPlaces(List<VolunteerModel> i_Volunteers)
         {
             List<string> volunteers = new List<string>();
 
-            foreach (Volunteer volunteer in i_Volunteers)
+            foreach (VolunteerModel volunteer in i_Volunteers)
             {
                 volunteers.Add(volunteer.ToString());
             }

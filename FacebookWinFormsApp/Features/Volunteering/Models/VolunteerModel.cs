@@ -2,7 +2,7 @@
 
 namespace BasicFacebookFeatures.Features.Volunteering
 {
-    public class Volunteer
+    public class VolunteerModel
     {
         public string Subject { get; set; }
         public string Location { get; set; }

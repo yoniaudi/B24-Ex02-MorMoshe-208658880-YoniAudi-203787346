@@ -9,7 +9,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
     {
         public DateTime StartAvailableDate { get; private set; }
         public DateTime EndAvailableDate { get; private set; }
-        public IValidationStrategy<Volunteer> ValidationStrategy { get; set; }
+        public IValidationStrategy<VolunteerModel> ValidationStrategy { get; set; }
         private readonly User r_LoggedInUser;
 
         public FindVolunteerService(User i_LoggedInUser)
@@ -30,14 +30,14 @@ namespace BasicFacebookFeatures.Features.Volunteering
             EndAvailableDate = i_EndDate;
         }
 
-        public bool ValidateData(Volunteer i_Volunteer, out string o_ErrorMessage)
+        public bool ValidateData(VolunteerModel i_Volunteer, out string o_ErrorMessage)
         {
             return ValidationStrategy.Validate(i_Volunteer, out o_ErrorMessage);
         }
 
-        public List<Volunteer> FindMatchingOpportunities(Volunteer i_Volunteer)
+        public List<VolunteerModel> FindMatchingOpportunities(VolunteerModel i_Volunteer)
         {
-            List<Volunteer> opportunities = new List<Volunteer>();
+            List<VolunteerModel> opportunities = new List<VolunteerModel>();
 
             opportunities.AddRange(findOpportunitiesFromFriends(i_Volunteer.Subject, i_Volunteer.Location));
             opportunities.AddRange(findOpportunitiesFromFile(i_Volunteer.Subject, i_Volunteer.Location));
@@ -45,10 +45,10 @@ namespace BasicFacebookFeatures.Features.Volunteering
             return opportunities;
         }
 
-        private List<Volunteer> findOpportunitiesFromFriends(string i_Subject, string i_Location)
+        private List<VolunteerModel> findOpportunitiesFromFriends(string i_Subject, string i_Location)
         {
             FacebookObjectCollection<User> friends = r_LoggedInUser.Friends;
-            List<Volunteer> opportunities = new List<Volunteer>();
+            List<VolunteerModel> opportunities = new List<VolunteerModel>();
 
             foreach (User friend in friends)
             {
@@ -66,7 +66,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
                         eventStartTime.Date >= StartAvailableDate.Date &&
                         eventEndTime.Date <= EndAvailableDate.Date)
                     {
-                        Volunteer opportunity = new Volunteer
+                        VolunteerModel opportunity = new VolunteerModel
                         {
                             Subject = i_Subject,
                             Location = eventLocation,
@@ -82,14 +82,14 @@ namespace BasicFacebookFeatures.Features.Volunteering
             return opportunities;
         }
 
-        private List<Volunteer> findOpportunitiesFromFile(string i_Subject, string i_Location)
+        private List<VolunteerModel> findOpportunitiesFromFile(string i_Subject, string i_Location)
         {
-            List<Volunteer> opportunities = new List<Volunteer>();
-            List<Volunteer> opportunitiesFromFile = Singleton<SingletonFileOperations>.Instance.LoadFromFile();
+            List<VolunteerModel> opportunities = new List<VolunteerModel>();
+            List<VolunteerModel> opportunitiesFromFile = Singleton<SingletonFileOperations>.Instance.LoadFromFile();
 
             if (opportunitiesFromFile != null)
             {
-                foreach (Volunteer volunteer in opportunitiesFromFile)
+                foreach (VolunteerModel volunteer in opportunitiesFromFile)
                 {
                     string eventName = volunteer.Subject;
                     string eventLocation = volunteer.Location;

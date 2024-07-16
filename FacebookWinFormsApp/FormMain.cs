@@ -15,7 +15,7 @@ namespace BasicFacebookFeatures
 {
     public partial class FormMain : Form
     {
-        private FacebookWrapper.LoginResult m_LoginResult = null;
+        private LoginResult m_LoginResult = null;
         private User m_LoggedInUser = null;
         private PhotosController m_Photos = null;
         private PostController m_Posts = null;
@@ -28,7 +28,7 @@ namespace BasicFacebookFeatures
         public FormMain()
         {
             InitializeComponent();
-            FacebookWrapper.FacebookService.s_CollectionLimit = 25;
+            FacebookService.s_CollectionLimit = 25;
             m_Panels = new Panel[] 
             {
                 panelProfile,

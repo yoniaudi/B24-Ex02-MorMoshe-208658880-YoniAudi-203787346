@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace BasicFacebookFeatures.Features.Volunteering
 {
-    public class FindVolunteerValidationStrategy : IValidationStrategy<Volunteer>
+    public class FindVolunteerValidationStrategy : IValidationStrategy<VolunteerModel>
     {
-        public bool Validate(Volunteer i_Volunteer, out string o_ErrorMessage)
+        public bool Validate(VolunteerModel i_Volunteer, out string o_ErrorMessage)
         {
             List<string> errorMessages = new List<string>();
             bool isDataValid = true;
@@ -31,27 +31,27 @@ namespace BasicFacebookFeatures.Features.Volunteering
             return isDataValid;
         }
 
-        private void validateSubject(string i_Subject, List<string> o_ErrorMessages)
+        private void validateSubject(string i_Subject, List<string> i_ErrorMessages)
         {
             if (string.IsNullOrEmpty(i_Subject) == true)
             {
-                o_ErrorMessages.Add("Choose a subject.");
+                i_ErrorMessages.Add("Choose a subject.");
             }
         }
 
-        private void validateLocation(string i_Location, List<string> o_ErrorMessages)
+        private void validateLocation(string i_Location, List<string> i_ErrorMessages)
         {
             if (string.IsNullOrEmpty(i_Location) == true)
             {
-                o_ErrorMessages.Add("Choose a location.");
+                i_ErrorMessages.Add("Choose a location.");
             }
         }
 
-        private void validateDates(DateTime i_StartDate, DateTime i_EndDate, List<string> o_ErrorMessages)
+        private void validateDates(DateTime i_StartDate, DateTime i_EndDate, List<string> i_ErrorMessages)
         {
             if (i_StartDate > i_EndDate)
             {
-                o_ErrorMessages.Add("Invalid dates.");
+                i_ErrorMessages.Add("Invalid dates.");
             }
         }
     }

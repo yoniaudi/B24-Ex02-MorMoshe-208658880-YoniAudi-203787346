@@ -5,24 +5,24 @@ using System.Linq;
 
 public class RemoveVolunteerService
 {
-    public List<Volunteer> LoadVolunteers()
+    public List<VolunteerModel> LoadVolunteers()
     {
         return Singleton<SingletonFileOperations>.Instance.LoadFromFile();
     }
 
-    public void SaveVolunteers(List<Volunteer> i_Volunteers)
+    public void SaveVolunteers(List<VolunteerModel> i_Volunteers)
     {
         Singleton<SingletonFileOperations>.Instance.SaveToFile(i_Volunteers);
     }
 
-    public List<Volunteer> FilterVolunteersByPhoneNumber(List<Volunteer> i_Volunteers, string i_PhoneNumber)
+    public List<VolunteerModel> FilterVolunteersByPhoneNumber(List<VolunteerModel> i_Volunteers, string i_PhoneNumber)
     {
         return i_Volunteers.Where(volunteer => volunteer.PhoneNumber == i_PhoneNumber).ToList();
     }
 
-    public Volunteer ExtractVolunteerDetails(string i_volunteerStr)
+    public VolunteerModel ExtractVolunteerDetails(string i_volunteerStr)
     {
-        Volunteer volunteer = new Volunteer();
+        VolunteerModel volunteer = new VolunteerModel();
         string[] details = i_volunteerStr.Split(new string[] { " at ", " from ", " to ", " Phone:" }, StringSplitOptions.None);
 
         if (details.Length == 5)
@@ -37,7 +37,7 @@ public class RemoveVolunteerService
         return volunteer;
     }
 
-    public void RemoveVolunteer(List<Volunteer> i_Volunteer, Volunteer i_VolunteerToRemove)
+    public void RemoveVolunteer(List<VolunteerModel> i_Volunteer, VolunteerModel i_VolunteerToRemove)
     {
         i_Volunteer.Remove(i_VolunteerToRemove);
         SaveVolunteers(i_Volunteer);

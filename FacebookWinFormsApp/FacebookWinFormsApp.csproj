@@ -93,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationSettings.cs" />
-    <Compile Include="Features\TravelBuddy\TravelBuddyModel.cs" />
+    <Compile Include="Features\TravelBuddy\Models\TravelBuddyModel.cs" />
     <Compile Include="Features\TravelBuddy\FormTravelBuddy.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,15 +101,15 @@
       <DependentUpon>FormTravelBuddy.cs</DependentUpon>
     </Compile>
     <Compile Include="Features\TravelBuddy\TravelBuddyService.cs" />
-    <Compile Include="Features\TravelBuddy\TravelBuddyValidationData.cs" />
-    <Compile Include="Features\TravelBuddy\TravelBuddyValidationStrategy.cs" />
-    <Compile Include="Features\TravelBuddy\TravelPlanModel.cs" />
+    <Compile Include="Features\TravelBuddy\Validations\TravelBuddyValidationData.cs" />
+    <Compile Include="Features\TravelBuddy\Validations\TravelBuddyValidationStrategy.cs" />
+    <Compile Include="Features\TravelBuddy\Models\TravelPlanModel.cs" />
     <Compile Include="Features\ValidationStrategy\IValidationStrategy.cs" />
-    <Compile Include="Features\Volunteering\AddVolunteerService.cs" />
-    <Compile Include="Features\Volunteering\AddVolunteerValidationStrategy.cs" />
-    <Compile Include="Features\Volunteering\FindVolunteerValidationStrategy.cs" />
+    <Compile Include="Features\Volunteering\Services\AddVolunteerService.cs" />
+    <Compile Include="Features\Volunteering\Validations\AddVolunteerValidationStrategy.cs" />
+    <Compile Include="Features\Volunteering\Validations\FindVolunteerValidationStrategy.cs" />
     <Compile Include="Features\Volunteering\SingletonFileOperations.cs" />
-    <Compile Include="Features\Volunteering\FindVolunteerService.cs" />
+    <Compile Include="Features\Volunteering\Services\FindVolunteerService.cs" />
     <Compile Include="Features\Volunteering\FormAddVolunteer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,9 +134,9 @@
     <Compile Include="Features\Volunteering\FormRemoveVolunteer.Designer.cs">
       <DependentUpon>FormRemoveVolunteer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Features\Volunteering\RemoveVolunteerService.cs" />
+    <Compile Include="Features\Volunteering\Services\RemoveVolunteerService.cs" />
     <Compile Include="Features\Volunteering\Singleton.cs" />
-    <Compile Include="Features\Volunteering\Volunteer.cs" />
+    <Compile Include="Features\Volunteering\Models\VolunteerModel.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
