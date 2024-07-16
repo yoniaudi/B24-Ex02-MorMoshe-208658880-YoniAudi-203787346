@@ -1,4 +1,5 @@
-﻿using BasicFacebookFeatures.Features.TravelBuddy;
+﻿using BasicFacebookFeatures.Controllers;
+using BasicFacebookFeatures.Features.TravelBuddy;
 using BasicFacebookFeatures.Features.Volunteering;
 using BasicFacebookFeatures.Models;
 using FacebookWrapper;
@@ -24,11 +25,13 @@ namespace BasicFacebookFeatures
         private FriendController m_Friends = null;
         private StatusController m_Statuses = null;
         private Panel[] m_Panels = null;
+        private Controlls m_Controlls = null;
 
         public FormMain()
         {
             InitializeComponent();
             FacebookService.s_CollectionLimit = 25;
+            m_Controlls = new Controlls();
             m_Panels = new Panel[] 
             {
                 panelProfile,
@@ -153,11 +156,6 @@ namespace BasicFacebookFeatures
 			pictureBoxAppVisability.Visible = true;
 		}
 
-        private void reportUserNameChange()
-        {
-            labelFullName.Text = m_LoginResult.LoggedInUser.Name;
-        }
-
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
             new Thread(fetchPhotos).Start();
@@ -171,18 +169,19 @@ namespace BasicFacebookFeatures
             {
                 if (m_Photos == null)
                 {
-                    m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
+                    m_Controlls.PhotosController = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
+                    //m_Photos = new Models.PhotosController(m_LoginResult.LoggedInUser.Albums, progressBar);
                 }
 
                 panelPhotos.Invoke(new Action(() =>
                 {
                     panelPhotos.Controls.Clear();
-                    panelPhotos.Controls.Add(m_Photos);
+                    panelPhotos.Controls.Add(m_Controlls.PhotosController as Control);
                 }));
                 searchableListBoxMain.Invoke(new Action(() =>
                 {
-                    searchableListBoxMain.DisplayMember = m_Photos.DisplayMember;
-                    searchableListBoxMain.DataSource = m_Photos.DataSource;
+                    searchableListBoxMain.DisplayMember = m_Controlls.PhotosController.DisplayMember;
+                    searchableListBoxMain.DataSource = m_Controlls.PhotosController.DataSource;
                 }));
                 displayPanel(panelPhotos);
             }
@@ -208,18 +207,19 @@ namespace BasicFacebookFeatures
 
             if (m_Posts == null)
             {
-                m_Posts = new Models.PostController(m_LoginResult.LoggedInUser.Posts, progressBar);
+                m_Controlls.PostController = new Models.PostController(m_LoginResult.LoggedInUser.Posts, progressBar);
+                //m_Posts = new Models.PostController(m_LoginResult.LoggedInUser.Posts, progressBar);
             }
 
             panelPosts.Invoke(new Action(() =>
             {
                 panelPosts.Controls.Clear();
-                panelPosts.Controls.Add(m_Posts);
+                panelPosts.Controls.Add(m_Controlls.PostController as Control);
             }));
             searchableListBoxMain.Invoke(new Action(() =>
             {
-                searchableListBoxMain.DisplayMember = m_Posts.DisplayMember;
-                searchableListBoxMain.DataSource = m_Posts.DataSource;
+                searchableListBoxMain.DisplayMember = m_Controlls.PostController.DisplayMember;
+                searchableListBoxMain.DataSource = m_Controlls.PostController.DataSource;
             }));
             displayPanel(panelPosts);
             progressBar.Invoke(new Action(() => progressBar.Visible = false));
@@ -236,18 +236,19 @@ namespace BasicFacebookFeatures
             
             if (m_Pages == null)
             {
-                m_Pages = new Models.PageController(m_LoginResult.LoggedInUser.LikedPages, progressBar);
+                m_Controlls.PageController = new Models.PageController(m_LoginResult.LoggedInUser.LikedPages, progressBar);
+                //m_Pages = new Models.PageController(m_LoginResult.LoggedInUser.LikedPages, progressBar);
             }
 
             panelPages.Invoke(new Action(() =>
             {
                 panelPages.Controls.Clear();
-                panelPages.Controls.Add(m_Pages);
+                panelPages.Controls.Add(m_Controlls.PageController as Control);
             }));
             searchableListBoxMain.Invoke(new Action(() =>
             {
-                searchableListBoxMain.DisplayMember = m_Pages.DisplayMember;
-                searchableListBoxMain.DataSource = m_Pages.DataSource;
+                searchableListBoxMain.DisplayMember = m_Controlls.PageController.DisplayMember;
+                searchableListBoxMain.DataSource = m_Controlls.PageController.DataSource;
             }));
             displayPanel(panelPages);
             progressBar.Invoke(new Action(() => progressBar.Visible = false));
@@ -275,6 +276,11 @@ namespace BasicFacebookFeatures
             displayPanel(panelProfile);
         }
 
+        private void reportUserNameChange()
+        {
+            labelFullName.Text = m_LoginResult.LoggedInUser.Name;
+        }
+
         private void buttonFriends_Click(object sender, EventArgs e)
         {
             new Thread(fetchFriends).Start();
@@ -286,18 +292,19 @@ namespace BasicFacebookFeatures
             
             if (m_Friends == null)
             {
-                m_Friends = new FriendController(m_LoginResult.LoggedInUser.Friends, progressBar);
+                m_Controlls.FriendController = new FriendController(m_LoginResult.LoggedInUser.Friends, progressBar);
+                //m_Friends = new FriendController(m_LoginResult.LoggedInUser.Friends, progressBar);
             }
 
             panelFriends.Invoke(new Action(() =>
             {
                 panelFriends.Controls.Clear();
-                panelFriends.Controls.Add(m_Friends);
+                panelFriends.Controls.Add(m_Controlls.FriendController as Control);
             }));
             searchableListBoxMain.Invoke(new Action(() =>
             {
-                searchableListBoxMain.DisplayMember = m_Friends.DisplayMember;
-                searchableListBoxMain.DataSource = m_Friends.DataSource;
+                searchableListBoxMain.DisplayMember = m_Controlls.FriendController.DisplayMember;
+                searchableListBoxMain.DataSource = m_Controlls.FriendController.DataSource;
             }));
             displayPanel(panelFriends);
             progressBar.Invoke(new Action(() => progressBar.Visible = false));
@@ -314,24 +321,51 @@ namespace BasicFacebookFeatures
             
             if (m_Statuses == null)
             {
-                m_Statuses = new Models.StatusController(m_LoginResult.LoggedInUser.Statuses, progressBar);
+                m_Controlls.StatusController = new Models.StatusController(m_LoginResult.LoggedInUser.Statuses, progressBar);
+                //m_Statuses = new Models.StatusController(m_LoginResult.LoggedInUser.Statuses, progressBar);
             }
 
             panelStatuses.Invoke(new Action(() =>
             {
                 panelStatuses.Controls.Clear();
-                panelStatuses.Controls.Add(m_Statuses);
+                panelStatuses.Controls.Add(m_Controlls.StatusController as Control);
             }));
             searchableListBoxMain.Invoke(new Action(() =>
             {
-                searchableListBoxMain.DisplayMember = m_Statuses.DisplayMember;
-                searchableListBoxMain.DataSource = m_Statuses.DataSource;
+                searchableListBoxMain.DisplayMember = m_Controlls.StatusController.DisplayMember;
+                searchableListBoxMain.DataSource = m_Controlls.StatusController.DataSource;
             }));
             displayPanel(panelStatuses);
             progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
-        
+
         private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            object selectedItem = (sender as SearchableListBoxController).SelectedItem;
+
+            switch (selectedItem)
+            {
+                case Album album:
+                    m_Controlls.ShowSelectedAlbum(album);
+                    break;
+                case Post post:
+                    m_Controlls.ShowSelectedPost(post);
+                    break;
+                case Page page:
+                    m_Controlls.ShowSelectedPage(page);
+                    break;
+                case User user:
+                    m_Controlls.ShowSelectedFriend(user);
+                    break;
+                case Status status:
+                    m_Controlls.ShowSelectedStatus(status);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /*private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             object selectedItem = (sender as SearchableListBoxController).SelectedItem;
 
@@ -347,7 +381,7 @@ namespace BasicFacebookFeatures
                     m_Pages.ShowSelectedPage(page);
                     break;
                 case User user:
-                    m_Friends.ShowSelectedFriend(user);
+                    m_Friends.Show(user);
                     break;
                 case Status status:
                     m_Statuses.ShowSelectedStatus(status);
@@ -355,7 +389,7 @@ namespace BasicFacebookFeatures
                 default:
                     break;
             }
-        }
+        }*/
 
         private void buttonTravelBuddy_Click(object sender, EventArgs e)
         {

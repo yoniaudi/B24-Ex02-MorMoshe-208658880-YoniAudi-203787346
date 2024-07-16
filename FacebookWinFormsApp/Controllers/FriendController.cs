@@ -10,7 +10,7 @@ using Page = FacebookWrapper.ObjectModel.Page;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class FriendController : UserControl
+    public partial class FriendController : UserControl, IControllers
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
@@ -28,7 +28,7 @@ namespace BasicFacebookFeatures.Models
             m_ProgressBar = i_ProgressBar;
         }
 
-        public void ShowSelectedFriend(User i_Friend)
+        /*public void ShowSelectedFriend(User i_Friend)
         {
             FacebookObjectCollection<User> mainUserFriends = (FacebookObjectCollection<User>)DataSource;
 
@@ -51,7 +51,7 @@ namespace BasicFacebookFeatures.Models
             searchableListBoxControllerCommonFriends.DisplayMember = "Name";
             searchableListBoxControllerCommonFriends.DataSource = i_Friend.Friends.Where(myFriend => mainUserFriends.Contains(myFriend)).ToList();
             m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = false));
-        }
+        }*/
 
         private void initializeProgressBar(User i_Friend)
         {
@@ -154,10 +154,36 @@ namespace BasicFacebookFeatures.Models
         private void searchableListBoxControllerFriendsStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             FacebookWrapper.ObjectModel.Status status = searchableListBoxControllerFriendsStatus.SelectedItem as FacebookWrapper.ObjectModel.Status;
-            statusesModelFriendStatuses.ShowSelectedStatus(status);
+            statusesModelFriendStatuses.Show(status);
             flowLayoutPanelFriendPhotos.Hide();
             statusesModelFriendStatuses.Show();
             m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+        }
+
+        public void Show(object i_Object)
+        {
+            User friend = i_Object as User;
+            FacebookObjectCollection<User> mainUserFriends = (FacebookObjectCollection<User>)DataSource;
+
+            initializeProgressBar(friend);
+            flowLayoutPanelFriendPhotos.Controls.Clear();
+            labelFriendFullName.Text = friend.Name;
+            pictureBoxFriendProfile.ImageLocation = friend.PictureNormalURL;
+            labelUserFriendBirthday.Text = friend.Birthday;
+            labelUserFriendLocation.Text = friend.Location != null ? friend.Location.Name : "";
+            labelUserFriendEmail.Text = friend.Email;
+            labelUserFriendLanguages.Text = getLanguagesStr(friend.Languages);
+            labelFriendStatuses.Text = $"{friend.FirstName} Statuses:";
+            searchableListBoxControllerFriendsStatus.DisplayMember = "Message";
+            searchableListBoxControllerFriendsStatus.DataSource = filterStatusesWithProgress(friend);
+            searchableListBoxControllerFriendAlbums.DisplayMember = "Name";
+            searchableListBoxControllerFriendAlbums.DataSource = filterAlbumsWithProgress(friend);
+            labelFriendsOfFriend.Text = $"{friend.FirstName} Friends:";
+            searchableListBoxControllerFriendsOfFriend.DisplayMember = "Name";
+            searchableListBoxControllerFriendsOfFriend.DataSource = friend.Friends;
+            searchableListBoxControllerCommonFriends.DisplayMember = "Name";
+            searchableListBoxControllerCommonFriends.DataSource = friend.Friends.Where(myFriend => mainUserFriends.Contains(myFriend)).ToList();
+            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = false));
         }
     }
 }

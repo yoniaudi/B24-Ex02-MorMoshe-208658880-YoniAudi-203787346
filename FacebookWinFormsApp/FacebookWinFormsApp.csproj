@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationSettings.cs" />
+    <Compile Include="Controllers\Controlls.cs" />
     <Compile Include="Features\TravelBuddy\Models\TravelBuddyModel.cs" />
     <Compile Include="Features\TravelBuddy\FormTravelBuddy.cs">
       <SubType>Form</SubType>
@@ -185,7 +186,7 @@
     <Compile Include="Controllers\StatusController.Designer.cs">
       <DependentUpon>StatusController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ICommand.cs" />
+    <Compile Include="Controllers\IControllers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Features\TravelBuddy\FormTravelBuddy.resx">

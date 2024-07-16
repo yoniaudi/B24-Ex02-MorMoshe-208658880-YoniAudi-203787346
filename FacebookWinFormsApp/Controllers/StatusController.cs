@@ -1,11 +1,12 @@
 ﻿using FacebookWrapper.ObjectModel;
 using System;
+using System.Net.NetworkInformation;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class StatusController : UserControl
+    public partial class StatusController : UserControl, IControllers
     {
         public string DisplayMember { get { return "Message"; } }
         public object DataSource { get; set; }
@@ -52,13 +53,29 @@ namespace BasicFacebookFeatures.Models
             return filteredStatuses;
         }
 
-        public void ShowSelectedStatus(FacebookWrapper.ObjectModel.Status i_Status)
+        /*public void ShowSelectedStatus(FacebookWrapper.ObjectModel.Status i_Status)
         {
             if (i_Status != null)
             {
                 string authorName = i_Status.From != null ? i_Status.From.Name : "";
                 string dateCreated = i_Status.CreatedTime != null ? i_Status.CreatedTime.ToString() : "";
                 string message = i_Status.Message != null ? i_Status.Message : "";
+
+                labelUserAuthor.Text = authorName;
+                labelUserDateCreated.Text = dateCreated;
+                richTextBoxUserMessage.Text = message;
+            }
+        }*/
+
+        public void Show(object i_Object)
+        {
+            FacebookWrapper.ObjectModel.Status status = i_Object as FacebookWrapper.ObjectModel.Status;
+
+            if (status != null)
+            {
+                string authorName = status.From != null ? status.From.Name : "";
+                string dateCreated = status.CreatedTime != null ? status.CreatedTime.ToString() : "";
+                string message = status.Message != null ? status.Message : "";
 
                 labelUserAuthor.Text = authorName;
                 labelUserDateCreated.Text = dateCreated;

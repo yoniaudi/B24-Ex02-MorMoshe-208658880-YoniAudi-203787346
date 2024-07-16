@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class PhotosController : UserControl
+    public partial class PhotosController : UserControl, IControllers
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
@@ -64,7 +64,7 @@ namespace BasicFacebookFeatures.Models
             return filteredAlbums;
         }
 
-        public void ShowSelectedAlbum(FacebookWrapper.ObjectModel.Album i_Album)
+        /*public void ShowSelectedAlbum(FacebookWrapper.ObjectModel.Album i_Album)
         {
             initializeProgressBar(null, i_Album);
             flowLayoutPanelPhotos.Controls.Clear();
@@ -76,6 +76,27 @@ namespace BasicFacebookFeatures.Models
                 picture.Name = $"pictureBox{i}";
                 picture.SizeMode = PictureBoxSizeMode.AutoSize;
                 picture.ImageLocation = i_Album.Photos[i].PictureThumbURL;
+                flowLayoutPanelPhotos.Controls.Add(picture);
+                picture.BringToFront();
+                picture.Visible = true;
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+            }
+        }*/
+
+        public void Show(object i_Object)
+        {
+            Album album = i_Object as Album;
+
+            initializeProgressBar(null, album);
+            flowLayoutPanelPhotos.Controls.Clear();
+
+            for (int i = 0; i < album.Photos.Count; i++)
+            {
+                PictureBox picture = new PictureBox();
+
+                picture.Name = $"pictureBox{i}";
+                picture.SizeMode = PictureBoxSizeMode.AutoSize;
+                picture.ImageLocation = album.Photos[i].PictureThumbURL;
                 flowLayoutPanelPhotos.Controls.Add(picture);
                 picture.BringToFront();
                 picture.Visible = true;

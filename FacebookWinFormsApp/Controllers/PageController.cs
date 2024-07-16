@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class PageController : UserControl
+    public partial class PageController : UserControl, IControllers
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
@@ -51,10 +51,18 @@ namespace BasicFacebookFeatures.Models
             return filteredPages;
         }
 
-        public void ShowSelectedPage(Page i_Page)
+        /*public void ShowSelectedPage(Page i_Page)
         {
             labelPageName.Text = i_Page.Name;
             pictureBoxCheckin.ImageLocation = i_Page.PictureURL;
+        }*/
+
+        public void Show(object i_Object)
+        {
+            Page page = i_Object as Page;
+
+            labelPageName.Text = page.Name;
+            pictureBoxCheckin.ImageLocation = page.PictureURL;
         }
     }
 }

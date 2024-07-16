@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class PostController : UserControl
+    public partial class PostController : UserControl, IControllers
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
@@ -51,7 +51,7 @@ namespace BasicFacebookFeatures.Models
             return filteredPosts;
         }
 
-        internal void ShowSelectedPost(Post i_Post)
+        /*internal void ShowSelectedPost(Post i_Post)
         {
             string propValue = getPropertyValue(i_Post, "Message") ?? getPropertyValue(i_Post, "Description");
 
@@ -60,6 +60,19 @@ namespace BasicFacebookFeatures.Models
             labelUserPostFrom.Text = i_Post.From != null ? i_Post.From.Name : "";
             labelUserPostPlace.Text = i_Post.Place != null ? i_Post.Place.Name : "";
             picturePost.ImageLocation = i_Post.PictureURL;
+            labelUserPostMessage.Text = propValue ?? "";
+        }*/
+
+        public void Show(object i_Object)
+        {
+            Post post = i_Object as Post;
+            string propValue = getPropertyValue(post, "Message") ?? getPropertyValue(post, "Description");
+
+            labelUserPostAuthor.Text = post.Name != null ? post.Name : "";
+            labelUserPostDateCreated.Text = post.CreatedTime.ToString();
+            labelUserPostFrom.Text = post.From != null ? post.From.Name : "";
+            labelUserPostPlace.Text = post.Place != null ? post.Place.Name : "";
+            picturePost.ImageLocation = post.PictureURL;
             labelUserPostMessage.Text = propValue ?? "";
         }
 
