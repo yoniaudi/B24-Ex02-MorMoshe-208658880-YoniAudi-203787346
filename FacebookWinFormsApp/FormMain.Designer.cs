@@ -37,6 +37,7 @@ namespace BasicFacebookFeatures
             this.labelInstractions = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelFullName = new System.Windows.Forms.Label();
+            this.userBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panelProfile = new System.Windows.Forms.Panel();
             this.panelFriends = new System.Windows.Forms.Panel();
             this.panelPosts = new System.Windows.Forms.Panel();
@@ -58,13 +59,12 @@ namespace BasicFacebookFeatures
             this.checkBoxRememberMe = new System.Windows.Forms.CheckBox();
             this.pictureBoxAppVisability = new System.Windows.Forms.PictureBox();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
-            this.userBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.searchableListBoxMain = new BasicFacebookFeatures.Models.SearchableListBoxController();
+            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).BeginInit();
             this.panelMain.SuspendLayout();
             this.panelSecondary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAppVisability)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonLogin
@@ -122,6 +122,10 @@ namespace BasicFacebookFeatures
             this.labelFullName.Size = new System.Drawing.Size(109, 25);
             this.labelFullName.TabIndex = 80;
             this.labelFullName.Text = "Full Name";
+            // 
+            // userBindingSource
+            // 
+            this.userBindingSource.DataSource = typeof(FacebookWrapper.ObjectModel.User);
             // 
             // panelProfile
             // 
@@ -301,9 +305,9 @@ namespace BasicFacebookFeatures
             // 
             // pictureBoxAppVisability
             // 
-            this.pictureBoxAppVisability.Location = new System.Drawing.Point(12, 590);
+            this.pictureBoxAppVisability.Location = new System.Drawing.Point(12, 96);
             this.pictureBoxAppVisability.Name = "pictureBoxAppVisability";
-            this.pictureBoxAppVisability.Size = new System.Drawing.Size(1197, 29);
+            this.pictureBoxAppVisability.Size = new System.Drawing.Size(1197, 523);
             this.pictureBoxAppVisability.TabIndex = 86;
             this.pictureBoxAppVisability.TabStop = false;
             // 
@@ -315,10 +319,6 @@ namespace BasicFacebookFeatures
             this.pictureBoxProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxProfile.TabIndex = 55;
             this.pictureBoxProfile.TabStop = false;
-            // 
-            // userBindingSource
-            // 
-            this.userBindingSource.DataSource = typeof(FacebookWrapper.ObjectModel.User);
             // 
             // searchableListBoxMain
             // 
@@ -365,11 +365,11 @@ namespace BasicFacebookFeatures
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Facebook Minimal App";
+            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).EndInit();
             this.panelMain.ResumeLayout(false);
             this.panelSecondary.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAppVisability)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

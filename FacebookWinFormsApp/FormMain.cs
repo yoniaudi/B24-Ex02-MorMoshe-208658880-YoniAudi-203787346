@@ -126,8 +126,8 @@ namespace BasicFacebookFeatures
                 buttonLogout.Enabled = true;
                 buttonTravelBuddy.Visible = true;
                 buttonVolunteer.Visible = true;
-                pictureBoxAppVisability.Visible = false;
                 m_Controllers = new ControllersFacade.Controllers(m_LoggedInUser, searchableListBoxMain, progressBar);
+                pictureBoxAppVisability.Visible = false;
             }
         }
 
@@ -182,43 +182,33 @@ namespace BasicFacebookFeatures
 
         private void buttonPosts_Click(object sender, EventArgs e)
         {
-            new Thread(fetchPosts).Start();
+            fetchPosts();
         }
 
         private void fetchPosts()
         {
-            progressBar.Invoke(new Action(() => progressBar.Visible = true));
             m_Controllers.ShowPosts();
-            panelPosts.Invoke(new Action(() =>
-            {
-                panelPosts.Controls.Clear();
-                panelPosts.Controls.Add(m_Controllers.GetController(new Post()) as Control);
-            }));
+            panelPosts.Controls.Clear();
+            panelPosts.Controls.Add(m_Controllers.GetController(new Post()) as Control);
             displayPanel(panelPosts);
-            progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
 
         private void buttonPages_Click(object sender, EventArgs e)
         {
-            new Thread(fetchPages).Start();
+            fetchPages();
         }
 
         private void fetchPages()
         {
-            progressBar.Invoke(new Action(() => progressBar.Visible = true));
             m_Controllers.ShowPages();
-            panelPages.Invoke(new Action(() =>
-            {
-                panelPages.Controls.Clear();
-                panelPages.Controls.Add(m_Controllers.GetController(new Page()) as Control);
-            }));
+            panelPages.Controls.Clear();
+            panelPages.Controls.Add(m_Controllers.GetController(new Page()) as Control);
             displayPanel(panelPages);
-            progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
 
         private void buttonProfile_Click(object sender, EventArgs e)
         {
-            new Thread(fetchProfile).Start();
+            fetchProfile();
         }
 
         private void fetchProfile()
@@ -226,11 +216,8 @@ namespace BasicFacebookFeatures
             m_Profile = new ProfileController(m_LoginResult.LoggedInUser);
             m_Profile.UserNameChanged += reportUserNameChange;
             searchableListBoxMain.Invoke(new Action(() => searchableListBoxMain.DataSource = null));
-            panelProfile.Invoke(new Action(() =>
-            {
-                panelProfile.Controls.Clear();
-                panelProfile.Controls.Add(m_Profile);
-            }));
+            panelProfile.Controls.Clear();
+            panelProfile.Controls.Add(m_Profile);
             displayPanel(panelProfile);
         }
 
@@ -241,38 +228,28 @@ namespace BasicFacebookFeatures
 
         private void buttonFriends_Click(object sender, EventArgs e)
         {
-            new Thread(fetchFriends).Start();
+            fetchFriends();
         }
 
         private void fetchFriends()
         {
-            progressBar.Invoke(new Action(() => progressBar.Visible = true));
             m_Controllers.ShowFriends();
-            panelFriends.Invoke(new Action(() =>
-            {
-                panelFriends.Controls.Clear();
-                panelFriends.Controls.Add(m_Controllers.GetController(new User()) as Control);
-            }));
+            panelFriends.Controls.Clear();
+            panelFriends.Controls.Add(m_Controllers.GetController(new User()) as Control);
             displayPanel(panelFriends);
-            progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
 
         private void buttonStatuses_Click(object sender, EventArgs e)
         {
-            new Thread(fetchStatus).Start();
+            fetchStatus();
         }
 
         private void fetchStatus()
         {
-            progressBar.Invoke(new Action(() => progressBar.Visible = true));
             m_Controllers.ShowStatuses();
-            panelStatuses.Invoke(new Action(() =>
-            {
-                panelStatuses.Controls.Clear();
-                panelStatuses.Controls.Add(m_Controllers.GetController(new Status()) as Control);
-            }));
+            panelStatuses.Controls.Clear();
+            panelStatuses.Controls.Add(m_Controllers.GetController(new Status()) as Control);
             displayPanel(panelStatuses);
-            progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
 
         private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
