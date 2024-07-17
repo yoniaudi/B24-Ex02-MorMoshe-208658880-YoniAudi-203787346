@@ -5,6 +5,7 @@ using BasicFacebookFeatures.Models;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -18,22 +19,21 @@ namespace BasicFacebookFeatures
         private LoginResult m_LoginResult = null;
         private User m_LoggedInUser = null;
         private ProfileController m_Profile = null;
-        private Panel[] m_Panels = null;
+        private Dictionary<eControllerType, Panel> m_Panels = null;
+        //private Panel[] m_Panels = null;
         private ControllersFacade.Controllers m_Controllers = null;
 
         public FormMain()
         {
             InitializeComponent();
             FacebookService.s_CollectionLimit = 25;
-            m_Panels = new Panel[]
+            m_Panels = new Dictionary<eControllerType, Panel>()
             {
-                panelProfile,
-                panelFriends,
-                panelStatuses,
-                panelInbox,
-                panelPhotos,
-                panelPosts,
-                panelPages
+                {eControllerType.Photo, panelPhotos },
+                {eControllerType.Post, panelPosts },
+                {eControllerType.Page, panelPages },
+                {eControllerType.Friend, panelFriends },
+                {eControllerType.Status, panelStatuses }
             };
         }
 
@@ -155,17 +155,28 @@ namespace BasicFacebookFeatures
             displayPanel(panelPhotos);
         }
 
+        private void showPosts()
+        {
+            if (m_Controllers.GetController(eControllerType.Post) != null)
+            {
+                (m_Controllers.GetController(eControllerType.Post) as IController).LoadDataToListBox();
+                panelPosts.Controls.Clear();
+                panelPosts.Controls.Add(m_Controllers.GetController(eControllerType.Post) as Control);
+                displayPanel(panelPosts);
+            }
+        }
+
         private void showData(eControllerType i_ControllerType)
         {
-            object controller = m_Controllers.GetController(i_ControllerType);
+            Control controller = m_Controllers.GetController(i_ControllerType) as Control;
 
             if (controller != null)
             {
                 try
                 {
                     m_Controllers.LoadDataToListBox(i_ControllerType);
-                    panelPhotos.Controls.Clear();
-                    panelPhotos.Controls.Add(controller as Control);
+                    m_Panels[i_ControllerType].Controls.Clear();
+                    m_Panels[i_ControllerType].Controls.Add(controller);
                 }
                 catch (Exception ex)
                 {
@@ -177,42 +188,65 @@ namespace BasicFacebookFeatures
             }
         }
 
-        private void showPhotos()
+        /*private void showData(eControllerType i_ControllerType)
         {
-            if (m_Controllers.GetController(eControllerType.Photo) != null)
+            object controller = m_Controllers.GetController(i_ControllerType);
+
+            if (controller != null)
             {
                 try
                 {
-                    Control control = m_Controllers.GetController(eControllerType.Photo) as Control;
-
-                    m_Controllers.LoadDataToListBox(eControllerType.Photo);
+                    m_Controllers.LoadDataToListBox(i_ControllerType);
                     panelPhotos.Controls.Clear();
-                    panelPhotos.Controls.Add(control);
-                    displayPanel(panelPhotos);
+                    panelPhotos.Controls.Add(m_Controllers.GetController(eControllerType.Post) as Control);
                 }
                 catch (Exception ex)
                 {
-                    string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
-                        Environment.NewLine, ex.Message);
+                    string exceptionMsg = string.Format("Getting {0} is not supported by Meta anymore.{1}Press ok to continue.{1}Error: {2}",
+                    i_ControllerType.ToString(), Environment.NewLine, ex.Message);
 
-                    MessageBox.Show(exMsg);
+                    MessageBox.Show(exceptionMsg);
                 }
             }
-        }
+        }*/
+
+        /*        private void showPhotos()
+                {
+                    if (m_Controllers.GetController(eControllerType.Photo) != null)
+                    {
+                        try
+                        {
+                            Control control = m_Controllers.GetController(eControllerType.Photo) as Control;
+
+                            m_Controllers.LoadDataToListBox(eControllerType.Photo);
+                            panelPhotos.Controls.Clear();
+                            panelPhotos.Controls.Add(control);
+                            displayPanel(panelPhotos);
+                        }
+                        catch (Exception ex)
+                        {
+                            string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
+                                Environment.NewLine, ex.Message);
+
+                            MessageBox.Show(exMsg);
+                        }
+                    }
+                }*/
 
         private void buttonPosts_Click(object sender, EventArgs e)
         {
             showData(eControllerType.Post);
             displayPanel(panelPosts);
+            //showPosts();
         }
 
         /*private void showPosts()
         {
-            if (m_Controllers.GetController() != null)
+            if (m_Controllers.GetController(eControllerType.Post) != null)
             {
-                m_Controllers.ShowPosts();
+                (m_Controllers.GetController(eControllerType.Post) as IController).LoadDataToListBox();
                 panelPosts.Controls.Clear();
-                panelPosts.Controls.Add(m_Controllers.GetController(new Post()) as Control);
+                panelPosts.Controls.Add(m_Controllers.GetController(eControllerType.Post) as Control);
                 displayPanel(panelPosts);
             }
         }*/
@@ -253,7 +287,12 @@ namespace BasicFacebookFeatures
         private void showProfile()
         {
             m_Profile = new ProfileController(m_LoginResult.LoggedInUser);
-            m_Profile.UserNameChanged += reportUserNameChange;
+            
+            if (m_Profile == null)
+            {
+                m_Profile.UserNameChanged += reportUserNameChange; /////////////             Need to have protection so it wont be greater than one.
+            }
+
             searchableListBoxMain.Invoke(new Action(() => searchableListBoxMain.DataSource = null));
             panelProfile.Controls.Clear();
             panelProfile.Controls.Add(m_Profile);
@@ -348,12 +387,22 @@ namespace BasicFacebookFeatures
 
         private void displayPanel(Panel i_Panel)
         {
+            foreach (Panel panel in m_Panels.Values)
+            {
+                panel.Visible = false;
+            }
+
+            i_Panel.Visible = true;
+        }
+
+        /*private void displayPanel(Panel i_Panel)
+        {
             foreach (Panel panel in m_Panels)
             {
                 panel.Invoke(new Action(() => panel.Visible = false));
             }
 
             i_Panel.Invoke(new Action(() => i_Panel.Visible = true));
-        }
+        }*/
     }
 }

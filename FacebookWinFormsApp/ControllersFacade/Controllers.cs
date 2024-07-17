@@ -37,7 +37,47 @@ namespace BasicFacebookFeatures.ControllersFacade
             startThread(() => fetchData(eControllerType.Page));
             startThread(() => fetchData(eControllerType.Friend));
             startThread(() => fetchData(eControllerType.Status));
+            /*            startThread(fetchPhotos);
+                        startThread(fetchPosts);
+                        startThread(fetchPages);
+                        startThread(fetchFriends);
+                        startThread(fetchStatuses);*/
         }
+
+/*        private void fetchPhotos()
+        {
+            try
+            {
+                m_Controllers[eControllerType.Photo] = new PhotosController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
+            }
+            catch (Exception ex)
+            {
+                string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
+                    Environment.NewLine, ex.Message);
+
+                MessageBox.Show(exMsg);
+            }
+        }
+
+        private void fetchPosts()
+        {
+            m_Controllers[eControllerType.Post] = new PostController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
+        }
+
+        private void fetchPages()
+        {
+            m_Controllers[eControllerType.Page] = new PageController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
+        }
+
+        private void fetchFriends()
+        {
+            m_Controllers[eControllerType.Friend] = new FriendController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
+        }
+
+        private void fetchStatuses()
+        {
+            m_Controllers[eControllerType.Status] = new StatusController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
+        }*/
 
         private void initializeProgressBar()
         {
