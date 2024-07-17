@@ -1,4 +1,5 @@
-﻿using BasicFacebookFeatures.Features.TravelBuddy;
+﻿using BasicFacebookFeatures.Enums;
+using BasicFacebookFeatures.Features.TravelBuddy;
 using BasicFacebookFeatures.Features.Volunteering;
 using BasicFacebookFeatures.Models;
 using FacebookWrapper;
@@ -155,7 +156,7 @@ namespace BasicFacebookFeatures
 
         private void showPhotos()
         {
-            if (m_Controllers.GetController(new Album()) != null)
+            if (m_Controllers.GetController(eControllerType.Photo) != null)
             {
                 try
                 {
@@ -181,7 +182,7 @@ namespace BasicFacebookFeatures
 
         private void showPosts()
         {
-            if (m_Controllers.GetController(new Post()) != null)
+            if (m_Controllers.GetController() != null)
             {
                 m_Controllers.ShowPosts();
                 panelPosts.Controls.Clear();
@@ -189,6 +190,17 @@ namespace BasicFacebookFeatures
                 displayPanel(panelPosts);
             }
         }
+
+        /*private void showPosts()
+        {
+            if (m_Controllers.GetController(new Post()) != null)
+            {
+                m_Controllers.ShowPosts();
+                panelPosts.Controls.Clear();
+                panelPosts.Controls.Add(m_Controllers.GetController(new Post()) as Control);
+                displayPanel(panelPosts);
+            }
+        }*/
 
         private void buttonPages_Click(object sender, EventArgs e)
         {
@@ -262,6 +274,13 @@ namespace BasicFacebookFeatures
         {
             object selectedItem = (sender as SearchableListBoxController).SelectedItem;
 
+            m_Controllers.ShowSelectedItem(selectedItem);
+        }
+
+        /*private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            object selectedItem = (sender as SearchableListBoxController).SelectedItem;
+
             switch (selectedItem)
             {
                 case Album album:
@@ -282,7 +301,7 @@ namespace BasicFacebookFeatures
                 default:
                     break;
             }
-        }
+        }*/
 
         private void buttonTravelBuddy_Click(object sender, EventArgs e)
         {

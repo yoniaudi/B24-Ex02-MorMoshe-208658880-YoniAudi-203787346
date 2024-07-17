@@ -1,6 +1,9 @@
-﻿using BasicFacebookFeatures.Models;
+﻿using BasicFacebookFeatures.Enums;
+using BasicFacebookFeatures.Models;
 using FacebookWrapper.ObjectModel;
 using System;
+using System.Collections.Generic;
+using System.Speech.Recognition;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -8,18 +11,14 @@ namespace BasicFacebookFeatures.ControllersFacade
 {
     public class Controllers
     {
-        private IController m_PhotosController = null;
-        private IController m_PostController = null;
-        private IController m_PageController = null;
-        private IController m_FriendController = null;
-        private IController m_StatusController = null;
+        private Dictionary<eControllerType, IController> m_Controllers = null;
         private User m_LoggedInUser = null;
-        private System.Windows.Forms.ProgressBar m_ProgressBar = null;
+        private ProgressBar m_ProgressBar = null;
         private SearchableListBoxController m_SearchableListBox = null;
         private int m_ActiveThreads = 0;
         private readonly object r_LockObject = new object();
 
-        public Controllers(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, System.Windows.Forms.ProgressBar i_ProgressBar)
+        public Controllers(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
             m_LoggedInUser = i_LoggedInUser;
             m_SearchableListBox = i_SearchableListBox;
@@ -73,11 +72,27 @@ namespace BasicFacebookFeatures.ControllersFacade
             }
         }
 
+        private void fetchData(eControllerType i_ControllerType)
+        {
+            try
+            {
+                m_Controllers[i_ControllerType] = new PhotosController(m_LoggedInUser.Albums, m_SearchableListBox, m_ProgressBar);
+                //m_Controllers[i_ControllerType] = new PhotosController(m_LoggedInUser.Albums, m_SearchableListBox, m_ProgressBar);
+            }
+            catch (Exception ex)
+            {
+                string exceptionMsg = string.Format("Getting {0} is not supported by Meta anymore.{1}Press ok to continue.{1}Error: {2}",
+                    i_ControllerType.ToString(), Environment.NewLine, ex.Message);
+
+                MessageBox.Show(exceptionMsg);
+            }
+        }
+
         private void fetchPhotos()
         {
             try
             {
-                m_PhotosController = new PhotosController(m_LoggedInUser.Albums, m_SearchableListBox, m_ProgressBar);
+                m_Controllers[eControllerType.Photo] = new PhotosController(m_LoggedInUser.Albums, m_SearchableListBox, m_ProgressBar);
             }
             catch (Exception ex)
             {
@@ -90,110 +105,66 @@ namespace BasicFacebookFeatures.ControllersFacade
 
         private void fetchPosts()
         {
-            m_PostController = new PostController(m_LoggedInUser.Posts, m_SearchableListBox, m_ProgressBar);
+            m_Controllers[eControllerType.Post] = new PostController(m_LoggedInUser.Posts, m_SearchableListBox, m_ProgressBar);
         }
 
         private void fetchPages()
         {
-            m_PageController = new PageController(m_LoggedInUser.LikedPages, m_SearchableListBox, m_ProgressBar);
+            m_Controllers[eControllerType.Page] = new PageController(m_LoggedInUser.LikedPages, m_SearchableListBox, m_ProgressBar);
         }
 
         private void fetchFriends()
         {
-            m_FriendController = new FriendController(m_LoggedInUser.Friends, m_SearchableListBox, m_ProgressBar);
+            m_Controllers[eControllerType.Friend] = new FriendController(m_LoggedInUser.Friends, m_SearchableListBox, m_ProgressBar);
         }
 
         private void fetchStatuses()
         {
-            m_StatusController = new StatusController(m_LoggedInUser.Statuses, m_SearchableListBox, m_ProgressBar);
+            m_Controllers[eControllerType.Status] = new StatusController(m_LoggedInUser.Statuses, m_SearchableListBox, m_ProgressBar);
         }
 
-        public void ShowSelectedFriend(object i_User)
+        public object GetController(eControllerType i_ControllerType)
         {
-            m_FriendController.ShowSelectedItem(i_User);
+            return m_Controllers[i_ControllerType];
         }
 
-        public void ShowSelectedPage(object i_Page)
-        {
-            m_PageController.ShowSelectedItem(i_Page);
-        }
-
-        public void ShowSelectedAlbum(object i_Album)
-        {
-            m_PhotosController.ShowSelectedItem(i_Album);
-        }
-
-        public void ShowSelectedPost(object i_Post)
-        {
-            m_PostController.ShowSelectedItem(i_Post);
-        }
-
-        public void ShowSelectedStatus(object i_Status)
-        {
-            m_StatusController.ShowSelectedItem(i_Status);
-        }
-
-        public void ShowPhotos()
+        public void LoadDataToListBox(eControllerType i_ControllerType)
         {
             try
             {
-                m_PhotosController?.LoadDataToListBox();
+                m_Controllers[i_ControllerType]?.LoadDataToListBox();
             }
             catch (Exception ex)
             {
-                string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
-                    Environment.NewLine, ex.Message);
+                string exceptionMsg = string.Format("Getting {0} is not supported by Meta anymore.{1}Press ok to continue.{1}Error: {2}",
+                    i_ControllerType.ToString(), Environment.NewLine, ex.Message);
 
-                MessageBox.Show(exMsg);
+                MessageBox.Show(exceptionMsg);
             }
         }
 
-        public void ShowPosts()
+        public void ShowSelectedItem(object i_SelectedItem)
         {
-            m_PostController.LoadDataToListBox();
-        }
-
-        public void ShowPages()
-        {
-            m_PageController.LoadDataToListBox();
-        }
-
-        public void ShowFriends()
-        {
-            m_FriendController.LoadDataToListBox();
-        }
-
-        public void ShowStatuses()
-        {
-            m_StatusController.LoadDataToListBox();
-        }
-
-        public object GetController(object i_ControllerType)
-        {
-            object controller = null;
-
-            switch (i_ControllerType)
+            switch (i_SelectedItem)
             {
                 case Album album:
-                    controller = m_PhotosController;
+                    m_Controllers[eControllerType.Photo].ShowSelectedItem(i_SelectedItem);
                     break;
                 case Post post:
-                    controller = m_PostController;
+                    m_Controllers[eControllerType.Post].ShowSelectedItem(i_SelectedItem);
                     break;
-                case FacebookWrapper.ObjectModel.Page page:
-                    controller = m_PageController;
+                case Page page:
+                    m_Controllers[eControllerType.Page].ShowSelectedItem(i_SelectedItem);
                     break;
                 case User user:
-                    controller = m_FriendController;
+                    m_Controllers[eControllerType.Friend].ShowSelectedItem(i_SelectedItem);
                     break;
-                case FacebookWrapper.ObjectModel.Status status:
-                    controller = m_StatusController;
+                case Status status:
+                    m_Controllers[eControllerType.Status].ShowSelectedItem(i_SelectedItem);
                     break;
                 default:
                     break;
             }
-
-            return controller;
         }
     }
 }

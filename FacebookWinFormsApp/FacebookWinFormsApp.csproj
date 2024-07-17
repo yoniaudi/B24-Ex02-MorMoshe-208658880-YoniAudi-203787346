@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="ApplicationSettings.cs" />
     <Compile Include="ControllersFacade\Controllers.cs" />
+    <Compile Include="Enums\eControllerType.cs" />
     <Compile Include="Features\TravelBuddy\Models\TravelBuddyModel.cs" />
     <Compile Include="Features\TravelBuddy\FormTravelBuddy.cs">
       <SubType>Form</SubType>
