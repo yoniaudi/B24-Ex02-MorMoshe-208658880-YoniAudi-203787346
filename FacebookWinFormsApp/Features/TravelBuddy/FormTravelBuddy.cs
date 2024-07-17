@@ -136,7 +136,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             List<TravelBuddyModel> friendsWithPlannedTravel = r_TravelBuddyService
                 .FindFriendsWithPlannedTravel(i_FriendList, m_SelectedCountry, m_ArrivalDate,
                     m_DepartureDate, m_MinAge, m_MaxAge, m_Gender);
-            
+
             listBoxTravelBuddies.DisplayMember = "Name";
             listBoxTravelBuddies.DataSource = friendsWithPlannedTravel;
         }
@@ -145,7 +145,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
         {
             List<TravelBuddyModel> friendsTraveledDesiredCountry = r_TravelBuddyService
                 .FindFriendsForDesiredCountry(i_FriendsList, m_SelectedCountry);
-            
+
             listBoxTraveledFriends.DisplayMember = "Name";
             listBoxTraveledFriends.DataSource = friendsTraveledDesiredCountry;
         }

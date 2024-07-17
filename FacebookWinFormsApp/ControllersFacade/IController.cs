@@ -1,8 +1,6 @@
-﻿using BasicFacebookFeatures.Models;
-
-namespace BasicFacebookFeatures
+﻿namespace BasicFacebookFeatures
 {
-    public interface IControllers
+    public interface IController
     {
         string DisplayMember { get; }
         object DataSource { get; set; }

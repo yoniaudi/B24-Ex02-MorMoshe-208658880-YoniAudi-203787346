@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class PhotosController : UserControl, IControllers
+    public partial class PhotosController : UserControl, IController
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
@@ -27,7 +27,7 @@ namespace BasicFacebookFeatures.Models
                 initializeProgressBar(i_Albums);
                 DataSource = filterAlbumsWithProgress(i_Albums);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
                     Environment.NewLine, ex.Message);

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class PostController : UserControl, IControllers
+    public partial class PostController : UserControl, IController
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }

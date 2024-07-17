@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class PageController : UserControl, IControllers
+    public partial class PageController : UserControl, IController
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
@@ -20,7 +20,7 @@ namespace BasicFacebookFeatures.Models
         {
             InitializeComponent();
             m_ProgressBar = i_ProgressBar;
-            m_SearchableListBox= i_SearchableListBox;
+            m_SearchableListBox = i_SearchableListBox;
             initializeProgressBar(i_Pages);
             DataSource = filterPostsWithProgress(i_Pages);
         }

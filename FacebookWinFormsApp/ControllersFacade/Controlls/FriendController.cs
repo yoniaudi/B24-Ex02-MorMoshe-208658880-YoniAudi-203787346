@@ -5,12 +5,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Page = FacebookWrapper.ObjectModel.Page;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class FriendController : UserControl, IControllers
+    public partial class FriendController : UserControl, IController
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
@@ -72,7 +71,7 @@ namespace BasicFacebookFeatures.Models
             {
                 string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
                     Environment.NewLine, ex.Message);
-                
+
                 MessageBox.Show(exMsg);
             }
 

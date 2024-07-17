@@ -1,12 +1,10 @@
 ﻿using FacebookWrapper.ObjectModel;
 using System;
-using System.Net.NetworkInformation;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class StatusController : UserControl, IControllers
+    public partial class StatusController : UserControl, IController
     {
         public string DisplayMember { get { return "Message"; } }
         public object DataSource { get; set; }

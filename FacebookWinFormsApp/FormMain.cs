@@ -6,7 +6,6 @@ using FacebookWrapper.ObjectModel;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 using Page = FacebookWrapper.ObjectModel.Page;
 using Status = FacebookWrapper.ObjectModel.Status;
@@ -25,7 +24,7 @@ namespace BasicFacebookFeatures
         {
             InitializeComponent();
             FacebookService.s_CollectionLimit = 25;
-            m_Panels = new Panel[] 
+            m_Panels = new Panel[]
             {
                 panelProfile,
                 panelFriends,
@@ -116,51 +115,51 @@ namespace BasicFacebookFeatures
             {
                 string loggedInMsg = $"Logged in as {m_LoginResult.LoggedInUser.Name}";
 
-                progressBar.PerformStep();
                 this.Text = loggedInMsg;
                 buttonLogin.Text = loggedInMsg;
                 buttonLogin.BackColor = Color.LightGreen;
                 labelFullName.Text = m_LoginResult.LoggedInUser.Name;
                 pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
+                m_Controllers = new ControllersFacade.Controllers(m_LoggedInUser, searchableListBoxMain, progressBar);
                 buttonLogin.Enabled = false;
                 buttonLogout.Enabled = true;
                 buttonTravelBuddy.Visible = true;
                 buttonVolunteer.Visible = true;
-                m_Controllers = new ControllersFacade.Controllers(m_LoggedInUser, searchableListBoxMain, progressBar);
                 pictureBoxAppVisability.Visible = false;
             }
         }
 
         private void buttonLogout_Click(object sender, EventArgs e)
-		{
-			logout();
-		}
+        {
+            logout();
+        }
 
-		private void logout()
-		{
-			FacebookService.LogoutWithUI();
-			buttonLogin.Text = "Login";
-			buttonLogin.BackColor = buttonLogout.BackColor;
-			m_LoginResult = null;
-			buttonLogin.Enabled = true;
-			buttonLogout.Enabled = false;
-			checkBoxRememberMe.Checked = false;
-			buttonTravelBuddy.Visible = false;
-			buttonVolunteer.Visible = false;
-			pictureBoxAppVisability.Visible = true;
-		}
+        private void logout()
+        {
+            FacebookService.LogoutWithUI();
+            buttonLogin.Text = "Login";
+            buttonLogin.BackColor = buttonLogout.BackColor;
+            m_LoginResult = null;
+            buttonLogin.Enabled = true;
+            buttonLogout.Enabled = false;
+            checkBoxRememberMe.Checked = false;
+            buttonTravelBuddy.Visible = false;
+            buttonVolunteer.Visible = false;
+            pictureBoxAppVisability.Visible = true;
+        }
 
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
-            fetchPhotos();
+            showPhotos();
         }
 
-        private void fetchPhotos()
+        private void showPhotos()
         {
             if (m_Controllers.GetController(new Album()) != null)
             {
                 try
                 {
+                    m_Controllers.ShowPhotos();
                     panelPhotos.Controls.Clear();
                     panelPhotos.Controls.Add(m_Controllers.GetController(new Album()) as Control);
                     displayPanel(panelPhotos);
@@ -177,10 +176,10 @@ namespace BasicFacebookFeatures
 
         private void buttonPosts_Click(object sender, EventArgs e)
         {
-            fetchPosts();
+            showPosts();
         }
 
-        private void fetchPosts()
+        private void showPosts()
         {
             if (m_Controllers.GetController(new Post()) != null)
             {
@@ -193,10 +192,10 @@ namespace BasicFacebookFeatures
 
         private void buttonPages_Click(object sender, EventArgs e)
         {
-            fetchPages();
+            showPages();
         }
 
-        private void fetchPages()
+        private void showPages()
         {
             if (m_Controllers.GetController(new Page()) != null)
             {
@@ -209,10 +208,10 @@ namespace BasicFacebookFeatures
 
         private void buttonProfile_Click(object sender, EventArgs e)
         {
-            fetchProfile();
+            showProfile();
         }
 
-        private void fetchProfile()
+        private void showProfile()
         {
             m_Profile = new ProfileController(m_LoginResult.LoggedInUser);
             m_Profile.UserNameChanged += reportUserNameChange;
@@ -229,10 +228,10 @@ namespace BasicFacebookFeatures
 
         private void buttonFriends_Click(object sender, EventArgs e)
         {
-            fetchFriends();
+            showFriends();
         }
 
-        private void fetchFriends()
+        private void showFriends()
         {
             if (m_Controllers.GetController(new User()) != null)
             {
@@ -240,15 +239,15 @@ namespace BasicFacebookFeatures
                 panelFriends.Controls.Clear();
                 panelFriends.Controls.Add(m_Controllers.GetController(new User()) as Control);
                 displayPanel(panelFriends);
-            }   
+            }
         }
 
         private void buttonStatuses_Click(object sender, EventArgs e)
         {
-            fetchStatus();
+            showStatus();
         }
 
-        private void fetchStatus()
+        private void showStatus()
         {
             if (m_Controllers.GetController(new Status()) != null)
             {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -42,7 +41,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
             using (FileStream stream = new FileStream(r_FileName, FileMode.Create))
             {
                 XmlSerializer listSerializer = new XmlSerializer(typeof(List<VolunteerModel>));
-                
+
                 listSerializer.Serialize(stream, existingVolunteers);
             }
         }
@@ -52,7 +51,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
             using (FileStream stream = new FileStream(r_FileName, FileMode.Create))
             {
                 XmlSerializer listSerializer = new XmlSerializer(typeof(List<VolunteerModel>));
-                
+
                 listSerializer.Serialize(stream, i_Volunteers);
             }
         }
@@ -66,7 +65,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
                 using (FileStream stream = new FileStream(r_FileName, FileMode.Open))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(List<VolunteerModel>));
-                    
+
                     volunteers = (List<VolunteerModel>)serializer.Deserialize(stream);
                 }
             }
