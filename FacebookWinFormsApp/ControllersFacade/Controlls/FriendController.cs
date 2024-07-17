@@ -13,7 +13,7 @@ namespace BasicFacebookFeatures.Models
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
-        private System.Windows.Forms.ProgressBar m_ProgressBar = null;
+        private ProgressBar m_ProgressBar = null;
         private SearchableListBoxController m_SearchableListBox = null;
 
         public FriendController()
@@ -21,10 +21,10 @@ namespace BasicFacebookFeatures.Models
             InitializeComponent();
         }
 
-        public FriendController(FacebookObjectCollection<User> i_Friends, SearchableListBoxController i_SearchableListBox, System.Windows.Forms.ProgressBar i_ProgressBar)
+        public FriendController(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
             InitializeComponent();
-            DataSource = i_Friends;
+            DataSource = i_LoggedInUser.Friends;
             m_ProgressBar = i_ProgressBar;
             m_SearchableListBox = i_SearchableListBox;
         }

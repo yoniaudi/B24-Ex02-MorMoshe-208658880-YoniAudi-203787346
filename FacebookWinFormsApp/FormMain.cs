@@ -151,7 +151,30 @@ namespace BasicFacebookFeatures
 
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
-            showPhotos();
+            showData(eControllerType.Photo);
+            displayPanel(panelPhotos);
+        }
+
+        private void showData(eControllerType i_ControllerType)
+        {
+            object controller = m_Controllers.GetController(i_ControllerType);
+
+            if (controller != null)
+            {
+                try
+                {
+                    m_Controllers.LoadDataToListBox(i_ControllerType);
+                    panelPhotos.Controls.Clear();
+                    panelPhotos.Controls.Add(controller as Control);
+                }
+                catch (Exception ex)
+                {
+                    string exceptionMsg = string.Format("Getting {0} is not supported by Meta anymore.{1}Press ok to continue.{1}Error: {2}",
+                    i_ControllerType.ToString(), Environment.NewLine, ex.Message);
+
+                    MessageBox.Show(exceptionMsg);
+                }
+            }
         }
 
         private void showPhotos()
@@ -160,9 +183,11 @@ namespace BasicFacebookFeatures
             {
                 try
                 {
-                    m_Controllers.ShowPhotos();
+                    Control control = m_Controllers.GetController(eControllerType.Photo) as Control;
+
+                    m_Controllers.LoadDataToListBox(eControllerType.Photo);
                     panelPhotos.Controls.Clear();
-                    panelPhotos.Controls.Add(m_Controllers.GetController(new Album()) as Control);
+                    panelPhotos.Controls.Add(control);
                     displayPanel(panelPhotos);
                 }
                 catch (Exception ex)
@@ -177,10 +202,11 @@ namespace BasicFacebookFeatures
 
         private void buttonPosts_Click(object sender, EventArgs e)
         {
-            showPosts();
+            showData(eControllerType.Post);
+            displayPanel(panelPosts);
         }
 
-        private void showPosts()
+        /*private void showPosts()
         {
             if (m_Controllers.GetController() != null)
             {
@@ -189,7 +215,7 @@ namespace BasicFacebookFeatures
                 panelPosts.Controls.Add(m_Controllers.GetController(new Post()) as Control);
                 displayPanel(panelPosts);
             }
-        }
+        }*/
 
         /*private void showPosts()
         {
@@ -204,10 +230,11 @@ namespace BasicFacebookFeatures
 
         private void buttonPages_Click(object sender, EventArgs e)
         {
-            showPages();
+            showData(eControllerType.Page);
+            displayPanel(panelPages);
         }
 
-        private void showPages()
+        /*private void showPages()
         {
             if (m_Controllers.GetController(new Page()) != null)
             {
@@ -216,7 +243,7 @@ namespace BasicFacebookFeatures
                 panelPages.Controls.Add(m_Controllers.GetController(new Page()) as Control);
                 displayPanel(panelPages);
             }
-        }
+        }*/
 
         private void buttonProfile_Click(object sender, EventArgs e)
         {
@@ -240,10 +267,11 @@ namespace BasicFacebookFeatures
 
         private void buttonFriends_Click(object sender, EventArgs e)
         {
-            showFriends();
+            showData(eControllerType.Friend);
+            displayPanel(panelFriends);
         }
 
-        private void showFriends()
+        /*private void showFriends()
         {
             if (m_Controllers.GetController(new User()) != null)
             {
@@ -252,14 +280,15 @@ namespace BasicFacebookFeatures
                 panelFriends.Controls.Add(m_Controllers.GetController(new User()) as Control);
                 displayPanel(panelFriends);
             }
-        }
+        }*/
 
         private void buttonStatuses_Click(object sender, EventArgs e)
         {
-            showStatus();
+            showData(eControllerType.Status);
+            displayPanel(panelStatuses);
         }
 
-        private void showStatus()
+        /*private void showStatus()
         {
             if (m_Controllers.GetController(new Status()) != null)
             {
@@ -268,7 +297,7 @@ namespace BasicFacebookFeatures
                 panelStatuses.Controls.Add(m_Controllers.GetController(new Status()) as Control);
                 displayPanel(panelStatuses);
             }
-        }
+        }*/
 
         private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
         {

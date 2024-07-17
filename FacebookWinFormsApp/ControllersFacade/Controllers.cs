@@ -3,7 +3,7 @@ using BasicFacebookFeatures.Models;
 using FacebookWrapper.ObjectModel;
 using System;
 using System.Collections.Generic;
-using System.Speech.Recognition;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -20,15 +20,23 @@ namespace BasicFacebookFeatures.ControllersFacade
 
         public Controllers(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
+            m_Controllers = new Dictionary<eControllerType, IController>()
+            {
+                {eControllerType.Photo, null },
+                {eControllerType.Post, null },
+                {eControllerType.Page, null },
+                {eControllerType.Friend, null },
+                {eControllerType.Status, null }
+            };
             m_LoggedInUser = i_LoggedInUser;
             m_SearchableListBox = i_SearchableListBox;
             m_ProgressBar = i_ProgressBar;
             initializeProgressBar();
-            startThread(fetchPhotos);
-            startThread(fetchPosts);
-            startThread(fetchPages);
-            startThread(fetchFriends);
-            startThread(fetchStatuses);
+            startThread(() => fetchData(eControllerType.Photo));
+            startThread(() => fetchData(eControllerType.Post));
+            startThread(() => fetchData(eControllerType.Page));
+            startThread(() => fetchData(eControllerType.Friend));
+            startThread(() => fetchData(eControllerType.Status));
         }
 
         private void initializeProgressBar()
@@ -76,8 +84,27 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             try
             {
-                m_Controllers[i_ControllerType] = new PhotosController(m_LoggedInUser.Albums, m_SearchableListBox, m_ProgressBar);
-                //m_Controllers[i_ControllerType] = new PhotosController(m_LoggedInUser.Albums, m_SearchableListBox, m_ProgressBar);
+                Type controllerType = getControllerType(i_ControllerType);
+
+                if (controllerType != null)
+                {
+                    ConstructorInfo constructorInfo = controllerType.GetConstructor(new Type[] { typeof(User), typeof(SearchableListBoxController), typeof(ProgressBar) });
+
+                    if (constructorInfo != null)
+                    {
+                        object controllerInstance = constructorInfo.Invoke(new object[] { m_LoggedInUser, m_SearchableListBox, m_ProgressBar });
+                        
+                        m_Controllers[i_ControllerType] = controllerInstance as IController;
+                    }
+                    else
+                    {
+                        throw new Exception("Constructor not found.");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Controller type not found.");
+                }
             }
             catch (Exception ex)
             {
@@ -88,44 +115,40 @@ namespace BasicFacebookFeatures.ControllersFacade
             }
         }
 
-        private void fetchPhotos()
+        private Type getControllerType(eControllerType i_ControllerType)
         {
-            try
+            Type controllerType = null;
+
+            switch (i_ControllerType)
             {
-                m_Controllers[eControllerType.Photo] = new PhotosController(m_LoggedInUser.Albums, m_SearchableListBox, m_ProgressBar);
+                case eControllerType.Photo:
+                    controllerType = typeof(PhotosController);
+                    break;
+                case eControllerType.Post:
+                    controllerType = typeof(PostController);
+                    break;
+                case eControllerType.Page:
+                    controllerType = typeof(PageController);
+                    break;
+                case eControllerType.Friend:
+                    controllerType = typeof(FriendController);
+                    break;
+                case eControllerType.Status:
+                    controllerType = typeof(StatusController);
+                    break;
+                default:
+                    break;
             }
-            catch (Exception ex)
-            {
-                string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
-                    Environment.NewLine, ex.Message);
 
-                MessageBox.Show(exMsg);
-            }
-        }
-
-        private void fetchPosts()
-        {
-            m_Controllers[eControllerType.Post] = new PostController(m_LoggedInUser.Posts, m_SearchableListBox, m_ProgressBar);
-        }
-
-        private void fetchPages()
-        {
-            m_Controllers[eControllerType.Page] = new PageController(m_LoggedInUser.LikedPages, m_SearchableListBox, m_ProgressBar);
-        }
-
-        private void fetchFriends()
-        {
-            m_Controllers[eControllerType.Friend] = new FriendController(m_LoggedInUser.Friends, m_SearchableListBox, m_ProgressBar);
-        }
-
-        private void fetchStatuses()
-        {
-            m_Controllers[eControllerType.Status] = new StatusController(m_LoggedInUser.Statuses, m_SearchableListBox, m_ProgressBar);
+            return controllerType;
         }
 
         public object GetController(eControllerType i_ControllerType)
         {
-            return m_Controllers[i_ControllerType];
+            lock (r_LockObject)
+            {
+                return m_Controllers[i_ControllerType];
+            }
         }
 
         public void LoadDataToListBox(eControllerType i_ControllerType)

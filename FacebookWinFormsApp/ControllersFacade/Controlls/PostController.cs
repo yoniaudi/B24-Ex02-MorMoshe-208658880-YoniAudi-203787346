@@ -16,13 +16,13 @@ namespace BasicFacebookFeatures.Models
             InitializeComponent();
         }
 
-        public PostController(FacebookObjectCollection<Post> i_Posts, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
+        public PostController(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
             InitializeComponent();
             m_ProgressBar = i_ProgressBar;
             m_SearchableListBox = i_SearchableListBox;
-            initializeProgressBar(i_Posts);
-            DataSource = filterPostsWithProgress(i_Posts);
+            initializeProgressBar(i_LoggedInUser.Posts);
+            DataSource = filterPostsWithProgress(i_LoggedInUser.Posts);
         }
 
         private void initializeProgressBar(FacebookObjectCollection<Post> i_Posts)

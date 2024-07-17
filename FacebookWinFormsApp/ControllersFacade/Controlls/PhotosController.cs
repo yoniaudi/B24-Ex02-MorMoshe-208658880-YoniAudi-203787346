@@ -16,7 +16,7 @@ namespace BasicFacebookFeatures.Models
             InitializeComponent();
         }
 
-        public PhotosController(FacebookObjectCollection<Album> i_Albums, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
+        public PhotosController(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
             InitializeComponent();
 
@@ -24,8 +24,8 @@ namespace BasicFacebookFeatures.Models
             {
                 m_ProgressBar = i_ProgressBar;
                 m_SearchableListBox = i_SearchableListBox;
-                initializeProgressBar(i_Albums);
-                DataSource = filterAlbumsWithProgress(i_Albums);
+                initializeProgressBar(i_LoggedInUser.Albums);
+                DataSource = filterAlbumsWithProgress(i_LoggedInUser.Albums);
             }
             catch (Exception ex)
             {
