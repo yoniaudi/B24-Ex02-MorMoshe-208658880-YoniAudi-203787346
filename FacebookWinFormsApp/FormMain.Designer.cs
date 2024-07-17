@@ -305,9 +305,9 @@ namespace BasicFacebookFeatures
             // 
             // pictureBoxAppVisability
             // 
-            this.pictureBoxAppVisability.Location = new System.Drawing.Point(12, 96);
+            this.pictureBoxAppVisability.Location = new System.Drawing.Point(12, 590);
             this.pictureBoxAppVisability.Name = "pictureBoxAppVisability";
-            this.pictureBoxAppVisability.Size = new System.Drawing.Size(1197, 523);
+            this.pictureBoxAppVisability.Size = new System.Drawing.Size(1197, 29);
             this.pictureBoxAppVisability.TabIndex = 86;
             this.pictureBoxAppVisability.TabStop = false;
             // 

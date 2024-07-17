@@ -55,20 +55,6 @@ namespace BasicFacebookFeatures.Models
             return filteredStatuses;
         }
 
-        /*public void ShowSelectedStatus(FacebookWrapper.ObjectModel.Status i_Status)
-        {
-            if (i_Status != null)
-            {
-                string authorName = i_Status.From != null ? i_Status.From.Name : "";
-                string dateCreated = i_Status.CreatedTime != null ? i_Status.CreatedTime.ToString() : "";
-                string message = i_Status.Message != null ? i_Status.Message : "";
-
-                labelUserAuthor.Text = authorName;
-                labelUserDateCreated.Text = dateCreated;
-                richTextBoxUserMessage.Text = message;
-            }
-        }*/
-
         public void LoadData()
         {
             m_SearchableListBox.Invoke(new Action(() =>
