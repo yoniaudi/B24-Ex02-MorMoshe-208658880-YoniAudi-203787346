@@ -29,13 +29,7 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(FacebookObjectCollection<FacebookWrapper.ObjectModel.Status> i_Statuses)
         {
-            m_ProgressBar.Invoke(new Action(() =>
-            {
-                m_ProgressBar.Minimum = 1;
-                m_ProgressBar.Maximum = i_Statuses.Count;
-                m_ProgressBar.Value = 1;
-                m_ProgressBar.Step = 1;
-            }));
+            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Maximum += i_Statuses.Count));
         }
 
         private object filterStatusesWithProgress(FacebookObjectCollection<FacebookWrapper.ObjectModel.Status> i_Statuses)
@@ -55,7 +49,7 @@ namespace BasicFacebookFeatures.Models
             return filteredStatuses;
         }
 
-        public void LoadData()
+        public void LoadDataToListBox()
         {
             m_SearchableListBox.Invoke(new Action(() =>
             {

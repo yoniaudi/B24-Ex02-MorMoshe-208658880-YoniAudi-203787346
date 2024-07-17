@@ -25,11 +25,24 @@ namespace BasicFacebookFeatures.ControllersFacade
             m_LoggedInUser = i_LoggedInUser;
             m_SearchableListBox = i_SearchableListBox;
             m_ProgressBar = i_ProgressBar;
+            initializeProgressBar();
             new Thread(fetchPhotos).Start();
             new Thread(fetchPosts).Start();
             new Thread(fetchPages).Start();
             new Thread(fetchFriends).Start();
             new Thread(fetchStatuses).Start();
+            m_ProgressBar.Visible = false;
+        }
+
+        private void initializeProgressBar()
+        {
+            m_ProgressBar.Invoke(new Action(() =>
+            {
+                m_ProgressBar.Visible = true;
+                m_ProgressBar.Minimum = 0;
+                m_ProgressBar.Value = 0;
+                m_ProgressBar.Step = 1;
+            }));
         }
 
         private void fetchPhotos()
@@ -124,7 +137,7 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             try
             {
-                m_PhotosController?.LoadData();
+                m_PhotosController?.LoadDataToListBox();
             }
             catch (Exception ex)
             {
@@ -137,22 +150,22 @@ namespace BasicFacebookFeatures.ControllersFacade
 
         public void ShowPosts()
         {
-            m_PostController.LoadData();
+            m_PostController.LoadDataToListBox();
         }
 
         public void ShowPages()
         {
-            m_PageController.LoadData();
+            m_PageController.LoadDataToListBox();
         }
 
         public void ShowFriends()
         {
-            m_FriendController.LoadData();
+            m_FriendController.LoadDataToListBox();
         }
 
         public void ShowStatuses()
         {
-            m_StatusController.LoadData();
+            m_StatusController.LoadDataToListBox();
         }
     }
 }

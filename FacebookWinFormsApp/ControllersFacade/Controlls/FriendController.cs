@@ -30,40 +30,9 @@ namespace BasicFacebookFeatures.Models
             m_SearchableListBox = i_SearchableListBox;
         }
 
-        /*public void ShowSelectedFriend(User i_Friend)
-        {
-            FacebookObjectCollection<User> mainUserFriends = (FacebookObjectCollection<User>)DataSource;
-
-            initializeProgressBar(i_Friend);
-            flowLayoutPanelFriendPhotos.Controls.Clear();
-            labelFriendFullName.Text = i_Friend.Name;
-            pictureBoxFriendProfile.ImageLocation = i_Friend.PictureNormalURL;
-            labelUserFriendBirthday.Text = i_Friend.Birthday;
-            labelUserFriendLocation.Text = i_Friend.Location != null ? i_Friend.Location.Name : "";
-            labelUserFriendEmail.Text = i_Friend.Email;
-            labelUserFriendLanguages.Text = getLanguagesStr(i_Friend.Languages);
-            labelFriendStatuses.Text = $"{i_Friend.FirstName} Statuses:";
-            searchableListBoxControllerFriendsStatus.DisplayMember = "Message";
-            searchableListBoxControllerFriendsStatus.DataSource = filterStatusesWithProgress(i_Friend);
-            searchableListBoxControllerFriendAlbums.DisplayMember = "Name";
-            searchableListBoxControllerFriendAlbums.DataSource = filterAlbumsWithProgress(i_Friend);
-            labelFriendsOfFriend.Text = $"{i_Friend.FirstName} Friends:";
-            searchableListBoxControllerFriendsOfFriend.DisplayMember = "Name";
-            searchableListBoxControllerFriendsOfFriend.DataSource = i_Friend.Friends;
-            searchableListBoxControllerCommonFriends.DisplayMember = "Name";
-            searchableListBoxControllerCommonFriends.DataSource = i_Friend.Friends.Where(myFriend => mainUserFriends.Contains(myFriend)).ToList();
-            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = false));
-        }*/
-
         private void initializeProgressBar(User i_Friend)
         {
-            m_ProgressBar.Invoke(new Action(() =>
-            {
-                m_ProgressBar.Minimum = 0;
-                m_ProgressBar.Maximum = i_Friend.Statuses.Count;
-                m_ProgressBar.Value = 0;
-                m_ProgressBar.Step = 1;
-            }));
+            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Maximum += i_Friend.Statuses.Count));
         }
 
         private object filterStatusesWithProgress(User i_Friend)
@@ -162,7 +131,7 @@ namespace BasicFacebookFeatures.Models
             m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
         }
 
-        public void LoadData()
+        public void LoadDataToListBox()
         {
             m_SearchableListBox.Invoke(new Action(() =>
             {

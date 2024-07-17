@@ -8,7 +8,6 @@ namespace BasicFacebookFeatures.Models
     public partial class ProfileController : UserControl
     {
         private User m_LoggedInUser = null;
-        private Label m_LabelUserFullName = null;
         public string DisplayMember { get { return ""; } }
         public object DataSource { get; set; }
 

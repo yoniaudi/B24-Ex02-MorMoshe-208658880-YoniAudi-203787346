@@ -38,15 +38,9 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(FacebookObjectCollection<Album> i_Albums = null, FacebookWrapper.ObjectModel.Album i_Album = null)
         {
+
             m_ProgressBar.Invoke(new Action(() =>
-            {
-                m_ProgressBar.Visible = true;
-                m_ProgressBar.Minimum = 0;
-                m_ProgressBar.Maximum = i_Albums != null ? i_Albums.Count : (i_Album != null ? i_Album.Photos.Count : 0);
-                m_ProgressBar.Value = 0;
-                m_ProgressBar.Step = 1;
-                m_ProgressBar.Visible = false;
-            }));
+                m_ProgressBar.Maximum += i_Albums != null ? i_Albums.Count : (i_Album != null ? i_Album.Photos.Count : 0)));
         }
 
         private object filterAlbumsWithProgress(FacebookObjectCollection<Album> i_Albums)
@@ -66,7 +60,7 @@ namespace BasicFacebookFeatures.Models
             return filteredAlbums;
         }
 
-        public void LoadData()
+        public void LoadDataToListBox()
         {
             m_SearchableListBox.DisplayMember = DisplayMember;
             m_SearchableListBox.DataSource = DataSource;

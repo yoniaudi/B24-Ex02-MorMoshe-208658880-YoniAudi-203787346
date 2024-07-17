@@ -27,13 +27,7 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(FacebookObjectCollection<Page> i_Pages)
         {
-            m_ProgressBar.Invoke(new Action(() =>
-            {
-                m_ProgressBar.Minimum = 1;
-                m_ProgressBar.Maximum = i_Pages.Count;
-                m_ProgressBar.Value = 1;
-                m_ProgressBar.Step = 1;
-            }));
+            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Maximum += i_Pages.Count));
         }
 
         private object filterPostsWithProgress(FacebookObjectCollection<Page> i_Pages)
@@ -53,13 +47,7 @@ namespace BasicFacebookFeatures.Models
             return filteredPages;
         }
 
-        /*public void ShowSelectedPage(Page i_Page)
-        {
-            labelPageName.Text = i_Page.Name;
-            pictureBoxCheckin.ImageLocation = i_Page.PictureURL;
-        }*/
-
-        public void LoadData()
+        public void LoadDataToListBox()
         {
             m_SearchableListBox.Invoke(new Action(() =>
             {
