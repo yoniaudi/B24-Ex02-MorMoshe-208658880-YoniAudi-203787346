@@ -129,11 +129,6 @@ namespace BasicFacebookFeatures
             }
         }
 
-        private void turnOfPictureBoxAppVisability()
-        {
-            pictureBoxAppVisability.Invoke(new Action(() => pictureBoxAppVisability.Visible = false));
-        }
-
         private void buttonLogout_Click(object sender, EventArgs e)
         {
             logout();
