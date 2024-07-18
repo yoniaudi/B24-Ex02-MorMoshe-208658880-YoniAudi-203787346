@@ -22,11 +22,11 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             m_Controllers = new Dictionary<eControllerType, IController>()
             {
-                {eControllerType.Photo, null },
-                {eControllerType.Post, null },
-                {eControllerType.Page, null },
-                {eControllerType.Friend, null },
-                {eControllerType.Status, null }
+                {eControllerType.Photo, new PhotosController() },
+                {eControllerType.Post, new PostController() },
+                {eControllerType.Page, new PageController() },
+                {eControllerType.Friend, new FriendController() },
+                {eControllerType.Status, new StatusController() }
             };
             m_LoggedInUser = i_LoggedInUser;
             m_SearchableListBox = i_SearchableListBox;
@@ -37,47 +37,7 @@ namespace BasicFacebookFeatures.ControllersFacade
             startThread(() => fetchData(eControllerType.Page));
             startThread(() => fetchData(eControllerType.Friend));
             startThread(() => fetchData(eControllerType.Status));
-            /*            startThread(fetchPhotos);
-                        startThread(fetchPosts);
-                        startThread(fetchPages);
-                        startThread(fetchFriends);
-                        startThread(fetchStatuses);*/
         }
-
-/*        private void fetchPhotos()
-        {
-            try
-            {
-                m_Controllers[eControllerType.Photo] = new PhotosController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
-            }
-            catch (Exception ex)
-            {
-                string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
-                    Environment.NewLine, ex.Message);
-
-                MessageBox.Show(exMsg);
-            }
-        }
-
-        private void fetchPosts()
-        {
-            m_Controllers[eControllerType.Post] = new PostController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
-        }
-
-        private void fetchPages()
-        {
-            m_Controllers[eControllerType.Page] = new PageController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
-        }
-
-        private void fetchFriends()
-        {
-            m_Controllers[eControllerType.Friend] = new FriendController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
-        }
-
-        private void fetchStatuses()
-        {
-            m_Controllers[eControllerType.Status] = new StatusController(m_LoggedInUser, m_SearchableListBox, m_ProgressBar);
-        }*/
 
         private void initializeProgressBar()
         {
@@ -133,7 +93,7 @@ namespace BasicFacebookFeatures.ControllersFacade
                     if (constructorInfo != null)
                     {
                         object controllerInstance = constructorInfo.Invoke(new object[] { m_LoggedInUser, m_SearchableListBox, m_ProgressBar });
-                        
+
                         m_Controllers[i_ControllerType] = controllerInstance as IController;
                     }
                     else
@@ -157,30 +117,10 @@ namespace BasicFacebookFeatures.ControllersFacade
 
         private Type getControllerType(eControllerType i_ControllerType)
         {
-            Type controllerType = null;
-
-            switch (i_ControllerType)
+            lock (r_LockObject)
             {
-                case eControllerType.Photo:
-                    controllerType = typeof(PhotosController);
-                    break;
-                case eControllerType.Post:
-                    controllerType = typeof(PostController);
-                    break;
-                case eControllerType.Page:
-                    controllerType = typeof(PageController);
-                    break;
-                case eControllerType.Friend:
-                    controllerType = typeof(FriendController);
-                    break;
-                case eControllerType.Status:
-                    controllerType = typeof(StatusController);
-                    break;
-                default:
-                    break;
+                return m_Controllers[i_ControllerType].GetType();
             }
-
-            return controllerType;
         }
 
         public object GetController(eControllerType i_ControllerType)

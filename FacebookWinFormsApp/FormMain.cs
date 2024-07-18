@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Page = FacebookWrapper.ObjectModel.Page;
-using Status = FacebookWrapper.ObjectModel.Status;
 
 namespace BasicFacebookFeatures
 {
@@ -20,7 +18,6 @@ namespace BasicFacebookFeatures
         private User m_LoggedInUser = null;
         private ProfileController m_Profile = null;
         private Dictionary<eControllerType, Panel> m_Panels = null;
-        //private Panel[] m_Panels = null;
         private ControllersFacade.Controllers m_Controllers = null;
 
         public FormMain()
@@ -33,7 +30,8 @@ namespace BasicFacebookFeatures
                 {eControllerType.Post, panelPosts },
                 {eControllerType.Page, panelPages },
                 {eControllerType.Friend, panelFriends },
-                {eControllerType.Status, panelStatuses }
+                {eControllerType.Status, panelStatuses },
+                {eControllerType.Profile, panelProfile }
             };
         }
 
@@ -155,17 +153,6 @@ namespace BasicFacebookFeatures
             displayPanel(panelPhotos);
         }
 
-        private void showPosts()
-        {
-            if (m_Controllers.GetController(eControllerType.Post) != null)
-            {
-                (m_Controllers.GetController(eControllerType.Post) as IController).LoadDataToListBox();
-                panelPosts.Controls.Clear();
-                panelPosts.Controls.Add(m_Controllers.GetController(eControllerType.Post) as Control);
-                displayPanel(panelPosts);
-            }
-        }
-
         private void showData(eControllerType i_ControllerType)
         {
             Control controller = m_Controllers.GetController(i_ControllerType) as Control;
@@ -188,96 +175,17 @@ namespace BasicFacebookFeatures
             }
         }
 
-        /*private void showData(eControllerType i_ControllerType)
-        {
-            object controller = m_Controllers.GetController(i_ControllerType);
-
-            if (controller != null)
-            {
-                try
-                {
-                    m_Controllers.LoadDataToListBox(i_ControllerType);
-                    panelPhotos.Controls.Clear();
-                    panelPhotos.Controls.Add(m_Controllers.GetController(eControllerType.Post) as Control);
-                }
-                catch (Exception ex)
-                {
-                    string exceptionMsg = string.Format("Getting {0} is not supported by Meta anymore.{1}Press ok to continue.{1}Error: {2}",
-                    i_ControllerType.ToString(), Environment.NewLine, ex.Message);
-
-                    MessageBox.Show(exceptionMsg);
-                }
-            }
-        }*/
-
-        /*        private void showPhotos()
-                {
-                    if (m_Controllers.GetController(eControllerType.Photo) != null)
-                    {
-                        try
-                        {
-                            Control control = m_Controllers.GetController(eControllerType.Photo) as Control;
-
-                            m_Controllers.LoadDataToListBox(eControllerType.Photo);
-                            panelPhotos.Controls.Clear();
-                            panelPhotos.Controls.Add(control);
-                            displayPanel(panelPhotos);
-                        }
-                        catch (Exception ex)
-                        {
-                            string exMsg = string.Format("Getting albums is not supported by Meta anymore.{0}Press ok to continue.{0}Error: {1}",
-                                Environment.NewLine, ex.Message);
-
-                            MessageBox.Show(exMsg);
-                        }
-                    }
-                }*/
-
         private void buttonPosts_Click(object sender, EventArgs e)
         {
             showData(eControllerType.Post);
             displayPanel(panelPosts);
-            //showPosts();
         }
-
-        /*private void showPosts()
-        {
-            if (m_Controllers.GetController(eControllerType.Post) != null)
-            {
-                (m_Controllers.GetController(eControllerType.Post) as IController).LoadDataToListBox();
-                panelPosts.Controls.Clear();
-                panelPosts.Controls.Add(m_Controllers.GetController(eControllerType.Post) as Control);
-                displayPanel(panelPosts);
-            }
-        }*/
-
-        /*private void showPosts()
-        {
-            if (m_Controllers.GetController(new Post()) != null)
-            {
-                m_Controllers.ShowPosts();
-                panelPosts.Controls.Clear();
-                panelPosts.Controls.Add(m_Controllers.GetController(new Post()) as Control);
-                displayPanel(panelPosts);
-            }
-        }*/
 
         private void buttonPages_Click(object sender, EventArgs e)
         {
             showData(eControllerType.Page);
             displayPanel(panelPages);
         }
-
-        /*private void showPages()
-        {
-            if (m_Controllers.GetController(new Page()) != null)
-            {
-                m_Controllers.ShowPages();
-                panelPages.Controls.Clear();
-                panelPages.Controls.Add(m_Controllers.GetController(new Page()) as Control);
-                displayPanel(panelPages);
-            }
-        }*/
 
         private void buttonProfile_Click(object sender, EventArgs e)
         {
@@ -287,7 +195,7 @@ namespace BasicFacebookFeatures
         private void showProfile()
         {
             m_Profile = new ProfileController(m_LoginResult.LoggedInUser);
-            
+
             if (m_Profile == null)
             {
                 m_Profile.UserNameChanged += reportUserNameChange; /////////////             Need to have protection so it wont be greater than one.
@@ -310,33 +218,11 @@ namespace BasicFacebookFeatures
             displayPanel(panelFriends);
         }
 
-        /*private void showFriends()
-        {
-            if (m_Controllers.GetController(new User()) != null)
-            {
-                m_Controllers.ShowFriends();
-                panelFriends.Controls.Clear();
-                panelFriends.Controls.Add(m_Controllers.GetController(new User()) as Control);
-                displayPanel(panelFriends);
-            }
-        }*/
-
         private void buttonStatuses_Click(object sender, EventArgs e)
         {
             showData(eControllerType.Status);
             displayPanel(panelStatuses);
         }
-
-        /*private void showStatus()
-        {
-            if (m_Controllers.GetController(new Status()) != null)
-            {
-                m_Controllers.ShowStatuses();
-                panelStatuses.Controls.Clear();
-                panelStatuses.Controls.Add(m_Controllers.GetController(new Status()) as Control);
-                displayPanel(panelStatuses);
-            }
-        }*/
 
         private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -344,32 +230,6 @@ namespace BasicFacebookFeatures
 
             m_Controllers.ShowSelectedItem(selectedItem);
         }
-
-        /*private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            object selectedItem = (sender as SearchableListBoxController).SelectedItem;
-
-            switch (selectedItem)
-            {
-                case Album album:
-                    m_Controllers.ShowSelectedAlbum(album);
-                    break;
-                case Post post:
-                    m_Controllers.ShowSelectedPost(post);
-                    break;
-                case Page page:
-                    m_Controllers.ShowSelectedPage(page);
-                    break;
-                case User user:
-                    m_Controllers.ShowSelectedFriend(user);
-                    break;
-                case Status status:
-                    m_Controllers.ShowSelectedStatus(status);
-                    break;
-                default:
-                    break;
-            }
-        }*/
 
         private void buttonTravelBuddy_Click(object sender, EventArgs e)
         {
@@ -389,20 +249,10 @@ namespace BasicFacebookFeatures
         {
             foreach (Panel panel in m_Panels.Values)
             {
-                panel.Visible = false;
-            }
-
-            i_Panel.Visible = true;
-        }
-
-        /*private void displayPanel(Panel i_Panel)
-        {
-            foreach (Panel panel in m_Panels)
-            {
                 panel.Invoke(new Action(() => panel.Visible = false));
             }
 
             i_Panel.Invoke(new Action(() => i_Panel.Visible = true));
-        }*/
+        }
     }
 }
