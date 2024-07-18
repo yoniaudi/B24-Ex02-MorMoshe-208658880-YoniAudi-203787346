@@ -195,12 +195,8 @@ namespace BasicFacebookFeatures
         private void showProfile()
         {
             m_Profile = new ProfileController(m_LoginResult.LoggedInUser);
-
-            if (m_Profile == null)
-            {
-                m_Profile.UserNameChanged += reportUserNameChange; /////////////             Need to have protection so it wont be greater than one.
-            }
-
+            m_Profile.UserNameChanged -= reportUserNameChange;
+            m_Profile.UserNameChanged += reportUserNameChange;
             searchableListBoxMain.Invoke(new Action(() => searchableListBoxMain.DataSource = null));
             panelProfile.Controls.Clear();
             panelProfile.Controls.Add(m_Profile);

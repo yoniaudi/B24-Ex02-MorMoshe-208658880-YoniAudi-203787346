@@ -22,21 +22,17 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             m_Controllers = new Dictionary<eControllerType, IController>()
             {
-                {eControllerType.Photo, new PhotosController() },
-                {eControllerType.Post, new PostController() },
-                {eControllerType.Page, new PageController() },
-                {eControllerType.Friend, new FriendController() },
-                {eControllerType.Status, new StatusController() }
+                { eControllerType.Photo, new PhotosController() },
+                { eControllerType.Post, new PostController() },
+                { eControllerType.Page, new PageController() },
+                { eControllerType.Friend, new FriendController() },
+                { eControllerType.Status, new StatusController() }
             };
             m_LoggedInUser = i_LoggedInUser;
             m_SearchableListBox = i_SearchableListBox;
             m_ProgressBar = i_ProgressBar;
             initializeProgressBar();
-            startThread(() => fetchData(eControllerType.Photo));
-            startThread(() => fetchData(eControllerType.Post));
-            startThread(() => fetchData(eControllerType.Page));
-            startThread(() => fetchData(eControllerType.Friend));
-            startThread(() => fetchData(eControllerType.Status));
+            launchThreading();
         }
 
         private void initializeProgressBar()
@@ -48,6 +44,15 @@ namespace BasicFacebookFeatures.ControllersFacade
                 m_ProgressBar.Value = 0;
                 m_ProgressBar.Step = 1;
             }));
+        }
+
+        private void launchThreading()
+        {
+            startThread(() => fetchData(eControllerType.Photo));
+            startThread(() => fetchData(eControllerType.Post));
+            startThread(() => fetchData(eControllerType.Page));
+            startThread(() => fetchData(eControllerType.Friend));
+            startThread(() => fetchData(eControllerType.Status));
         }
 
         private void startThread(ThreadStart i_ThreadStart)
@@ -119,7 +124,7 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             lock (r_LockObject)
             {
-                return m_Controllers[i_ControllerType].GetType();
+                return m_Controllers[i_ControllerType]?.GetType();
             }
         }
 
