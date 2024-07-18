@@ -11,16 +11,17 @@ namespace BasicFacebookFeatures.ControllersFacade
 {
     public class Controllers
     {
-        private Dictionary<eControllerType, IController> m_Controllers = null;
         private User m_LoggedInUser = null;
         private ProgressBar m_ProgressBar = null;
         private SearchableListBoxController m_SearchableListBox = null;
         private int m_ActiveThreads = 0;
         private readonly object r_LockObject = new object();
+        private readonly Dictionary<eControllerType, IController> r_Controllers = null;
+        private readonly Dictionary<Type, eControllerType> r_SelectedItemTypes = null;
 
         public Controllers(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
-            m_Controllers = new Dictionary<eControllerType, IController>()
+            r_Controllers = new Dictionary<eControllerType, IController>()
             {
                 { eControllerType.Photo, new PhotoController() },
                 { eControllerType.Post, new PostController() },
@@ -28,6 +29,14 @@ namespace BasicFacebookFeatures.ControllersFacade
                 { eControllerType.Profile, new ProfileController() },
                 { eControllerType.Friend, new FriendController() },
                 { eControllerType.Status, new StatusController() }
+            };
+            r_SelectedItemTypes = new Dictionary<Type, eControllerType>()
+            {
+                { typeof(Album), eControllerType.Photo },
+                { typeof(Post), eControllerType.Post },
+                { typeof(Page), eControllerType.Page },
+                { typeof(User), eControllerType.Friend },
+                { typeof(Status), eControllerType.Status }
             };
             m_LoggedInUser = i_LoggedInUser;
             m_SearchableListBox = i_SearchableListBox;
@@ -102,7 +111,7 @@ namespace BasicFacebookFeatures.ControllersFacade
                     
                 object controllerInstance = constructorInfo.Invoke(new object[] { m_LoggedInUser, m_SearchableListBox, m_ProgressBar });
 
-                m_Controllers[i_ControllerType] = controllerInstance as IController;
+                r_Controllers[i_ControllerType] = controllerInstance as IController;
             }
             catch (Exception ex)
             {
@@ -117,7 +126,7 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             lock (r_LockObject)
             {
-                return m_Controllers[i_ControllerType]?.GetType();
+                return r_Controllers[i_ControllerType]?.GetType();
             }
         }
 
@@ -125,7 +134,7 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             lock (r_LockObject)
             {
-                return m_Controllers[i_ControllerType];
+                return r_Controllers[i_ControllerType];
             }
         }
 
@@ -133,7 +142,7 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             try
             {
-                m_Controllers[i_ControllerType]?.LoadDataToListBox();
+                r_Controllers[i_ControllerType]?.LoadDataToListBox();
             }
             catch (Exception ex)
             {
@@ -146,25 +155,15 @@ namespace BasicFacebookFeatures.ControllersFacade
 
         public void ShowSelectedItem(object i_SelectedItem)
         {
-            switch (i_SelectedItem)
+            if (i_SelectedItem != null)
             {
-                case Album album:
-                    m_Controllers[eControllerType.Photo].ShowSelectedItem(i_SelectedItem);
-                    break;
-                case Post post:
-                    m_Controllers[eControllerType.Post].ShowSelectedItem(i_SelectedItem);
-                    break;
-                case Page page:
-                    m_Controllers[eControllerType.Page].ShowSelectedItem(i_SelectedItem);
-                    break;
-                case User user:
-                    m_Controllers[eControllerType.Friend].ShowSelectedItem(i_SelectedItem);
-                    break;
-                case Status status:
-                    m_Controllers[eControllerType.Status].ShowSelectedItem(i_SelectedItem);
-                    break;
-                default:
-                    break;
+                Type selectedItemType = i_SelectedItem.GetType();
+                bool isValueRetrieved = r_SelectedItemTypes.TryGetValue(selectedItemType, out eControllerType controllerType);
+
+                if (isValueRetrieved == true)
+                {
+                    r_Controllers[controllerType].ShowSelectedItem(i_SelectedItem);
+                }
             }
         }
     }
