@@ -26,6 +26,7 @@ namespace BasicFacebookFeatures.ControllersFacade
                 { eControllerType.Photo, new PhotosController() },
                 { eControllerType.Post, new PostController() },
                 { eControllerType.Page, new PageController() },
+                { eControllerType.Profile, new ProfileController() },
                 { eControllerType.Friend, new FriendController() },
                 { eControllerType.Status, new StatusController() }
             };
@@ -52,6 +53,7 @@ namespace BasicFacebookFeatures.ControllersFacade
             startThread(() => fetchData(eControllerType.Photo));
             startThread(() => fetchData(eControllerType.Post));
             startThread(() => fetchData(eControllerType.Page));
+            startThread(() => fetchData(eControllerType.Profile));
             startThread(() => fetchData(eControllerType.Friend));
             startThread(() => fetchData(eControllerType.Status));
         }

@@ -5,23 +5,24 @@ using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class ProfileController : UserControl
+    public partial class ProfileController : UserControl, IController
     {
         private User m_LoggedInUser = null;
         public string DisplayMember { get { return ""; } }
         public object DataSource { get; set; }
-
         public event Action UserNameChanged = null;
+        private SearchableListBoxController m_SearchableListBox = null;
 
         public ProfileController()
         {
             InitializeComponent();
         }
 
-        public ProfileController(User i_LoggedInUser)
+        public ProfileController(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar = null)
         {
             InitializeComponent();
             m_LoggedInUser = i_LoggedInUser;
+            m_SearchableListBox = i_SearchableListBox;
             populateProfileData();
         }
 
@@ -38,7 +39,6 @@ namespace BasicFacebookFeatures.Models
             foreach (Page languagePage in m_LoggedInUser.Languages)
             {
                 string languageName = languagePage.Name.Remove(languagePage.Name.Length - "Language".Length - 1);
-
                 languages.Append($"{languageName}, ");
             }
 
@@ -93,6 +93,16 @@ namespace BasicFacebookFeatures.Models
 
             m_LoggedInUser.Name = newUserName;
             UserNameChanged?.Invoke();
+        }
+
+        public void LoadDataToListBox()
+        {
+            m_SearchableListBox.DisplayMember = DisplayMember;
+            m_SearchableListBox.DataSource = DataSource;
+        }
+
+        public void ShowSelectedItem(object i_Item)
+        {
         }
     }
 }

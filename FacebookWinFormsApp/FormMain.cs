@@ -1,4 +1,5 @@
-﻿using BasicFacebookFeatures.Enums;
+﻿using BasicFacebookFeatures.ControllersFacade;
+using BasicFacebookFeatures.Enums;
 using BasicFacebookFeatures.Features.TravelBuddy;
 using BasicFacebookFeatures.Features.Volunteering;
 using BasicFacebookFeatures.Models;
@@ -29,6 +30,7 @@ namespace BasicFacebookFeatures
                 {eControllerType.Photo, panelPhotos },
                 {eControllerType.Post, panelPosts },
                 {eControllerType.Page, panelPages },
+                {eControllerType.Profile, panelProfile },
                 {eControllerType.Friend, panelFriends },
                 {eControllerType.Status, panelStatuses }
             };
@@ -154,21 +156,62 @@ namespace BasicFacebookFeatures
 
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
-            displayPanel(panelPhotos);
             showData(eControllerType.Photo);
+        }
+
+        private void buttonPosts_Click(object sender, EventArgs e)
+        {
+            showData(eControllerType.Post);
+        }
+
+        private void buttonPages_Click(object sender, EventArgs e)
+        {
+            showData(eControllerType.Page);
+        }
+
+        private void buttonProfile_Click(object sender, EventArgs e)
+        {
+            showData(eControllerType.Profile);
+            setUserNameChangedEvent();
+        }
+
+        private void setUserNameChangedEvent()
+        {
+            ProfileController userProfile = m_Controllers.GetController(eControllerType.Profile) as ProfileController;
+
+            userProfile.UserNameChanged -= updateUserName;
+            userProfile.UserNameChanged += updateUserName;
+        }
+
+        private void updateUserName()
+        {
+            labelFullName.Text = m_LoginResult.LoggedInUser.Name;
+        }
+
+        private void buttonFriends_Click(object sender, EventArgs e)
+        {
+            showData(eControllerType.Friend);
+        }
+
+        private void buttonStatuses_Click(object sender, EventArgs e)
+        {
+            showData(eControllerType.Status);
         }
 
         private void showData(eControllerType i_ControllerType)
         {
             Control controller = m_Controllers.GetController(i_ControllerType) as Control;
+            Panel panel = m_Panels[i_ControllerType];
+
+            displayPanel(panel);
 
             if (controller != null)
             {
                 try
                 {
                     m_Controllers.LoadDataToListBox(i_ControllerType);
-                    m_Panels[i_ControllerType].Controls.Clear();
-                    m_Panels[i_ControllerType].Controls.Add(controller);
+                    panel.Controls.Clear();
+                    panel.Controls.Add(controller);
                 }
                 catch (Exception ex)
                 {
@@ -178,51 +221,6 @@ namespace BasicFacebookFeatures
                     MessageBox.Show(exceptionMsg);
                 }
             }
-        }
-
-        private void buttonPosts_Click(object sender, EventArgs e)
-        {
-            displayPanel(panelPosts);
-            showData(eControllerType.Post);
-        }
-
-        private void buttonPages_Click(object sender, EventArgs e)
-        {
-            displayPanel(panelPages);
-            showData(eControllerType.Page);
-        }
-
-        private void buttonProfile_Click(object sender, EventArgs e)
-        {
-            showProfile();
-        }
-
-        private void showProfile()
-        {
-            m_Profile = new ProfileController(m_LoginResult.LoggedInUser);
-            m_Profile.UserNameChanged -= reportUserNameChange;
-            m_Profile.UserNameChanged += reportUserNameChange;
-            searchableListBoxMain.Invoke(new Action(() => searchableListBoxMain.DataSource = null));
-            panelProfile.Controls.Clear();
-            panelProfile.Controls.Add(m_Profile);
-            displayPanel(panelProfile);
-        }
-
-        private void reportUserNameChange()
-        {
-            labelFullName.Text = m_LoginResult.LoggedInUser.Name;
-        }
-
-        private void buttonFriends_Click(object sender, EventArgs e)
-        {
-            displayPanel(panelFriends);
-            showData(eControllerType.Friend);
-        }
-
-        private void buttonStatuses_Click(object sender, EventArgs e)
-        {
-            displayPanel(panelStatuses);
-            showData(eControllerType.Status);
         }
 
         private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -253,7 +251,6 @@ namespace BasicFacebookFeatures
                 panel.Invoke(new Action(() => panel.Visible = false));
             }
 
-            panelProfile.Visible = false;
             i_Panel.Invoke(new Action(() => i_Panel.Visible = true));
         }
     }
