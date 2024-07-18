@@ -118,13 +118,19 @@ namespace BasicFacebookFeatures
                 buttonLogin.BackColor = Color.LightGreen;
                 labelFullName.Text = m_LoginResult.LoggedInUser.Name;
                 pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
+                pictureBoxAppVisability.Visible = true;
                 m_Controllers = new ControllersFacade.Controllers(m_LoggedInUser, searchableListBoxMain, progressBar);
+                m_Controllers.DisablePictureBoxAppVisability += turnOfPictureBoxAppVisability;
                 buttonLogin.Enabled = false;
                 buttonLogout.Enabled = true;
                 buttonTravelBuddy.Visible = true;
                 buttonVolunteer.Visible = true;
-                pictureBoxAppVisability.Visible = false;
             }
+        }
+
+        private void turnOfPictureBoxAppVisability()
+        {
+            pictureBoxAppVisability.Invoke(new Action(() => pictureBoxAppVisability.Visible = false));
         }
 
         private void buttonLogout_Click(object sender, EventArgs e)
@@ -148,8 +154,8 @@ namespace BasicFacebookFeatures
 
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
-            showData(eControllerType.Photo);
             displayPanel(panelPhotos);
+            showData(eControllerType.Photo);
         }
 
         private void showData(eControllerType i_ControllerType)
@@ -176,14 +182,14 @@ namespace BasicFacebookFeatures
 
         private void buttonPosts_Click(object sender, EventArgs e)
         {
-            showData(eControllerType.Post);
             displayPanel(panelPosts);
+            showData(eControllerType.Post);
         }
 
         private void buttonPages_Click(object sender, EventArgs e)
         {
-            showData(eControllerType.Page);
             displayPanel(panelPages);
+            showData(eControllerType.Page);
         }
 
         private void buttonProfile_Click(object sender, EventArgs e)
@@ -209,14 +215,14 @@ namespace BasicFacebookFeatures
 
         private void buttonFriends_Click(object sender, EventArgs e)
         {
-            showData(eControllerType.Friend);
             displayPanel(panelFriends);
+            showData(eControllerType.Friend);
         }
 
         private void buttonStatuses_Click(object sender, EventArgs e)
         {
-            showData(eControllerType.Status);
             displayPanel(panelStatuses);
+            showData(eControllerType.Status);
         }
 
         private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)

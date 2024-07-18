@@ -305,9 +305,9 @@ namespace BasicFacebookFeatures
             // 
             // pictureBoxAppVisability
             // 
-            this.pictureBoxAppVisability.Location = new System.Drawing.Point(12, 590);
+            this.pictureBoxAppVisability.Location = new System.Drawing.Point(12, 91);
             this.pictureBoxAppVisability.Name = "pictureBoxAppVisability";
-            this.pictureBoxAppVisability.Size = new System.Drawing.Size(1197, 29);
+            this.pictureBoxAppVisability.Size = new System.Drawing.Size(1197, 528);
             this.pictureBoxAppVisability.TabIndex = 86;
             this.pictureBoxAppVisability.TabStop = false;
             // 
@@ -340,11 +340,11 @@ namespace BasicFacebookFeatures
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(1243, 622);
             this.Controls.Add(this.checkBoxRememberMe);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.pictureBoxAppVisability);
             this.Controls.Add(this.searchableListBoxMain);
             this.Controls.Add(this.buttonVolunteer);
             this.Controls.Add(this.buttonTravelBuddy);
-            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.labelFullName);
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.panelSecondary);

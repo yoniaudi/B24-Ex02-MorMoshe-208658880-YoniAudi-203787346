@@ -17,6 +17,7 @@ namespace BasicFacebookFeatures.ControllersFacade
         private SearchableListBoxController m_SearchableListBox = null;
         private int m_ActiveThreads = 0;
         private readonly object r_LockObject = new object();
+        public event Action DisablePictureBoxAppVisability = null;
 
         public Controllers(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
@@ -77,10 +78,8 @@ namespace BasicFacebookFeatures.ControllersFacade
 
                 if (m_ActiveThreads == 0)
                 {
-                    m_ProgressBar.Invoke(new Action(() =>
-                    {
-                        m_ProgressBar.Visible = false;
-                    }));
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = false));
+                    DisablePictureBoxAppVisability?.Invoke();
                 }
             }
         }
