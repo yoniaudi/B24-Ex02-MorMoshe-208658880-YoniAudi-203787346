@@ -97,11 +97,14 @@ namespace BasicFacebookFeatures.Models
 
         public void LoadDataToListBox()
         {
-            m_SearchableListBox.Invoke(new Action(() =>
+            if (m_SearchableListBox != null)
             {
-                m_SearchableListBox.DisplayMember = DisplayMember;
-                m_SearchableListBox.DataSource = DataSource;
-            }));
+                m_SearchableListBox.Invoke(new Action(() =>
+                {
+                    m_SearchableListBox.DisplayMember = DisplayMember;
+                    m_SearchableListBox.DataSource = DataSource;
+                }));
+            }
         }
 
         public void ShowSelectedItem(object i_Item)

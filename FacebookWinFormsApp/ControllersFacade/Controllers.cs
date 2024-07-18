@@ -17,7 +17,6 @@ namespace BasicFacebookFeatures.ControllersFacade
         private SearchableListBoxController m_SearchableListBox = null;
         private int m_ActiveThreads = 0;
         private readonly object r_LockObject = new object();
-        public event Action DisablePictureBoxAppVisability = null;
 
         public Controllers(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
@@ -79,7 +78,6 @@ namespace BasicFacebookFeatures.ControllersFacade
                 if (m_ActiveThreads == 0)
                 {
                     m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = false));
-                    DisablePictureBoxAppVisability?.Invoke();
                 }
             }
         }
@@ -90,27 +88,21 @@ namespace BasicFacebookFeatures.ControllersFacade
             {
                 Type controllerType = getControllerType(i_ControllerType);
 
-                if (controllerType != null)
-                {
-                    ConstructorInfo constructorInfo = controllerType.GetConstructor(new Type[] { typeof(User), typeof(SearchableListBoxController), typeof(ProgressBar) });
-
-                    if (constructorInfo != null)
-                    {
-                        object controllerInstance = constructorInfo.Invoke(new object[] { m_LoggedInUser, m_SearchableListBox, m_ProgressBar });
-
-                        m_Controllers[i_ControllerType] = controllerInstance as IController;
-                    }
-                    else 
-                    {
-                        throw new Exception("Constructor not found.");
-                    }
-                    
-                }
-                else
+                if (controllerType == null)
                 {
                     throw new Exception("Controller type not found.");
                 }
                 
+                ConstructorInfo constructorInfo = controllerType.GetConstructor(new Type[] { typeof(User), typeof(SearchableListBoxController), typeof(ProgressBar) });
+
+                if (constructorInfo == null)
+                {
+                    throw new Exception("Constructor not found.");
+                }
+                    
+                object controllerInstance = constructorInfo.Invoke(new object[] { m_LoggedInUser, m_SearchableListBox, m_ProgressBar });
+
+                m_Controllers[i_ControllerType] = controllerInstance as IController;
             }
             catch (Exception ex)
             {

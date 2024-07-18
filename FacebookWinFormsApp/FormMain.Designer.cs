@@ -313,6 +313,7 @@ namespace BasicFacebookFeatures
             // 
             // pictureBoxProfile
             // 
+            this.pictureBoxProfile.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.userBindingSource, "PictureNormalURL", true));
             this.pictureBoxProfile.Location = new System.Drawing.Point(150, 96);
             this.pictureBoxProfile.Name = "pictureBoxProfile";
             this.pictureBoxProfile.Size = new System.Drawing.Size(136, 136);

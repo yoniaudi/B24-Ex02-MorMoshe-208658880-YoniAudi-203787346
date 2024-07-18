@@ -113,7 +113,7 @@ namespace BasicFacebookFeatures.Models
 
         private void searchableListBoxControllerFriendsStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FacebookWrapper.ObjectModel.Status status = searchableListBoxControllerFriendsStatus.SelectedItem as FacebookWrapper.ObjectModel.Status;
+            Status status = searchableListBoxControllerFriendsStatus.SelectedItem as Status;
             statusesModelFriendStatuses.ShowSelectedItem(status);
             flowLayoutPanelFriendPhotos.Hide();
             statusesModelFriendStatuses.Show();
@@ -122,11 +122,14 @@ namespace BasicFacebookFeatures.Models
 
         public void LoadDataToListBox()
         {
-            m_SearchableListBox.Invoke(new Action(() =>
+            if (m_SearchableListBox != null)
             {
-                m_SearchableListBox.DisplayMember = DisplayMember;
-                m_SearchableListBox.DataSource = DataSource;
-            }));
+                m_SearchableListBox.Invoke(new Action(() =>
+                {
+                    m_SearchableListBox.DisplayMember = DisplayMember;
+                    m_SearchableListBox.DataSource = DataSource;
+                }));
+            }
         }
 
         public void ShowSelectedItem(object i_Friend)

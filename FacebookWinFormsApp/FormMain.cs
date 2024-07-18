@@ -120,13 +120,12 @@ namespace BasicFacebookFeatures
                 buttonLogin.BackColor = Color.LightGreen;
                 labelFullName.Text = m_LoginResult.LoggedInUser.Name;
                 pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
-                pictureBoxAppVisability.Visible = true;
                 m_Controllers = new ControllersFacade.Controllers(m_LoggedInUser, searchableListBoxMain, progressBar);
-                m_Controllers.DisablePictureBoxAppVisability += turnOfPictureBoxAppVisability;
                 buttonLogin.Enabled = false;
                 buttonLogout.Enabled = true;
                 buttonTravelBuddy.Visible = true;
                 buttonVolunteer.Visible = true;
+                pictureBoxAppVisability.Visible = false;
             }
         }
 
@@ -156,32 +155,44 @@ namespace BasicFacebookFeatures
 
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
-            new Thread(() => showData(eControllerType.Photo)).Start();
+            Thread thread = new Thread(() => showData(eControllerType.Photo));
+
+            thread.Start();
         }
 
         private void buttonPosts_Click(object sender, EventArgs e)
         {
-            new Thread(() => showData(eControllerType.Post)).Start();
+            Thread thread = new Thread(() => showData(eControllerType.Post));
+
+            thread.Start();
         }
 
         private void buttonPages_Click(object sender, EventArgs e)
         {
-            new Thread(() => showData(eControllerType.Page)).Start();
+            Thread thread = new Thread(() => showData(eControllerType.Page));
+
+            thread.Start();
         }
 
         private void buttonFriends_Click(object sender, EventArgs e)
         {
-            new Thread(() => showData(eControllerType.Friend)).Start();
+            Thread thread = new Thread(() => showData(eControllerType.Friend));
+
+            thread.Start();
         }
 
         private void buttonStatuses_Click(object sender, EventArgs e)
         {
-            new Thread(() => showData(eControllerType.Status)).Start();
+            Thread thread = new Thread(() => showData(eControllerType.Status));
+
+            thread.Start();
         }
 
         private void buttonProfile_Click(object sender, EventArgs e)
         {
-            new Thread(() => showData(eControllerType.Profile)).Start();
+            Thread thread = new Thread(() => showData(eControllerType.Profile));
+
+            thread.Start();
             setUserNameChangedEvent();
         }
 
