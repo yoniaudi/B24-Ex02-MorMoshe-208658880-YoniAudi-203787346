@@ -1,6 +1,6 @@
 ﻿namespace BasicFacebookFeatures.Models
 {
-    public partial class PhotosController
+    public partial class PhotoController
     {
         /// <summary> 
         /// Required designer variable.

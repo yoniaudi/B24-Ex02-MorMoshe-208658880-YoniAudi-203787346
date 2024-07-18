@@ -157,11 +157,11 @@
     <Compile Include="ControllersFacade\Controlls\FriendController.Designer.cs">
       <DependentUpon>FriendController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\PhotosController.cs">
+    <Compile Include="ControllersFacade\Controlls\PhotoController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\PhotosController.Designer.cs">
-      <DependentUpon>PhotosController.cs</DependentUpon>
+    <Compile Include="ControllersFacade\Controlls\PhotoController.Designer.cs">
+      <DependentUpon>PhotoController.cs</DependentUpon>
     </Compile>
     <Compile Include="ControllersFacade\Controlls\PostController.cs">
       <SubType>UserControl</SubType>
@@ -222,8 +222,8 @@
       <DependentUpon>FriendController.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControllersFacade\Controlls\PhotosController.resx">
-      <DependentUpon>PhotosController.cs</DependentUpon>
+    <EmbeddedResource Include="ControllersFacade\Controlls\PhotoController.resx">
+      <DependentUpon>PhotoController.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ControllersFacade\Controlls\PostController.resx">

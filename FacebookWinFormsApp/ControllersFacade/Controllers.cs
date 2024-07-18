@@ -23,7 +23,7 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             m_Controllers = new Dictionary<eControllerType, IController>()
             {
-                { eControllerType.Photo, new PhotosController() },
+                { eControllerType.Photo, new PhotoController() },
                 { eControllerType.Post, new PostController() },
                 { eControllerType.Page, new PageController() },
                 { eControllerType.Profile, new ProfileController() },

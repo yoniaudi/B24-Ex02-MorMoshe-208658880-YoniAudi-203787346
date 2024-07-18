@@ -29,10 +29,10 @@ namespace BasicFacebookFeatures.Models
         private void populateProfileData()
         {
             userBindingSource.DataSource = m_LoggedInUser;
-            labelUserLanguages.Text = getLanguagesStr(m_LoggedInUser.Languages);
+            labelUserLanguages.Text = getLanguagesStr();
         }
 
-        private string getLanguagesStr(Page[] i_Languages)
+        private string getLanguagesStr()
         {
             StringBuilder languages = new StringBuilder();
 
@@ -79,15 +79,15 @@ namespace BasicFacebookFeatures.Models
 
         private void textBoxUserFirstName_Validated(object sender, System.EventArgs e)
         {
-            OnUserNameChanged();
+            onUserNameChanged();
         }
 
         private void textBoxUserLastName_Validated(object sender, System.EventArgs e)
         {
-            OnUserNameChanged();
+            onUserNameChanged();
         }
 
-        private void OnUserNameChanged()
+        private void onUserNameChanged()
         {
             string newUserName = $"{m_LoggedInUser.FirstName} {m_LoggedInUser.LastName}";
 

@@ -4,19 +4,19 @@ using System.Windows.Forms;
 
 namespace BasicFacebookFeatures.Models
 {
-    public partial class PhotosController : UserControl, IController
+    public partial class PhotoController : UserControl, IController
     {
         public string DisplayMember { get { return "Name"; } }
         public object DataSource { get; set; }
         private ProgressBar m_ProgressBar = null;
         private SearchableListBoxController m_SearchableListBox = null;
 
-        public PhotosController()
+        public PhotoController()
         {
             InitializeComponent();
         }
 
-        public PhotosController(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
+        public PhotoController(User i_LoggedInUser, SearchableListBoxController i_SearchableListBox, ProgressBar i_ProgressBar)
         {
             InitializeComponent();
 
