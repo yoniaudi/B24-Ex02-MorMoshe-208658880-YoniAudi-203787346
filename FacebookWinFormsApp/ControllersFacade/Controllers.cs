@@ -50,12 +50,10 @@ namespace BasicFacebookFeatures.ControllersFacade
 
         private void launchThreading()
         {
-            startThread(() => fetchData(eControllerType.Photo));
-            startThread(() => fetchData(eControllerType.Post));
-            startThread(() => fetchData(eControllerType.Page));
-            startThread(() => fetchData(eControllerType.Profile));
-            startThread(() => fetchData(eControllerType.Friend));
-            startThread(() => fetchData(eControllerType.Status));
+            foreach(eControllerType controllerType in Enum.GetValues(typeof(eControllerType)))
+            {
+                startThread(() => fetchData(controllerType));
+            }
         }
 
         private void startThread(ThreadStart i_ThreadStart)
