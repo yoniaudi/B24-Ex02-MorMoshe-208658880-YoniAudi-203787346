@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace BasicFacebookFeatures
@@ -156,22 +157,32 @@ namespace BasicFacebookFeatures
 
         private void buttonPhotos_Click(object sender, EventArgs e)
         {
-            showData(eControllerType.Photo);
+            new Thread(() => showData(eControllerType.Photo)).Start();
         }
 
         private void buttonPosts_Click(object sender, EventArgs e)
         {
-            showData(eControllerType.Post);
+            new Thread(() => showData(eControllerType.Post)).Start();
         }
 
         private void buttonPages_Click(object sender, EventArgs e)
         {
-            showData(eControllerType.Page);
+            new Thread(() => showData(eControllerType.Page)).Start();
+        }
+
+        private void buttonFriends_Click(object sender, EventArgs e)
+        {
+            new Thread(() => showData(eControllerType.Friend)).Start();
+        }
+
+        private void buttonStatuses_Click(object sender, EventArgs e)
+        {
+            new Thread(() => showData(eControllerType.Status)).Start();
         }
 
         private void buttonProfile_Click(object sender, EventArgs e)
         {
-            showData(eControllerType.Profile);
+            new Thread(() => showData(eControllerType.Profile)).Start();
             setUserNameChangedEvent();
         }
 
@@ -186,41 +197,6 @@ namespace BasicFacebookFeatures
         private void updateUserName()
         {
             labelFullName.Text = m_LoginResult.LoggedInUser.Name;
-        }
-
-        private void buttonFriends_Click(object sender, EventArgs e)
-        {
-            showData(eControllerType.Friend);
-        }
-
-        private void buttonStatuses_Click(object sender, EventArgs e)
-        {
-            showData(eControllerType.Status);
-        }
-
-        private void showData(eControllerType i_ControllerType)
-        {
-            Control controller = m_Controllers.GetController(i_ControllerType) as Control;
-            Panel panel = m_Panels[i_ControllerType];
-
-            displayPanel(panel);
-
-            if (controller != null)
-            {
-                try
-                {
-                    m_Controllers.LoadDataToListBox(i_ControllerType);
-                    panel.Controls.Clear();
-                    panel.Controls.Add(controller);
-                }
-                catch (Exception ex)
-                {
-                    string exceptionMsg = string.Format("Getting {0} is not supported by Meta anymore.{1}Press ok to continue.{1}Error: {2}",
-                    i_ControllerType.ToString(), Environment.NewLine, ex.Message);
-
-                    MessageBox.Show(exceptionMsg);
-                }
-            }
         }
 
         private void searchableListBoxMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -252,6 +228,34 @@ namespace BasicFacebookFeatures
             }
 
             i_Panel.Invoke(new Action(() => i_Panel.Visible = true));
+        }
+
+        private void showData(eControllerType i_ControllerType)
+        {
+            Control controller = m_Controllers.GetController(i_ControllerType) as Control;
+            Panel panel = m_Panels[i_ControllerType];
+
+            progressBar.Invoke(new Action(() => progressBar.Visible = true));
+            displayPanel(panel);
+
+            try
+            {
+                m_Controllers.LoadDataToListBox(i_ControllerType);
+                panel.Invoke(new Action(() =>
+                {
+                    panel.Controls.Clear();
+                    panel.Controls.Add(controller);
+                }));
+            }
+            catch (Exception ex)
+            {
+                string exceptionMsg = string.Format("Getting {0} is not supported by Meta anymore.{1}Press ok to continue.{1}Error: {2}",
+                i_ControllerType.ToString(), Environment.NewLine, ex.Message);
+
+                MessageBox.Show(exceptionMsg);
+            }
+
+            progressBar.Invoke(new Action(() => progressBar.Visible = false));
         }
     }
 }

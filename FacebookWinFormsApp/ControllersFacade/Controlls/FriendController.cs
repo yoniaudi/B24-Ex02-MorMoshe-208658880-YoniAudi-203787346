@@ -27,18 +27,26 @@ namespace BasicFacebookFeatures.Models
             DataSource = i_LoggedInUser.Friends;
             m_ProgressBar = i_ProgressBar;
             m_SearchableListBox = i_SearchableListBox;
+            initializeProgressBar(i_LoggedInUser);
         }
 
         private void initializeProgressBar(User i_Friend)
         {
             m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Maximum += i_Friend.Statuses.Count));
+
+            if (m_ProgressBar.Visible == false)
+            {
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = true));
+            }
         }
 
         private object filterStatusesWithProgress(User i_Friend)
         {
-            List<FacebookWrapper.ObjectModel.Status> filteredStatuses = new List<FacebookWrapper.ObjectModel.Status>();
+            List<Status> filteredStatuses = new List<Status>();
 
-            foreach (FacebookWrapper.ObjectModel.Status status in i_Friend.Statuses)
+            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Maximum += i_Friend.Statuses.Count));
+
+            foreach (Status status in i_Friend.Statuses)
             {
                 if (status.Message != null)
                 {
@@ -103,24 +111,6 @@ namespace BasicFacebookFeatures.Models
             }
         }
 
-        private string getLanguagesStr(Page[] i_Languages)
-        {
-            StringBuilder languages = new StringBuilder();
-
-            if (i_Languages != null)
-            {
-                foreach (FacebookWrapper.ObjectModel.Page languagePage in i_Languages)
-                {
-                    string languageName = languagePage.Name.Remove(languagePage.Name.Length - "Language".Length - 1);
-
-                    languages.Append($"{languageName}, ");
-                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
-                }
-            }
-
-            return languages.ToString().TrimEnd(',', ' ');
-        }
-
         private void searchableListBoxControllerFriendsStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             FacebookWrapper.ObjectModel.Status status = searchableListBoxControllerFriendsStatus.SelectedItem as FacebookWrapper.ObjectModel.Status;
@@ -163,6 +153,24 @@ namespace BasicFacebookFeatures.Models
             searchableListBoxControllerCommonFriends.DisplayMember = "Name";
             searchableListBoxControllerCommonFriends.DataSource = friend.Friends.Where(myFriend => mainUserFriends.Contains(myFriend)).ToList();
             m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = false));
+        }
+
+        private string getLanguagesStr(Page[] i_Languages)
+        {
+            StringBuilder languages = new StringBuilder();
+
+            if (i_Languages != null)
+            {
+                foreach (FacebookWrapper.ObjectModel.Page languagePage in i_Languages)
+                {
+                    string languageName = languagePage.Name.Remove(languagePage.Name.Length - "Language".Length - 1);
+
+                    languages.Append($"{languageName}, ");
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                }
+            }
+
+            return languages.ToString().TrimEnd(',', ' ');
         }
     }
 }

@@ -19,7 +19,11 @@ namespace BasicFacebookFeatures.Models
         public object DataSource
         {
             get { return listBoxMain.DataSource; }
-            set { listBoxMain.DataSource = value; }
+            set
+            {
+                textBoxSearch.Text = "";
+                listBoxMain.DataSource = value;
+            }
         }
 
         public SearchableListBoxController()
