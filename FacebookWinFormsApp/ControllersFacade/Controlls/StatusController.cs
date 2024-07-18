@@ -58,7 +58,7 @@ namespace BasicFacebookFeatures.Models
 
         public void ShowSelectedItem(object i_Status)
         {
-            FacebookWrapper.ObjectModel.Status status = i_Status as FacebookWrapper.ObjectModel.Status;
+            Status status = i_Status as Status;
 
             if (status != null)
             {
