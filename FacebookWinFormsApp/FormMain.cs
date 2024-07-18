@@ -18,8 +18,8 @@ namespace BasicFacebookFeatures
     {
         private LoginResult m_LoginResult = null;
         private User m_LoggedInUser = null;
-        private Dictionary<eControllerType, Panel> m_Panels = null;
         private Controllers m_Controllers = null;
+        private Dictionary<eControllerType, Panel> m_Panels = null;
 
         public FormMain()
         {
