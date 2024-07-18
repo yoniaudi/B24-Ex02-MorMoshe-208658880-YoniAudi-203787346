@@ -88,12 +88,29 @@ namespace BasicFacebookFeatures.ControllersFacade
         {
             try
             {
-                Type controllerType = getControllerType(i_ControllerType) ?? throw new Exception("Controller type not found.");
-                ConstructorInfo constructorInfo = controllerType.GetConstructor(new Type[] { typeof(User), typeof(SearchableListBoxController), typeof(ProgressBar) })
-                    ?? throw new Exception("Constructor not found.");
-                object controllerInstance = constructorInfo.Invoke(new object[] { m_LoggedInUser, m_SearchableListBox, m_ProgressBar });
+                Type controllerType = getControllerType(i_ControllerType);
 
-                m_Controllers[i_ControllerType] = controllerInstance as IController;
+                if (controllerType != null)
+                {
+                    ConstructorInfo constructorInfo = controllerType.GetConstructor(new Type[] { typeof(User), typeof(SearchableListBoxController), typeof(ProgressBar) });
+
+                    if (constructorInfo != null)
+                    {
+                        object controllerInstance = constructorInfo.Invoke(new object[] { m_LoggedInUser, m_SearchableListBox, m_ProgressBar });
+
+                        m_Controllers[i_ControllerType] = controllerInstance as IController;
+                    }
+                    else 
+                    {
+                        throw new Exception("Constructor not found.");
+                    }
+                    
+                }
+                else
+                {
+                    throw new Exception("Controller type not found.");
+                }
+                
             }
             catch (Exception ex)
             {

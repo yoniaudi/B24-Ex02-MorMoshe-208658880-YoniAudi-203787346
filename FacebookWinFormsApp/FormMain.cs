@@ -18,9 +18,8 @@ namespace BasicFacebookFeatures
     {
         private LoginResult m_LoginResult = null;
         private User m_LoggedInUser = null;
-        private ProfileController m_Profile = null;
         private Dictionary<eControllerType, Panel> m_Panels = null;
-        private ControllersFacade.Controllers m_Controllers = null;
+        private Controllers m_Controllers = null;
 
         public FormMain()
         {
@@ -28,12 +27,12 @@ namespace BasicFacebookFeatures
             FacebookService.s_CollectionLimit = 25;
             m_Panels = new Dictionary<eControllerType, Panel>()
             {
-                {eControllerType.Photo, panelPhotos },
-                {eControllerType.Post, panelPosts },
-                {eControllerType.Page, panelPages },
-                {eControllerType.Profile, panelProfile },
-                {eControllerType.Friend, panelFriends },
-                {eControllerType.Status, panelStatuses }
+                { eControllerType.Photo, panelPhotos },
+                { eControllerType.Post, panelPosts },
+                { eControllerType.Page, panelPages },
+                { eControllerType.Profile, panelProfile },
+                { eControllerType.Friend, panelFriends },
+                { eControllerType.Status, panelStatuses }
             };
         }
 
