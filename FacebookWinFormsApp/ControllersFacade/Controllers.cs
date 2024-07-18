@@ -33,7 +33,7 @@ namespace BasicFacebookFeatures.ControllersFacade
             m_SearchableListBox = i_SearchableListBox;
             m_ProgressBar = i_ProgressBar;
             initializeProgressBar();
-            launchThreading();
+            launchThreads();
         }
 
         private void initializeProgressBar()
@@ -47,7 +47,7 @@ namespace BasicFacebookFeatures.ControllersFacade
             }));
         }
 
-        private void launchThreading()
+        private void launchThreads()
         {
             foreach(eControllerType controllerType in Enum.GetValues(typeof(eControllerType)))
             {
