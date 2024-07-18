@@ -5,7 +5,6 @@
         Photo,
         Post,
         Page,
-        Profile,
         Friend,
         Status
     }

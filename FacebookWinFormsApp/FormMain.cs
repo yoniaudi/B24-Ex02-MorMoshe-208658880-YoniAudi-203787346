@@ -30,8 +30,7 @@ namespace BasicFacebookFeatures
                 {eControllerType.Post, panelPosts },
                 {eControllerType.Page, panelPages },
                 {eControllerType.Friend, panelFriends },
-                {eControllerType.Status, panelStatuses },
-                {eControllerType.Profile, panelProfile }
+                {eControllerType.Status, panelStatuses }
             };
         }
 
@@ -248,6 +247,7 @@ namespace BasicFacebookFeatures
                 panel.Invoke(new Action(() => panel.Visible = false));
             }
 
+            panelProfile.Visible = false;
             i_Panel.Invoke(new Action(() => i_Panel.Visible = true));
         }
     }
