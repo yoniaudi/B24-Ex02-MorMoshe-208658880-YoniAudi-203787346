@@ -1,4 +1,5 @@
 ﻿using BasicFacebookFeatures.Features.ValidationStrategy;
+using BasicFacebookFeatures.Features.ValidationStrategy.TravelBuddyValidations;
 using FacebookWrapper.ObjectModel;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,11 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
     public class TravelBuddyService
     {
         private readonly User r_LoggedInUser = null;
-        public IValidationStrategy<TravelBuddyValidationData> ValidationStrategy { get; set; } = null;
+        public IValidation<TravelBuddyData> Validations { get; set; } = null;
 
         public TravelBuddyService(User loggedInUser)
         {
             r_LoggedInUser = loggedInUser;
-            ValidationStrategy = new TravelBuddyValidationStrategy();
         }
 
         public List<TravelBuddyModel> LoadFriends()
@@ -134,9 +134,39 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
                 (i_Gender == null || friend.Gender == i_Gender)).ToList();
         }
 
-        public bool ValidateData(TravelBuddyValidationData i_ValidationData, out string o_ErrorMessage)
+        public bool ValidateData(TravelBuddyData i_ValidationData, out string o_ErrorMessage)
         {
-            return ValidationStrategy.Validate(i_ValidationData, out o_ErrorMessage);
+            List<string> errorMessages = new List<string>();
+            bool isDataValid = true;
+
+            Validations = new TravelCountryValidation();
+            Validations.Validate(i_ValidationData, errorMessages);
+            Validations = new TravelDateValidation();
+            Validations.Validate(i_ValidationData, errorMessages);
+
+            if (i_ValidationData.AgeChecked == true)
+            {
+                Validations = new TravelAgeRangeValidation();
+                Validations.Validate(i_ValidationData, errorMessages);
+            }
+
+            if (i_ValidationData.GenderChecked == true)
+            {
+                Validations = new TravelGenderValidation();
+                Validations.Validate(i_ValidationData, errorMessages);
+            }
+
+            if (errorMessages.Count > 0)
+            {
+                o_ErrorMessage = string.Join(Environment.NewLine, errorMessages);
+                isDataValid = false;
+            }
+            else
+            {
+                o_ErrorMessage = string.Empty;
+            }
+
+            return isDataValid;
         }
     }
 }

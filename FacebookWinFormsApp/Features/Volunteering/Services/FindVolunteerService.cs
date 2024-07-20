@@ -9,7 +9,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
     {
         public DateTime StartAvailableDate { get; private set; }
         public DateTime EndAvailableDate { get; private set; }
-        public IValidationStrategy<VolunteerModel> ValidationStrategy { get; set; }
+        public IValidation<VolunteerModel> Validations { get; set; }
         private readonly User r_LoggedInUser;
 
         public FindVolunteerService(User i_LoggedInUser)
@@ -17,7 +17,6 @@ namespace BasicFacebookFeatures.Features.Volunteering
             r_LoggedInUser = i_LoggedInUser;
             StartAvailableDate = DateTime.Now;
             EndAvailableDate = DateTime.Now;
-            ValidationStrategy = new FindVolunteerValidationStrategy();
         }
 
         public void UpdateStartDate(DateTime i_StartDate)
@@ -32,7 +31,27 @@ namespace BasicFacebookFeatures.Features.Volunteering
 
         public bool ValidateData(VolunteerModel i_Volunteer, out string o_ErrorMessage)
         {
-            return ValidationStrategy.Validate(i_Volunteer, out o_ErrorMessage);
+            List<string> errorMessages = new List<string>();
+            bool isDataValid = true;
+
+            Validations = new VolunteerCategoryValidation();
+            Validations.Validate(i_Volunteer, errorMessages);
+            Validations = new VolunteerLocationValidation();
+            Validations.Validate(i_Volunteer, errorMessages);
+            Validations = new VolunteerDateValidation();
+            Validations.Validate(i_Volunteer, errorMessages);
+
+            if (errorMessages.Count > 0)
+            {
+                o_ErrorMessage = string.Join(Environment.NewLine, errorMessages);
+                isDataValid = false;
+            }
+            else
+            {
+                o_ErrorMessage = string.Empty;
+            }
+
+            return isDataValid;
         }
 
         public List<VolunteerModel> FindMatchingOpportunities(VolunteerModel i_Volunteer)

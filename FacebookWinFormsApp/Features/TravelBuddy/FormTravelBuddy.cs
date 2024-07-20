@@ -100,7 +100,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
 
         private void findMatchValidation()
         {
-            TravelBuddyValidationData validationData = new TravelBuddyValidationData
+            TravelBuddyData validationData = new TravelBuddyData
             {
                 SelectedCountry = comboBoxCountries.Text,
                 ArrivalDate = textBoxArrivalDate.Text,

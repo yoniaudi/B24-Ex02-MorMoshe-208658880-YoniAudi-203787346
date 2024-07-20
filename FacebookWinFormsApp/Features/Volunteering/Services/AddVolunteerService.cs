@@ -1,18 +1,37 @@
 ﻿using BasicFacebookFeatures.Features.ValidationStrategy;
 using BasicFacebookFeatures.Features.Volunteering;
+using System.Collections.Generic;
+using System;
 
 public class AddVolunteerService
 {
-    public IValidationStrategy<VolunteerModel> ValidationStrategy { get; set; }
+    public IValidation<VolunteerModel> Validations { get; set; }
 
-    public AddVolunteerService()
+    public bool DataValidation(VolunteerModel i_Volunteer, out string o_ErrorMessage)
     {
-        ValidationStrategy = new AddVolunteerValidationStrategy();
-    }
+        List<string> errorMessages = new List<string>();
+        bool isDataValid = true;
 
-    public bool ValidateData(VolunteerModel i_Volunteer, out string o_ErrorMessage)
-    {
-        return ValidationStrategy.Validate(i_Volunteer, out o_ErrorMessage);
+        Validations = new VolunteerCategoryValidation();
+        Validations.Validate(i_Volunteer, errorMessages);
+        Validations = new VolunteerLocationValidation();
+        Validations.Validate(i_Volunteer, errorMessages);
+        Validations = new VolunteerDateValidation();
+        Validations.Validate(i_Volunteer, errorMessages);
+        Validations = new VolunteerPhoneNumberValidation();
+        Validations.Validate(i_Volunteer, errorMessages);
+
+        if (errorMessages.Count > 0)
+        {
+            o_ErrorMessage = string.Join(Environment.NewLine, errorMessages);
+            isDataValid = false;
+        }
+        else
+        {
+            o_ErrorMessage = string.Empty;
+        }
+
+        return isDataValid;
     }
 
     public void SaveVolunteerPerson(VolunteerModel i_Volunteer)

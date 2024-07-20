@@ -1,4 +1,4 @@
-﻿public class TravelBuddyValidationData
+﻿public class TravelBuddyData
 {
     public string SelectedCountry { get; set; }
     public string ArrivalDate { get; set; }

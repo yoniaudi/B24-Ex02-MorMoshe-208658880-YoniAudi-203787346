@@ -102,14 +102,19 @@
     <Compile Include="Features\TravelBuddy\FormTravelBuddy.Designer.cs">
       <DependentUpon>FormTravelBuddy.cs</DependentUpon>
     </Compile>
-    <Compile Include="Features\TravelBuddy\TravelBuddyService.cs" />
-    <Compile Include="Features\TravelBuddy\Validations\TravelBuddyValidationData.cs" />
-    <Compile Include="Features\TravelBuddy\Validations\TravelBuddyValidationStrategy.cs" />
+    <Compile Include="Features\TravelBuddy\Services\TravelBuddyService.cs" />
+    <Compile Include="Features\TravelBuddy\Data\TravelBuddyData.cs" />
     <Compile Include="Features\TravelBuddy\Models\TravelPlanModel.cs" />
-    <Compile Include="Features\ValidationStrategy\IValidationStrategy.cs" />
+    <Compile Include="Features\ValidationStrategy\TravelBuddyValidations\TravelAgeRangeValidation.cs" />
+    <Compile Include="Features\ValidationStrategy\TravelBuddyValidations\TravelCountryValidation.cs" />
+    <Compile Include="Features\ValidationStrategy\TravelBuddyValidations\TravelDateValidation.cs" />
+    <Compile Include="Features\ValidationStrategy\VolunteerValidations\VolunteerDateValidation.cs" />
+    <Compile Include="Features\ValidationStrategy\TravelBuddyValidations\TravelGenderValidation.cs" />
+    <Compile Include="Features\ValidationStrategy\IValidation.cs" />
+    <Compile Include="Features\ValidationStrategy\VolunteerValidations\VolunteerLocationValidation.cs" />
+    <Compile Include="Features\ValidationStrategy\VolunteerValidations\VolunteerPhoneNumberValidation.cs" />
+    <Compile Include="Features\ValidationStrategy\VolunteerValidations\VolunteerCategoryValidation.cs" />
     <Compile Include="Features\Volunteering\Services\AddVolunteerService.cs" />
-    <Compile Include="Features\Volunteering\Validations\AddVolunteerValidationStrategy.cs" />
-    <Compile Include="Features\Volunteering\Validations\FindVolunteerValidationStrategy.cs" />
     <Compile Include="Features\Volunteering\SingletonFileOperations.cs" />
     <Compile Include="Features\Volunteering\Services\FindVolunteerService.cs" />
     <Compile Include="Features\Volunteering\FormAddVolunteer.cs">
@@ -145,34 +150,34 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\PageController.cs">
+    <Compile Include="ControllersFacade\Controller\PageController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\PageController.Designer.cs">
+    <Compile Include="ControllersFacade\Controller\PageController.Designer.cs">
       <DependentUpon>PageController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\FriendController.cs">
+    <Compile Include="ControllersFacade\Controller\FriendController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\FriendController.Designer.cs">
+    <Compile Include="ControllersFacade\Controller\FriendController.Designer.cs">
       <DependentUpon>FriendController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\PhotoController.cs">
+    <Compile Include="ControllersFacade\Controller\PhotoController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\PhotoController.Designer.cs">
+    <Compile Include="ControllersFacade\Controller\PhotoController.Designer.cs">
       <DependentUpon>PhotoController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\PostController.cs">
+    <Compile Include="ControllersFacade\Controller\PostController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\PostController.Designer.cs">
+    <Compile Include="ControllersFacade\Controller\PostController.Designer.cs">
       <DependentUpon>PostController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\ProfileController.cs">
+    <Compile Include="ControllersFacade\Controller\ProfileController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\ProfileController.Designer.cs">
+    <Compile Include="ControllersFacade\Controller\ProfileController.Designer.cs">
       <DependentUpon>ProfileController.cs</DependentUpon>
     </Compile>
     <Compile Include="ControllersFacade\SearchableListBoxController.cs">
@@ -181,10 +186,10 @@
     <Compile Include="ControllersFacade\SearchableListBoxController.Designer.cs">
       <DependentUpon>SearchableListBoxController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\StatusController.cs">
+    <Compile Include="ControllersFacade\Controller\StatusController.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ControllersFacade\Controlls\StatusController.Designer.cs">
+    <Compile Include="ControllersFacade\Controller\StatusController.Designer.cs">
       <DependentUpon>StatusController.cs</DependentUpon>
     </Compile>
     <Compile Include="ControllersFacade\IController.cs" />
@@ -214,23 +219,23 @@
       <DependentUpon>FormMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControllersFacade\Controlls\PageController.resx">
+    <EmbeddedResource Include="ControllersFacade\Controller\PageController.resx">
       <DependentUpon>PageController.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControllersFacade\Controlls\FriendController.resx">
+    <EmbeddedResource Include="ControllersFacade\Controller\FriendController.resx">
       <DependentUpon>FriendController.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControllersFacade\Controlls\PhotoController.resx">
+    <EmbeddedResource Include="ControllersFacade\Controller\PhotoController.resx">
       <DependentUpon>PhotoController.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControllersFacade\Controlls\PostController.resx">
+    <EmbeddedResource Include="ControllersFacade\Controller\PostController.resx">
       <DependentUpon>PostController.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControllersFacade\Controlls\ProfileController.resx">
+    <EmbeddedResource Include="ControllersFacade\Controller\ProfileController.resx">
       <DependentUpon>ProfileController.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -238,7 +243,7 @@
       <DependentUpon>SearchableListBoxController.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControllersFacade\Controlls\StatusController.resx">
+    <EmbeddedResource Include="ControllersFacade\Controller\StatusController.resx">
       <DependentUpon>StatusController.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

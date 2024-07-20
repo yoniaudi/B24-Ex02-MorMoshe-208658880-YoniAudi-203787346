@@ -64,7 +64,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
             bool isValid = true;
 
             io_Volunteer = collectFormData();
-            isValid = r_VolunteerService.ValidateData(io_Volunteer, out errorMessage);
+            isValid = r_VolunteerService.DataValidation(io_Volunteer, out errorMessage);
 
             if (!isValid)
             {
