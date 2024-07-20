@@ -11,7 +11,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
     public class TravelBuddyService
     {
         private readonly User r_LoggedInUser = null;
-        public IValidation<TravelBuddyData> Validations { get; set; } = null;
+        private IValidation<TravelBuddyData> m_Validation { get; set; } = null;
 
         public TravelBuddyService(User loggedInUser)
         {
@@ -125,13 +125,12 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
         public List<TravelBuddyModel> FindFriendsWithPlannedTravel(List<TravelBuddyModel> i_FriendList, string i_DesiredCountry,
             DateTime i_StartDate, DateTime i_EndDate, int i_MinAge = 0, int i_MaxAge = 0, string i_Gender = null)
         {
-            return i_FriendList.Where(friend =>
-                friend.TravelPlans.Any(travelPlan =>
+            return i_FriendList.Where(friend => friend.TravelPlans.Any(travelPlan =>
                     travelPlan.Country == i_DesiredCountry &&
                     travelPlan.StartDate <= i_EndDate &&
                     travelPlan.EndDate >= i_StartDate) &&
-                (i_MinAge == 0 && i_MaxAge == 0 || friend.Age >= i_MinAge && friend.Age <= i_MaxAge) &&
-                (i_Gender == null || friend.Gender == i_Gender)).ToList();
+                    (i_MinAge == 0 && i_MaxAge == 0 || friend.Age >= i_MinAge && friend.Age <= i_MaxAge) &&
+                    (i_Gender == null || friend.Gender == i_Gender)).ToList();
         }
 
         public bool ValidateData(TravelBuddyData i_ValidationData, out string o_ErrorMessage)
@@ -139,21 +138,21 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             List<string> errorMessages = new List<string>();
             bool isDataValid = true;
 
-            Validations = new TravelCountryValidation();
-            Validations.Validate(i_ValidationData, errorMessages);
-            Validations = new TravelDateValidation();
-            Validations.Validate(i_ValidationData, errorMessages);
+            m_Validation = new TravelCountryValidation();
+            m_Validation.Validate(i_ValidationData, errorMessages);
+            m_Validation = new TravelDateValidation();
+            m_Validation.Validate(i_ValidationData, errorMessages);
 
             if (i_ValidationData.AgeChecked == true)
             {
-                Validations = new TravelAgeRangeValidation();
-                Validations.Validate(i_ValidationData, errorMessages);
+                m_Validation = new TravelAgeRangeValidation();
+                m_Validation.Validate(i_ValidationData, errorMessages);
             }
 
             if (i_ValidationData.GenderChecked == true)
             {
-                Validations = new TravelGenderValidation();
-                Validations.Validate(i_ValidationData, errorMessages);
+                m_Validation = new TravelGenderValidation();
+                m_Validation.Validate(i_ValidationData, errorMessages);
             }
 
             if (errorMessages.Count > 0)
