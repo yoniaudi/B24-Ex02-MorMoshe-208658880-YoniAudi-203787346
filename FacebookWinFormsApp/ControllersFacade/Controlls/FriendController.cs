@@ -32,7 +32,10 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(User i_Friend)
         {
-            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Maximum += i_Friend.Statuses.Count));
+            if (m_ProgressBar?.IsHandleCreated == true)
+            {
+                m_ProgressBar?.Invoke(new Action(() => m_ProgressBar.Maximum += i_Friend.Statuses.Count));
+            }
 
             if (m_ProgressBar.Visible == false)
             {
@@ -53,7 +56,10 @@ namespace BasicFacebookFeatures.Models
                     filteredStatuses.Add(status);
                 }
 
-                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                if (m_ProgressBar?.IsHandleCreated == true)
+                {
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                }
             }
 
             return filteredStatuses;
@@ -72,7 +78,10 @@ namespace BasicFacebookFeatures.Models
                         filteredAlbums.Add(album);
                     }
 
-                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                    if (m_ProgressBar?.IsHandleCreated == true)
+                    {
+                        m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                    }
                 }
             }
             catch (Exception ex)
@@ -106,7 +115,11 @@ namespace BasicFacebookFeatures.Models
                     flowLayoutPanelFriendPhotos.Controls.Add(picture);
                     picture.BringToFront();
                     picture.Visible = true;
-                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+
+                    if (m_ProgressBar?.IsHandleCreated == true)
+                    {
+                        m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                    }
                 }
             }
         }
@@ -117,7 +130,11 @@ namespace BasicFacebookFeatures.Models
             statusesModelFriendStatuses.ShowSelectedItem(status);
             flowLayoutPanelFriendPhotos.Hide();
             statusesModelFriendStatuses.Show();
-            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+
+            if (m_ProgressBar?.IsHandleCreated == true)
+            {
+                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+            }
         }
 
         public void LoadDataToListBox()
@@ -169,7 +186,11 @@ namespace BasicFacebookFeatures.Models
                     string languageName = languagePage.Name.Remove(languagePage.Name.Length - "Language".Length - 1);
 
                     languages.Append($"{languageName}, ");
-                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+
+                    if (m_ProgressBar?.IsHandleCreated == true)
+                    {
+                        m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                    }
                 }
             }
 

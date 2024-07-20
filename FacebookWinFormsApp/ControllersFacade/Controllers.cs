@@ -86,7 +86,10 @@ namespace BasicFacebookFeatures.ControllersFacade
 
                 if (m_ActiveThreads == 0)
                 {
-                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = false));
+                    if (m_ProgressBar?.IsHandleCreated == true)
+                    {
+                        m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Visible = false));
+                    }
                 }
             }
         }

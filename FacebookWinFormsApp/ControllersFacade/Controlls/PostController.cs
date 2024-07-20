@@ -27,7 +27,10 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(FacebookObjectCollection<Post> i_Posts)
         {
-            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Maximum += i_Posts.Count));
+            if (m_ProgressBar?.IsHandleCreated == true)
+            {
+                m_ProgressBar?.Invoke(new Action(() => m_ProgressBar.Maximum += i_Posts.Count));
+            }
         }
 
         private object filterPostsWithProgress(FacebookObjectCollection<Post> i_Posts)
@@ -41,7 +44,10 @@ namespace BasicFacebookFeatures.Models
                     filteredPosts.Add(post);
                 }
 
-                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                if (m_ProgressBar?.IsHandleCreated == true)
+                {
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                }
             }
 
             return filteredPosts;

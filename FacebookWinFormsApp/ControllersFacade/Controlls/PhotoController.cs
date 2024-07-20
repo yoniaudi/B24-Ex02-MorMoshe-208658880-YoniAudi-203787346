@@ -38,9 +38,11 @@ namespace BasicFacebookFeatures.Models
 
         private void initializeProgressBar(FacebookObjectCollection<Album> i_Albums = null, FacebookWrapper.ObjectModel.Album i_Album = null)
         {
-
-            m_ProgressBar.Invoke(new Action(() =>
-                m_ProgressBar.Maximum += i_Albums != null ? i_Albums.Count : (i_Album != null ? i_Album.Photos.Count : 0)));
+            if (m_ProgressBar?.IsHandleCreated == true)
+            {
+                m_ProgressBar?.Invoke(new Action(() =>
+                    m_ProgressBar.Maximum += i_Albums != null ? i_Albums.Count : (i_Album != null ? i_Album.Photos.Count : 0)));
+            }
         }
 
         private object filterAlbumsWithProgress(FacebookObjectCollection<Album> i_Albums)
@@ -54,7 +56,10 @@ namespace BasicFacebookFeatures.Models
                     filteredAlbums.Add(album);
                 }
 
-                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                if (m_ProgressBar?.IsHandleCreated == true)
+                {
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                }
             }
 
             return filteredAlbums;
@@ -89,7 +94,11 @@ namespace BasicFacebookFeatures.Models
                 flowLayoutPanelPhotos.Controls.Add(picture);
                 picture.BringToFront();
                 picture.Visible = true;
-                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+
+                if (m_ProgressBar?.IsHandleCreated == true)
+                {
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                }
             }
         }
     }

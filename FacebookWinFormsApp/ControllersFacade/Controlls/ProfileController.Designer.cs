@@ -34,12 +34,12 @@
             System.Windows.Forms.Label labelFirstName;
             System.Windows.Forms.Label labelLastName;
             this.userBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dateTimePickerUserBirthday = new System.Windows.Forms.DateTimePicker();
             this.labelUserEmail = new System.Windows.Forms.Label();
             this.labelLanguages = new System.Windows.Forms.Label();
             this.labelUserLanguages = new System.Windows.Forms.Label();
             this.textBoxUserFirstName = new System.Windows.Forms.TextBox();
             this.textBoxUserLastName = new System.Windows.Forms.TextBox();
+            this.labelUserBirthday = new System.Windows.Forms.Label();
             labelBirthday = new System.Windows.Forms.Label();
             labelEmail = new System.Windows.Forms.Label();
             labelFirstName = new System.Windows.Forms.Label();
@@ -50,7 +50,7 @@
             // labelBirthday
             // 
             labelBirthday.AutoSize = true;
-            labelBirthday.Location = new System.Drawing.Point(3, 84);
+            labelBirthday.Location = new System.Drawing.Point(3, 85);
             labelBirthday.Name = "labelBirthday";
             labelBirthday.Size = new System.Drawing.Size(48, 13);
             labelBirthday.TabIndex = 2;
@@ -86,14 +86,6 @@
             // userBindingSource
             // 
             this.userBindingSource.DataSource = typeof(FacebookWrapper.ObjectModel.User);
-            // 
-            // dateTimePickerUserBirthday
-            // 
-            this.dateTimePickerUserBirthday.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.userBindingSource, "Birthday", true));
-            this.dateTimePickerUserBirthday.Location = new System.Drawing.Point(69, 83);
-            this.dateTimePickerUserBirthday.Name = "dateTimePickerUserBirthday";
-            this.dateTimePickerUserBirthday.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePickerUserBirthday.TabIndex = 3;
             // 
             // labelUserEmail
             // 
@@ -142,10 +134,20 @@
             this.textBoxUserLastName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxUserLastName_Validating);
             this.textBoxUserLastName.Validated += new System.EventHandler(this.textBoxUserLastName_Validated);
             // 
+            // labelUserBirthday
+            // 
+            this.labelUserBirthday.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "Birthday", true));
+            this.labelUserBirthday.Location = new System.Drawing.Point(69, 85);
+            this.labelUserBirthday.Name = "labelUserBirthday";
+            this.labelUserBirthday.Size = new System.Drawing.Size(100, 23);
+            this.labelUserBirthday.TabIndex = 14;
+            this.labelUserBirthday.Text = "User Birthday";
+            // 
             // ProfileController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelUserBirthday);
             this.Controls.Add(labelLastName);
             this.Controls.Add(this.textBoxUserLastName);
             this.Controls.Add(labelFirstName);
@@ -153,11 +155,10 @@
             this.Controls.Add(this.labelUserLanguages);
             this.Controls.Add(this.labelLanguages);
             this.Controls.Add(labelBirthday);
-            this.Controls.Add(this.dateTimePickerUserBirthday);
             this.Controls.Add(labelEmail);
             this.Controls.Add(this.labelUserEmail);
             this.Name = "ProfileController";
-            this.Size = new System.Drawing.Size(276, 132);
+            this.Size = new System.Drawing.Size(289, 143);
             ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -167,11 +168,11 @@
         #endregion
 
         private System.Windows.Forms.BindingSource userBindingSource;
-        private System.Windows.Forms.DateTimePicker dateTimePickerUserBirthday;
         private System.Windows.Forms.Label labelUserEmail;
         private System.Windows.Forms.Label labelLanguages;
         private System.Windows.Forms.Label labelUserLanguages;
         private System.Windows.Forms.TextBox textBoxUserFirstName;
         private System.Windows.Forms.TextBox textBoxUserLastName;
+        private System.Windows.Forms.Label labelUserBirthday;
     }
 }

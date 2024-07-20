@@ -25,23 +25,29 @@ namespace BasicFacebookFeatures.Models
             DataSource = filterStatusesWithProgress(i_LoggedInUser.Statuses);
         }
 
-        private void initializeProgressBar(FacebookObjectCollection<FacebookWrapper.ObjectModel.Status> i_Statuses)
+        private void initializeProgressBar(FacebookObjectCollection<Status> i_Statuses)
         {
-            m_ProgressBar.Invoke(new Action(() => m_ProgressBar.Maximum += i_Statuses.Count));
+            if (m_ProgressBar?.IsHandleCreated == true)
+            {
+                m_ProgressBar?.Invoke(new Action(() => m_ProgressBar.Maximum += i_Statuses.Count));
+            }
         }
 
-        private object filterStatusesWithProgress(FacebookObjectCollection<FacebookWrapper.ObjectModel.Status> i_Statuses)
+        private object filterStatusesWithProgress(FacebookObjectCollection<Status> i_Statuses)
         {
-            FacebookObjectCollection<FacebookWrapper.ObjectModel.Status> filteredStatuses = new FacebookObjectCollection<FacebookWrapper.ObjectModel.Status>();
+            FacebookObjectCollection<Status> filteredStatuses = new FacebookObjectCollection<Status>();
 
-            foreach (FacebookWrapper.ObjectModel.Status status in i_Statuses)
+            foreach (Status status in i_Statuses)
             {
                 if (status.Message != null)
                 {
                     filteredStatuses.Add(status);
                 }
 
-                m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                if (m_ProgressBar?.IsHandleCreated == true)
+                {
+                    m_ProgressBar.Invoke(new Action(() => m_ProgressBar.PerformStep()));
+                }
             }
 
             return filteredStatuses;
