@@ -29,7 +29,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
             EndAvailableDate = i_EndDate;
         }
 
-        public bool ValidateData(VolunteerModel i_Volunteer, out string o_ErrorMessage)
+        public bool DataValidation(VolunteerModel i_Volunteer, out string o_ErrorMessage)
         {
             List<string> errorMessages = new List<string>();
             bool isDataValid = true;

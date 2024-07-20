@@ -35,7 +35,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
         private void findOpportunities()
         {
             VolunteerModel volunteer = collectDataFromForm();
-            bool isDataValid = r_VolunteerService.ValidateData(volunteer, out string errorMessage);
+            bool isDataValid = r_VolunteerService.DataValidation(volunteer, out string errorMessage);
 
             if (isDataValid == true)
             {

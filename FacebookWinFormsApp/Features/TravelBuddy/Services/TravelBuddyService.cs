@@ -133,7 +133,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
                     (i_Gender == null || friend.Gender == i_Gender)).ToList();
         }
 
-        public bool ValidateData(TravelBuddyData i_ValidationData, out string o_ErrorMessage)
+        public bool DataValidation(TravelBuddyData i_ValidationData, out string o_ErrorMessage)
         {
             List<string> errorMessages = new List<string>();
             bool isDataValid = true;

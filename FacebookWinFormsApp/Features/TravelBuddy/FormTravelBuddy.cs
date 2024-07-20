@@ -112,7 +112,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
                 Gender = comboBoxGender.Text
             };
 
-            if (r_TravelBuddyService.ValidateData(validationData, out string errorMessage))
+            if (r_TravelBuddyService.DataValidation(validationData, out string errorMessage))
             {
                 List<TravelBuddyModel> friendsList = r_TravelBuddyService.LoadFriends();
 
