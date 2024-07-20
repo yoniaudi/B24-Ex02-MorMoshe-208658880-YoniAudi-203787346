@@ -24,8 +24,9 @@ public class RemoveVolunteerService
     {
         VolunteerModel volunteer = new VolunteerModel();
         string[] details = i_volunteerStr.Split(new string[] { " at ", " from ", " to ", " Phone:" }, StringSplitOptions.None);
+        const int numberOfDetails = 5;
 
-        if (details.Length == 5)
+        if (details.Length == numberOfDetails)
         {
             volunteer.Subject = details[0].Trim();
             volunteer.Location = details[1].Trim();

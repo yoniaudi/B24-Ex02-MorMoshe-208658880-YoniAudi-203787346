@@ -114,11 +114,12 @@ namespace BasicFacebookFeatures.Features.Volunteering
                     string eventLocation = volunteer.Location;
                     DateTime eventStartTime = volunteer.StartDate;
                     DateTime eventEndTime = volunteer.EndDate;
-
-                    if (eventName.ToLower() == i_Subject.ToLower() &&
+                    bool isOpportunityFound = eventName.ToLower() == i_Subject.ToLower() &&
                         eventLocation.ToLower() == i_Location.ToLower() &&
                         eventStartTime.Date >= StartAvailableDate.Date &&
-                        eventEndTime.Date <= EndAvailableDate.Date)
+                        eventEndTime.Date <= EndAvailableDate.Date;
+
+                    if (isOpportunityFound == true)
                     {
                         opportunities.Add(volunteer);
                     }

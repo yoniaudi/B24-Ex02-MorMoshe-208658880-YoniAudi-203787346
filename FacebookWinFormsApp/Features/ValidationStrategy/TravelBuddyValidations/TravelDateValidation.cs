@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BasicFacebookFeatures.Features.ValidationStrategy
 {
-    internal class TravelDateValidation : IValidation<TravelBuddyData>
+    public class TravelDateValidation : IValidation<TravelBuddyData>
     {
         public bool Validate(TravelBuddyData i_Data, List<string> i_ErrorMessages)
         {

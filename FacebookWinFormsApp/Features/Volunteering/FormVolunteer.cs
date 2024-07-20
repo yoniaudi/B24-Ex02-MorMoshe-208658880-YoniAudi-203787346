@@ -7,6 +7,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
     public partial class FormVolunteer : Form
     {
         private User m_LoggedInUser = null;
+
         public FormVolunteer()
         {
             InitializeComponent();

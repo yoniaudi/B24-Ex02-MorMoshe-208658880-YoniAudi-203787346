@@ -125,12 +125,14 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
         public List<TravelBuddyModel> FindFriendsWithPlannedTravel(List<TravelBuddyModel> i_FriendList, string i_DesiredCountry,
             DateTime i_StartDate, DateTime i_EndDate, int i_MinAge = 0, int i_MaxAge = 0, string i_Gender = null)
         {
-            return i_FriendList.Where(friend => friend.TravelPlans.Any(travelPlan =>
+            List<TravelBuddyModel> friendsWithPlannedTravel = i_FriendList.Where(friend => friend.TravelPlans.Any(travelPlan =>
                     travelPlan.Country == i_DesiredCountry &&
                     travelPlan.StartDate <= i_EndDate &&
                     travelPlan.EndDate >= i_StartDate) &&
                     (i_MinAge == 0 && i_MaxAge == 0 || friend.Age >= i_MinAge && friend.Age <= i_MaxAge) &&
                     (i_Gender == null || friend.Gender == i_Gender)).ToList();
+            
+            return friendsWithPlannedTravel;
         }
 
         public bool DataValidation(TravelBuddyData i_ValidationData, out string o_ErrorMessage)
