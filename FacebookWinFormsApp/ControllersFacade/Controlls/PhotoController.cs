@@ -36,7 +36,7 @@ namespace BasicFacebookFeatures.Models
             }
         }
 
-        private void initializeProgressBar(FacebookObjectCollection<Album> i_Albums = null, FacebookWrapper.ObjectModel.Album i_Album = null)
+        private void initializeProgressBar(FacebookObjectCollection<Album> i_Albums = null, Album i_Album = null)
         {
             if (m_ProgressBar?.IsHandleCreated == true)
             {

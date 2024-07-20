@@ -161,9 +161,9 @@ namespace BasicFacebookFeatures.ControllersFacade
             if (i_SelectedItem != null)
             {
                 Type selectedItemType = i_SelectedItem.GetType();
-                bool isValueRetrieved = r_SelectedItemTypes.TryGetValue(selectedItemType, out eControllerType controllerType);
+                bool isControllerTypeRetrieved = r_SelectedItemTypes.TryGetValue(selectedItemType, out eControllerType controllerType);
 
-                if (isValueRetrieved == true)
+                if (isControllerTypeRetrieved == true)
                 {
                     r_Controllers[controllerType].ShowSelectedItem(i_SelectedItem);
                 }

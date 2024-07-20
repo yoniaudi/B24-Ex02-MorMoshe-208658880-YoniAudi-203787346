@@ -22,7 +22,7 @@ namespace BasicFacebookFeatures.Models
             m_ProgressBar = i_ProgressBar;
             m_SearchableListBox = i_SearchableListBox;
             initializeProgressBar(i_LoggedInUser.LikedPages);
-            DataSource = filterPostsWithProgress(i_LoggedInUser.LikedPages);
+            DataSource = filterPagesWithProgress(i_LoggedInUser.LikedPages);
         }
 
         private void initializeProgressBar(FacebookObjectCollection<Page> i_Pages)
@@ -33,7 +33,7 @@ namespace BasicFacebookFeatures.Models
             }
         }
 
-        private object filterPostsWithProgress(FacebookObjectCollection<Page> i_Pages)
+        private object filterPagesWithProgress(FacebookObjectCollection<Page> i_Pages)
         {
             FacebookObjectCollection<Page> filteredPages = new FacebookObjectCollection<Page>();
 

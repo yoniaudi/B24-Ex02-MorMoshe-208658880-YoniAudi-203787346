@@ -29,7 +29,7 @@ namespace BasicFacebookFeatures.Models
             m_SearchableListBox = i_SearchableListBox;
             initializeProgressBar(i_LoggedInUser);
         }
-
+        
         private void initializeProgressBar(User i_Friend)
         {
             if (m_ProgressBar?.IsHandleCreated == true)
