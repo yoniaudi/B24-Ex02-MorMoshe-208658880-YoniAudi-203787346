@@ -10,7 +10,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
         public DateTime StartAvailableDate { get; private set; }
         public DateTime EndAvailableDate { get; private set; }
         public IValidation<VolunteerModel> Validations { get; set; }
-        private readonly User r_LoggedInUser;
+        private readonly User r_LoggedInUser = null;
 
         public FindVolunteerService(User i_LoggedInUser)
         {
@@ -79,11 +79,12 @@ namespace BasicFacebookFeatures.Features.Volunteering
                     string eventLocation = friendEvent.Location;
                     DateTime eventStartTime = friendEvent.StartTime.GetValueOrDefault();
                     DateTime eventEndTime = friendEvent.EndTime.GetValueOrDefault();
-
-                    if (eventName.ToLower() == i_Subject.ToLower() &&
+                    bool isOpportunityFound = eventName.ToLower() == i_Subject.ToLower() &&
                         eventLocation.ToLower() == i_Location.ToLower() &&
                         eventStartTime.Date >= StartAvailableDate.Date &&
-                        eventEndTime.Date <= EndAvailableDate.Date)
+                        eventEndTime.Date <= EndAvailableDate.Date;
+
+                    if (isOpportunityFound == true)
                     {
                         VolunteerModel opportunity = new VolunteerModel
                         {

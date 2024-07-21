@@ -7,10 +7,10 @@ namespace BasicFacebookFeatures.Models
 {
     public partial class ProfileController : UserControl, IController
     {
-        private User m_LoggedInUser = null;
         public string DisplayMember { get { return ""; } }
         public object DataSource { get; set; }
         public event Action UserNameChanged = null;
+        private User m_LoggedInUser = null;
         private SearchableListBoxController m_SearchableListBox = null;
 
         public ProfileController()

@@ -13,9 +13,9 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
         private readonly User r_LoggedInUser = null;
         private IValidation<TravelBuddyData> m_Validation { get; set; } = null;
 
-        public TravelBuddyService(User loggedInUser)
+        public TravelBuddyService(User i_LoggedInUser)
         {
-            r_LoggedInUser = loggedInUser;
+            r_LoggedInUser = i_LoggedInUser;
         }
 
         public List<TravelBuddyModel> LoadFriends()
@@ -27,7 +27,6 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
             {
                 int age = friend.Birthday != null ? calculateAge(friend.Birthday) : 0;
                 List<string> traveledCountries = getTraveledCountries(friend);
-
                 TravelBuddyModel travelBuddyFriend = new TravelBuddyModel
                 {
                     Name = friend.Name,

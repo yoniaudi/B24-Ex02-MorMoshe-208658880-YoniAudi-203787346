@@ -43,7 +43,7 @@ namespace BasicFacebookFeatures.Features.Volunteering
         {
             string phoneNumber = textBoxPhone.Text;
 
-            if (!string.IsNullOrEmpty(phoneNumber))
+            if (string.IsNullOrEmpty(phoneNumber) == false)
             {
                 displayVolunteersWithPhoneNumber(phoneNumber);
             }
