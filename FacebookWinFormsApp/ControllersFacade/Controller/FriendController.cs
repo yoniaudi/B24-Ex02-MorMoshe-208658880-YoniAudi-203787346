@@ -29,7 +29,7 @@ namespace BasicFacebookFeatures.Models
             m_SearchableListBox = i_SearchableListBox;
             initializeProgressBar(i_LoggedInUser);
         }
-        
+
         private void initializeProgressBar(User i_Friend)
         {
             if (m_ProgressBar?.IsHandleCreated == true)
@@ -127,6 +127,7 @@ namespace BasicFacebookFeatures.Models
         private void searchableListBoxControllerFriendsStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             Status status = searchableListBoxControllerFriendsStatus.SelectedItem as Status;
+
             statusesModelFriendStatuses.ShowSelectedItem(status);
             flowLayoutPanelFriendPhotos.Hide();
             statusesModelFriendStatuses.Show();
@@ -181,7 +182,7 @@ namespace BasicFacebookFeatures.Models
 
             if (i_Languages != null)
             {
-                foreach (FacebookWrapper.ObjectModel.Page languagePage in i_Languages)
+                foreach (Page languagePage in i_Languages)
                 {
                     string languageName = languagePage.Name.Remove(languagePage.Name.Length - "Language".Length - 1);
 

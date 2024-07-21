@@ -58,7 +58,7 @@ namespace BasicFacebookFeatures.ControllersFacade
 
         private void launchThreads()
         {
-            foreach(eControllerType controllerType in Enum.GetValues(typeof(eControllerType)))
+            foreach (eControllerType controllerType in Enum.GetValues(typeof(eControllerType)))
             {
                 startThread(() => fetchData(controllerType));
             }
@@ -104,14 +104,14 @@ namespace BasicFacebookFeatures.ControllersFacade
                 {
                     throw new Exception("Controller type not found.");
                 }
-                
+
                 ConstructorInfo constructorInfo = controllerType.GetConstructor(new Type[] { typeof(User), typeof(SearchableListBoxController), typeof(ProgressBar) });
 
                 if (constructorInfo == null)
                 {
                     throw new Exception("Constructor not found.");
                 }
-                    
+
                 object controllerInstance = constructorInfo.Invoke(new object[] { m_LoggedInUser, m_SearchableListBox, m_ProgressBar });
 
                 r_Controllers[i_ControllerType] = controllerInstance as IController;

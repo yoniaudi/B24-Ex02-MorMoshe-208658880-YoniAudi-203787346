@@ -131,7 +131,7 @@ namespace BasicFacebookFeatures.Features.TravelBuddy
                     travelPlan.EndDate >= i_StartDate) &&
                     (i_MinAge == 0 && i_MaxAge == 0 || friend.Age >= i_MinAge && friend.Age <= i_MaxAge) &&
                     (i_Gender == null || friend.Gender == i_Gender)).ToList();
-            
+
             return friendsWithPlannedTravel;
         }
 
