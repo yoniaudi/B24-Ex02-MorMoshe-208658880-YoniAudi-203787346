@@ -36,10 +36,13 @@ namespace BasicFacebookFeatures.Models
         {
             StringBuilder languages = new StringBuilder();
 
-            foreach (Page languagePage in m_LoggedInUser.Languages)
+            if (m_LoggedInUser.Languages != null)
             {
-                string languageName = languagePage.Name.Remove(languagePage.Name.Length - "Language".Length - 1);
-                languages.Append($"{languageName}, ");
+                foreach (Page languagePage in m_LoggedInUser.Languages)
+                {
+                    string languageName = languagePage.Name.Remove(languagePage.Name.Length - "Language".Length - 1);
+                    languages.Append($"{languageName}, ");
+                }
             }
 
             return languages.ToString().TrimEnd(',', ' ');
